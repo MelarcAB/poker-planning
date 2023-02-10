@@ -2,25 +2,30 @@
 
 @section('content')
 <div class="container">
-    <x-basic-options />
-    <div class="" style="display:flex">
-        <form>
-            <div class="form-row">
-                <div class="form-group col-md-6" style="display: inline-block;">
+    <h3 class="custom-title">Nuevo grupo</h3>
+    <div class="">
+        <form method="post" action="{{route('save-group')}}">
+            <div class="form-row custom-margins">
+                <div class="form-group col-md-4" style="display: inline-block;">
                     <label for="name">Nombre del grupo</label>
-                    <input type="email" class="form-control" id="name" placeholder="Nombre del grupo">
-                </div>
-                <div class="form-group col-md-6" style="display: inline-block;">
-                    <label for="inputPassword4">Descripción</label>
-                    <input type="password" class="form-control" id="inputPassword4" placeholder="Password">
+                    <input type="text" class=" custom-input" id="name" name="name" placeholder="Nombre del grupo">
+                    @error('name')
+                    <p class="error-custom-text">{{ $message }}</p>
+                    @enderror
                 </div>
             </div>
-            <div class="form-group">
-                <label for="inputAddress">Address</label>
-                <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+            <div class="form-group custom-margins">
+                <label for="inputPassword4">Descripción</label>
+                <textarea class="custom-textarea" id="description" name="description" rows="5"></textarea>
+                @error('description')
+                <p class="error-custom-text">{{ $message }}</p>
+                @enderror
             </div>
+            <div class="form-group custom-margins">
+                <button type="submit" class="custom-buttom">Guardar</button>
 
-            <button type="submit" class="btn btn-primary">Sign in</button>
+            </div>
+            @csrf
         </form>
     </div>
 </div>

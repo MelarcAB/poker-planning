@@ -19,6 +19,11 @@ Route::controller(App\Http\Controllers\GerenteController::class)->group(function
     Route::get('/new-group', 'formNewGroup')->name('form-new-group');
 });
 
+//groups controller
+Route::controller(App\Http\Controllers\GroupsController::class)->group(function () {
+    Route::post('/save-group', 'saveGroup')->name('save-group');
+    Route::get('/group/{slug}', 'group')->name('group');
+});
 
 
 //login y registrho

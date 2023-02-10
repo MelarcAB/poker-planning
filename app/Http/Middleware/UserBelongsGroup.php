@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class isGerente
+class UserBelongsGroup
 {
     /**
      * Handle an incoming request.
@@ -17,10 +17,13 @@ class isGerente
     public function handle(Request $request, Closure $next)
     {
 
-        //validar si el usuario es gestor
-        if (auth()->user()->user_type->name == 'gestor' || auth()->user()->user_type->name == 'admin') {
-            return $next($request);
+        echo 'entro';
+        exit;
+
+        // Check if the user belongs to the group
+        if (!$request->user()->belongsToGroup($request->slug)) {
+            return redirect()->route('home')->with('error', 'No puedes acceder a esta página');
         }
-        return redirect('home')->with('error', 'No tienes permisos para acceder a esta página');
+        return $next($request);
     }
 }

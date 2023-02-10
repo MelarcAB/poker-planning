@@ -13,19 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('groups', function (Blueprint $table) {
+        Schema::create('user_groups', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('description')->nullable();
-            $table->string('slug')->unique();
-
-            //user creador del grupo
             $table->bigInteger('user_id')->unsigned();
+            $table->bigInteger('group_id')->unsigned();
             $table->timestamps();
-            //password
-            $table->string('code')->nullable();
 
+            //relacion con tabla users
             $table->foreign('user_id')->references('id')->on('users');
+            //relacion con tabla groups
+            $table->foreign('group_id')->references('id')->on('groups');
         });
     }
 
@@ -36,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('groups');
+        Schema::dropIfExists('user_groups');
     }
 };

@@ -15,10 +15,12 @@
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
     <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 
 <x-navbar />
+<x-alerts />
 
 <body style="background-color: #1B1F2A;">
     <div id="app">

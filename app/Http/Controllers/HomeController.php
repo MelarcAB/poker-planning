@@ -28,6 +28,10 @@ class HomeController extends Controller
 
     public function my_groups()
     {
-        return view('user.my-groups');
+
+        //obtener usuario logeado
+        $user = auth()->user();
+
+        return view('user.my-groups', compact('user'));
     }
 }
