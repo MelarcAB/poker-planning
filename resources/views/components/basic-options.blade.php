@@ -5,7 +5,6 @@
     </div>
     <div class="basic-options-box">
         <a href="{{route('form-new-group')}}" class="nostyle">
-
             Nuevo grupo
         </a>
 

@@ -4,7 +4,9 @@ $(document).ready(function () {
     var code = $('#code');
     var b_save_code = $('#b-save-code');
     var b_new_code = $('#b-new-code');
+    var loading_spinner_code = $('#loading-spinner-code');
 
+    const token = $('meta[name="csrf-token"]').attr('content');
 
     //init components
     initComponents();
@@ -19,35 +21,59 @@ $(document).ready(function () {
 
     function initComponents() {
         new_password_group.hide();
+        loading_spinner_code.hide();
 
+
+    }
+
+    function showError(msg) {
         new Noty({
-            type: 'success',
-            layout: 'topRight',
-            text: 'Tu mensaje ha sido enviado con éxito',
+            type: 'error',
+            layout: 'bottomRight',
+            text: msg,
             timeout: 2000
         }).show();
     }
 
+    function showSuccess(msg) {
+        new Noty({
+            type: 'success',
+            layout: 'bottomRight',
+            text: msg,
+            timeout: 2000
+        }).show();
+    }
 
     function submitGroupCode(e) {
         let code = $('#code').val();
+        //obtener el slug del grupo a partir de la url
+        let slug = window.location.pathname.split('/')[2];
+        let url = '/api/update-group-code';
 
         //si esta vacio	se muestra un mensaje de error
         if (code == '') {
-            alert('El código no puede estar vacío');
+            showError('El código no puede estar vacío');
             return;
         }
-
-        axios.post('/api/path', {
-            data: 'value'
+        loading_spinner_code.show();
+        axios.post(url, {
+            code: code,
+            slug: slug,
+        }, {
+            headers: {
+                'X-CSRF-TOKEN': token
+            }
         })
             .then(function (response) {
                 console.log(response);
+                showSuccess(response.data.message);
+                loading_spinner_code.hide();
+
+                new_password_group.slideUp();
             })
             .catch(function (error) {
-                console.log(error);
+                loading_spinner_code.hide();
+                showError(error + ' ' + error.response.data.message);
             });
-
-
     }
 });

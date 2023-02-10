@@ -59,7 +59,8 @@ class GroupsController extends Controller
         $group = Groups::where('slug', $slug)->firstOrFail();
         $user = auth()->user();
         if (!$group->users->contains($user->id)) {
-            return redirect('home')->with('error', 'No puedes acceder a esta página');
+            //pantalla para que introduzca el codigo del grupo
+            return view('user.group-code', compact('group'));
         }
         return view('user.group', compact('group'));
     }

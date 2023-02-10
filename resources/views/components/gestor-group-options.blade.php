@@ -5,7 +5,7 @@
             Invitar al grupo
         </div>
         <div class="basic-options-box" id="b-new-code">
-            Nuevo código
+            Código de acceso
         </div>
 
     </div>
