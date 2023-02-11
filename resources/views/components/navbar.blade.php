@@ -28,13 +28,13 @@
                 <li class="nav-item dropdown">
                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                         <img src="{{asset(Auth::user()->image)}}" class="rounded-circle" style="width:25px">
-                        {{ Auth::user()->name }}
+                        {{ Auth::user()->username }}
                     </a>
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{{ route('my-groups') }}">
                             {{ __('Mis grupos') }}
                         </a>
-                        <a class="dropdown-item" href="{{ route('logout') }}">
+                        <a class="dropdown-item" href="{{ route('config') }}">
                             {{ __('Configuración') }}
                         </a>
                         <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();

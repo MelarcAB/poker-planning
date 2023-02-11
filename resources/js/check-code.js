@@ -30,15 +30,15 @@ $(document).ready(function () {
             }
         })
             .then(function (response) {
-                console.log(response);
                 showSuccess(response.data.message);
                 loading_spinner_code_access.hide();
+                //refresh page
+                window.location.reload();
 
-                new_password_group.slideUp();
             })
             .catch(function (error) {
                 loading_spinner_code_access.hide();
-                showError(error + ' ' + error.response.data.message);
+                showError(error.response.data.message);
             });
     }
 

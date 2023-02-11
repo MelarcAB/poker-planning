@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+//auth
+use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -33,5 +36,31 @@ class HomeController extends Controller
         $user = auth()->user();
 
         return view('user.my-groups', compact('user'));
+    }
+
+    public function config()
+    {
+        return view('user.config');
+    }
+
+    public function saveConfig(Request $request)
+    {
+        try {
+            //obtener usuario logeado
+            $user = Auth::user();
+
+            //validar datos
+            $request->validate([
+                'username' => 'required | min:3 | max:20',
+            ]);
+
+            //actualizar datos
+            $user->username = $request->username;
+            $user->save();
+
+            return redirect()->route('config')->with('success', 'Datos actualizados correctamente');
+        } catch (\Exception $e) {
+            return redirect()->route('config')->with('error', $e->getMessage());
+        }
     }
 }

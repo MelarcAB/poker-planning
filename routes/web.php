@@ -12,6 +12,8 @@ Route::get('/', 'App\Http\Controllers\PublicController@index')->name('index');
 Route::controller(App\Http\Controllers\HomeController::class)->group(function () {
     Route::get('/home', 'home')->name('home');
     Route::get('/my-groups', 'my_groups')->name('my-groups');
+    Route::get('/config', 'config')->name('config');
+    Route::post('/save-config', 'saveConfig')->name('save-config');
 });
 
 //controller GerenteController
@@ -28,6 +30,8 @@ Route::controller(App\Http\Controllers\GroupsController::class)->group(function 
 
 //login y registrho
 Auth::routes();
+
+
 Route::controller(App\Http\Controllers\Auth\LoginController::class)->group(function () {
     Route::get('/auth/google', 'redirectToGoogle')->name('google.login');
     Route::get('/auth/google/callback', 'handleGoogleCallback')->name('google.callback');

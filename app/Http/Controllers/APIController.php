@@ -61,22 +61,29 @@ class APIController extends Controller
             'slug' => 'required|string|max:500',
         ]);
 
-        $user = Auth::user();
+        $user = $request->user();
         $code = $request->input('code');
         $slug = $request->input('slug');
         $group = Groups::where('slug', $slug)->first();
-        return response()->json(['message' => 'Contraseña actualizada correctamente ' . $user]);
         //comprobar que el grupo existe
         if (!$group) {
+            //devolver error
             return response()->json(['message' => 'El grupo no existe'], 404);
         }
         //comprobar que el codigo es correcto
         if ($group->code != $code) {
             return response()->json(['message' => 'El código es incorrecto'], 403);
         }
-        //añadir el usuario al grupo
-        $group->users()->attach($user->id);
 
+        //comprobar si el usuario pertenece al grupo
+        if ($user->groups->contains($group)) {
+            //devolver error
+            return response()->json(['message' => 'Ya perteneces al grupo'], 403);
+        }
+
+        //añadir el usuario al grupo
+        $user->groups()->attach($group->id);
+        //devolver mensaje de exito
         //refrescar la pagina
         return response()->json(['message' => 'Acceso concedido']);
     }
