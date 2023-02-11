@@ -77,12 +77,18 @@ class LoginController extends Controller
 
             //asignar avatar por defecto
             $user->image = 'img/default_user.jpg';
-
             $user->save();
             Auth::login($user);
         }
+        //generar token de sesion
+        $accessToken = auth()->user()->createToken('Token Name')->accessToken;
+        //asignar token de sesion a la cookie 1 semana, permitir en http y https
+        $cookie = cookie('BEARER_TOKEN', $accessToken, 60 * 24 * 7);
+        //actualizar api_token del usuario
+        $user->api_token = $cookie->getValue();
+        $user->save();
 
-        return redirect()->route('home');
+        return redirect()->route('home')->cookie($cookie);
     }
 
 

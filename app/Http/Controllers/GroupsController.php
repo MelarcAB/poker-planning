@@ -62,6 +62,8 @@ class GroupsController extends Controller
             //pantalla para que introduzca el codigo del grupo
             return view('user.group-code', compact('group'));
         }
+
+
         return view('user.group', compact('group'));
     }
 

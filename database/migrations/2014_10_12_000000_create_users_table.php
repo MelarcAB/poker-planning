@@ -30,7 +30,11 @@ return new class extends Migration
             $table->string('provider')->nullable();
             //oauth_id
             $table->string('provider_id')->nullable();
-
+            //api_token
+            $table->string('api_token')->after('password')
+                ->unique()
+                ->nullable()
+                ->default(null);
 
             $table->foreign('user_type_id')->references('id')->on('user_types');
         });

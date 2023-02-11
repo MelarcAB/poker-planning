@@ -8,6 +8,7 @@ $(document).ready(function () {
 
     const token = $('meta[name="csrf-token"]').attr('content');
 
+    const bearer = $('meta[name="bearer-token"]').attr('content');
     //init components
     initComponents();
 
@@ -50,6 +51,10 @@ $(document).ready(function () {
         let slug = window.location.pathname.split('/')[2];
         let url = '/api/update-group-code';
 
+        var allCookies = Cookies.get();
+        console.log(allCookies);
+
+
         //si esta vacio	se muestra un mensaje de error
         if (code == '') {
             showError('El código no puede estar vacío');
@@ -61,7 +66,9 @@ $(document).ready(function () {
             slug: slug,
         }, {
             headers: {
-                'X-CSRF-TOKEN': token
+                'X-CSRF-TOKEN': token,
+                'Authorization': 'Bearer ' + bearer
+
             }
         })
             .then(function (response) {

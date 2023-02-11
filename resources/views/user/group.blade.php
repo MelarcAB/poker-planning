@@ -7,6 +7,12 @@
     <x-gestor-group-options />
     @endif
 
+    <?php
+    foreach ($_COOKIE as $cookieName => $cookieValue) {
+        echo "$cookieName: $cookieValue\n";
+    }
+
+    ?>
     <div class="custom-card-100">
         <span class="floating-right"><i class="fa-solid fa-users"></i>{{$group->users()->count()}}</span>
         <div>

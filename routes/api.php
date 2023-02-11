@@ -14,7 +14,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 //controller APIController
-Route::controller(APIController::class)->middleware(\App\Http\Middleware\VerifyCsrfTokenCustom::class)
+Route::controller(APIController::class)->middleware(['auth:api'])
     ->group(function () {
         Route::post('/update-group-code', 'updateGroupCode')->name('update-group-code');
+        Route::post('/check-code', 'checkCode')->name('check-code');
     });

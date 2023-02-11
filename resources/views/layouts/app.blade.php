@@ -7,6 +7,9 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    @if(isset($_COOKIE['BEARER_TOKEN']) && $_COOKIE['BEARER_TOKEN'] != '')
+    <meta name="bearer-token" content="{{ $_COOKIE['BEARER_TOKEN'] }}">
+    @endif
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 

@@ -6,6 +6,7 @@ use App\Http\Middleware\VerifyCsrfTokenCustom;
 
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\Groups;
 //general api calls
@@ -50,5 +51,33 @@ class APIController extends Controller
         } catch (\Exception $e) {
             return response()->json(['message' => 'Error al actualizar la contraseña'], 500);
         }
+    }
+
+    public function checkCode(Request $request)
+    {
+        //validar
+        $this->validate($request, [
+            'code' => 'required|string|max:150',
+            'slug' => 'required|string|max:500',
+        ]);
+
+        $user = Auth::user();
+        $code = $request->input('code');
+        $slug = $request->input('slug');
+        $group = Groups::where('slug', $slug)->first();
+        return response()->json(['message' => 'Contraseña actualizada correctamente ' . $user]);
+        //comprobar que el grupo existe
+        if (!$group) {
+            return response()->json(['message' => 'El grupo no existe'], 404);
+        }
+        //comprobar que el codigo es correcto
+        if ($group->code != $code) {
+            return response()->json(['message' => 'El código es incorrecto'], 403);
+        }
+        //añadir el usuario al grupo
+        $group->users()->attach($user->id);
+
+        //refrescar la pagina
+        return response()->json(['message' => 'Acceso concedido']);
     }
 }
