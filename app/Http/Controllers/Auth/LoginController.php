@@ -104,6 +104,9 @@ class LoginController extends Controller
         $newUsername = explode("@", $email)[0];
         $newUsername = preg_replace("/[^a-zA-Z0-9]+/", "", $newUsername);
 
+
+
+
         // Verificar si el nombre de usuario ya existe en la base de datos
         $check = User::where('username', $newUsername)->first();
 

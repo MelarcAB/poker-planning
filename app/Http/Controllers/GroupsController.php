@@ -49,7 +49,8 @@ class GroupsController extends Controller
         //añadir el usuario logueado como miembro del grupo
         $group->users()->attach($user_id);
 
-        return redirect()->route('my-groups')->with('success', 'Grupo creado exitosamente');
+        //redirigir a la ruta name group con parametro slug
+        return redirect()->route('group', ['slug' => $group->slug])->with('success', 'Grupo creado correctamente');
     }
 
     public function group($slug)
