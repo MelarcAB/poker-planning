@@ -66,5 +66,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'isGerente' =>  \App\Http\Middleware\isGerente::class,
         'UserBelongsGroup' =>  \App\Http\Middleware\UserBelongsGroup::class,
+        'jwt.auth' => \PHPOpenSourceSaver\JWTAuth\Middleware\GetUserFromToken::class,
+
     ];
 }

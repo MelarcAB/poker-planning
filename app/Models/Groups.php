@@ -6,10 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\UserGroups;
+use \Illuminate\Database\Eloquent\SoftDeletes;
 
 class Groups extends Model
 {
     use HasFactory;
+    use SoftDeletes;
+
+    //soft delete
+
 
     protected $fillable = [
         'name',
@@ -17,6 +22,10 @@ class Groups extends Model
         'code',
         'user_id'
     ];
+
+    //soft delete
+    protected $dates = ['deleted_at'];
+
 
 
     public function users()

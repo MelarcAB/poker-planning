@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Socialite;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+//jwt
+use \PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class LoginController extends Controller
 {
@@ -59,7 +61,7 @@ class LoginController extends Controller
             // Si el usuario ya existe, actualizar su google_id y iniciar sesión
             $user->provider_id = $googleUser->id;
             $user->save();
-            Auth::login($user);
+            $login = Auth::login($user);
         } else {
             // Si el usuario no existe, crear un nuevo usuario con los datos de Google y iniciar sesión
             $user = new User();
@@ -78,15 +80,16 @@ class LoginController extends Controller
             //asignar avatar por defecto
             $user->image = 'img/default_user.jpg';
             $user->save();
-            Auth::login($user);
+            $login = Auth::login($user);
         }
-        //generar token de sesion
-        $accessToken = auth()->user()->createToken('Token Name')->accessToken;
+        //generar token de acceso
+        $token = JWTAuth::fromUser($user);
+
         //asignar token de sesion a la cookie 1 semana, permitir en http y https
-        $cookie = cookie('BEARER_TOKEN', $accessToken, 60 * 24 * 7);
         //actualizar api_token del usuario
-        $user->api_token = $cookie->getValue();
+        $user->api_token = $token;
         $user->save();
+        $cookie = cookie('jwt', $token, 60 * 24 * 7);
 
         return redirect()->route('home')->cookie($cookie);
     }

@@ -182,6 +182,8 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 
+        //jwt
+        PHPOpenSourceSaver\JWTAuth\Providers\LaravelServiceProvider::class,
 
         /*
          * Package Service Providers...

@@ -8,7 +8,7 @@ $(document).ready(function () {
 
     const token = $('meta[name="csrf-token"]').attr('content');
 
-    const bearer = $('meta[name="bearer-token"]').attr('content');
+    const bearer = $('meta[name="jwt"]').attr('content');
     //init components
     initComponents();
 
@@ -52,7 +52,7 @@ $(document).ready(function () {
         let url = '/api/update-group-code';
 
         var allCookies = Cookies.get();
-        console.log(allCookies);
+        console.log(bearer);
 
 
         //si esta vacio	se muestra un mensaje de error
@@ -68,7 +68,6 @@ $(document).ready(function () {
             headers: {
                 'X-CSRF-TOKEN': token,
                 'Authorization': 'Bearer ' + bearer
-
             }
         })
             .then(function (response) {

@@ -3,7 +3,7 @@ $(document).ready(function () {
     var b_check_code = $('#b-check-code');
     var code = $('#code');
     const token = $('meta[name="csrf-token"]').attr('content');
-    const bearer = $('meta[name="bearer-token"]').attr('content');
+    const bearer = $('meta[name="jwt"]').attr('content');
 
 
     //on click b check code

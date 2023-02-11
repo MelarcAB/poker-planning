@@ -24,6 +24,8 @@ return new class extends Migration
             $table->timestamps();
             //password
             $table->string('code')->nullable();
+            //soft delete
+            $table->softDeletes();
 
             $table->foreign('user_id')->references('id')->on('users');
         });

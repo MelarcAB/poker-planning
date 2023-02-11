@@ -8,9 +8,9 @@
     @endif
 
     <?php
-    foreach ($_COOKIE as $cookieName => $cookieValue) {
+    /*  foreach ($_COOKIE as $cookieName => $cookieValue) {
         echo "$cookieName: $cookieValue\n";
-    }
+    } */
 
     ?>
     <div class="custom-card-100">

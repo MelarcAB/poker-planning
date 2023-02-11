@@ -10,9 +10,11 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Models\UserType;
 use App\Models\UserGroups;
 use App\Models\Groups;
+use \PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
+
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -83,5 +85,16 @@ class User extends Authenticatable
             return true;
         }
         return false;
+    }
+
+    //jwt
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 }
