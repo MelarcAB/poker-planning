@@ -48,6 +48,11 @@ class LoginController extends Controller
     {
         return Socialite::driver('google')->redirect();
     }
+    public function redirectToGoogle2()
+    {
+        echo "esdg";
+        exit;
+    }
 
     public function handleGoogleCallback()
     {

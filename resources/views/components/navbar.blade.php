@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-dark custom-bg-color shadow-sm ">
+<nav class="navbar navbar-expand-md navbar-dark custom-bg-color shadow-sm " style="z-index: 88;">
     <div class="container">
         <a class="navbar-brand" href="{{ url('/') }}">
             <img src="{{asset('img/icon.png')}}" width="50px">

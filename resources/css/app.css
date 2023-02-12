@@ -289,3 +289,18 @@ body{
     padding: 10px;
     margin: 10px;
   }
+
+  .user-list-box{
+    background: #150d19;
+    color: #fff;
+    border: 1px solid #150d19;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    transition: all 0.15s ease-in-out;
+    width: 100%;
+    resize: vertical;
+    margin: auto;
+    max-width: 300px;
+  }

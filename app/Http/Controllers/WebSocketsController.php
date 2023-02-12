@@ -20,7 +20,7 @@ class WebSocketsController extends Controller implements MessageComponentInterfa
     public function onOpen(ConnectionInterface $conn)
     {
         $this->clients->attach($conn);
-        echo "New connection! ({$conn->resourceId})\n";
+        echo "New connection! \n";
     }
 
     public function onMessage(ConnectionInterface $from, $msg)
