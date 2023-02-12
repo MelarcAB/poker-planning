@@ -4,7 +4,7 @@
 <div class="container">
     <h3 class=" custom-title">Grupo {{$group->name}}</h3>
     @if(Auth::user()->isGestor() && Auth::user()->id == $group->user_id )
-    <x-gestor-group-options />
+    <x-gestor-group-options :group="$group" />
     @endif
 
     <?php
@@ -19,26 +19,54 @@
             <p class="custom-text">{{$group->description}}</p>
         </div>
         <div class="custom-card-100">
-            <h4 class="custom-title">Miembros</h4>
-            <div class="custom-card-container">
-                @foreach($group->users as $user)
-                <div class="custom-card-100">
-                    <a class="custom-link">
-                        <div class="custom-card-secondary">
-                            <div style="display: inline-block;vertical-align:top;margin-right:5px"><img class="rounded-circle" src="{{asset($user->image)}}" style="width:50px;"></div>
-                            <div style="display: inline-block">
-                                {{ $user->name }}
-                                <p class="custom-text">{{$user->email}}</p>
-                            </div>
-
-                        </div>
-                    </a>
+            <div class="row justify-content-center">
+                <h3 class="custom-title">Salas por empezar</h3>
+                <div class="custom-card-container">
+                    @foreach($group->rooms->where('room_status_id','=','1') as $room)
+                    <div class="custom-card-wb">
+                        <a class="custom-link" style="color:white" href="{{route('group.room',['group_slug'=>$group->slug,'room_slug'=>$room->slug])}}">
+                            {{ $room->name }}
+                            <span class="floating-right">{{$room->status->name}} <i class="fa fa-circle"></i></span>
+                        </a>
+                    </div>
+                    @endforeach
                 </div>
-                @endforeach
+            </div>
+            <div class="row justify-content-center">
+                <h3 class="custom-title">Salas terminadas</h3>
+                <div class="custom-card-container">
+                    @foreach($group->rooms->whereIn('room_status_id',[2,3]) as $room)
+                    <div class="custom-card-wb">
+                        <a class="custom-link" style="color:white" href="{{route('group.room',['group_slug'=>$group->slug,'room_slug'=>$room->slug])}}">
+                            {{ $room->name }}
+                            <span class="floating-right">{{$room->status->name}} <i class="fa fa-circle"></i></span>
+                        </a>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+
+            <div class="custom-card-100">
+                <h4 class="custom-title">Miembros</h4>
+                <div class="custom-card-container">
+                    @foreach($group->users as $user)
+                    <div class="custom-card-100">
+                        <a class="custom-link">
+                            <div class="custom-card-secondary">
+                                <div style="display: inline-block;vertical-align:top;margin-right:5px"><img class="rounded-circle" src="{{asset($user->image)}}" style="width:50px;"></div>
+                                <div style="display: inline-block">
+                                    {{ $user->name }}
+                                    <p class="custom-text">{{$user->email}}</p>
+                                </div>
+
+                            </div>
+                        </a>
+                    </div>
+                    @endforeach
+                </div>
             </div>
         </div>
+
+
     </div>
-
-
-</div>
-@endsection
+    @endsection

@@ -19,12 +19,15 @@ Route::controller(App\Http\Controllers\HomeController::class)->group(function ()
 //controller GerenteController
 Route::controller(App\Http\Controllers\GerenteController::class)->group(function () {
     Route::get('/new-group', 'formNewGroup')->name('form-new-group');
+    Route::get('/{group_slug}/new-room', 'formNewRoom')->name('form-new-room');
+    Route::post('/save-room', 'saveRoom')->name('save-room');
 });
 
 //groups controller
 Route::controller(App\Http\Controllers\GroupsController::class)->group(function () {
     Route::post('/save-group', 'saveGroup')->name('save-group');
     Route::get('/group/{slug}', 'group')->name('group');
+    Route::get('/{group_slug}/{room_slug}', 'room')->name('group.room');
 });
 
 

@@ -1,24 +1,19 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\game;
 
 use Illuminate\View\Component;
-//groups
-use App\Models\Groups;
 
-
-class GestorGroupOptions extends Component
+class UsersList extends Component
 {
-
-    private Groups $group;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct(Groups $group)
+    public function __construct()
     {
-        $this->group = $group;
+        //
     }
 
     /**
@@ -28,6 +23,6 @@ class GestorGroupOptions extends Component
      */
     public function render()
     {
-        return view('components.gestor-group-options', ['group' => $this->group]);
+        return view('components.game.users-list');
     }
 }

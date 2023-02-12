@@ -8,6 +8,9 @@ use App\Models\User;
 use App\Models\UserGroups;
 use \Illuminate\Database\Eloquent\SoftDeletes;
 
+//rooms
+use App\Models\Room;
+
 class Groups extends Model
 {
     use HasFactory;
@@ -36,5 +39,10 @@ class Groups extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function rooms()
+    {
+        return $this->hasMany(Room::class, 'group_id')->orderBy('created_at', 'desc');
     }
 }

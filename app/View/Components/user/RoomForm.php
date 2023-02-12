@@ -1,13 +1,11 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\user;
 
-use Illuminate\View\Component;
-//groups
 use App\Models\Groups;
+use Illuminate\View\Component;
 
-
-class GestorGroupOptions extends Component
+class RoomForm extends Component
 {
 
     private Groups $group;
@@ -28,6 +26,11 @@ class GestorGroupOptions extends Component
      */
     public function render()
     {
-        return view('components.gestor-group-options', ['group' => $this->group]);
+        //obtener usuario logueado
+        $user = auth()->user();
+        //obtener el grupo
+        $group = $this->group;
+
+        return view('components.user.room-form', compact('user', 'group'));
     }
 }

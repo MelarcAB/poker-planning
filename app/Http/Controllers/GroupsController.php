@@ -85,4 +85,28 @@ class GroupsController extends Controller
 
         return $slug;
     }
+
+    //room
+    public function room($group_slug, $room_slug)
+    {
+        //verificar si el usuario pertenece al grupo
+        $group = Groups::where('slug', $group_slug)->firstOrFail();
+        $user = auth()->user();
+        if (!$group->users->contains($user->id)) {
+            //pantalla para que introduzca el codigo del grupo
+            return view('user.group-code', compact('group'));
+        }
+
+        //verificar si el usuario es gestor o admin
+        if (auth()->user()->user_type->name == 'gestor' || auth()->user()->user_type->name == 'admin') {
+            $is_admin = true;
+        } else {
+            $is_admin = false;
+        }
+
+        //obtener la sala
+        $room = $group->rooms()->where('slug', $room_slug)->firstOrFail();
+
+        return view('room.room', compact('group', 'room', 'is_admin'));
+    }
 }

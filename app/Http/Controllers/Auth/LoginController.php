@@ -82,8 +82,8 @@ class LoginController extends Controller
             $user->save();
             $login = Auth::login($user);
         }
-        //generar token de acceso
-        $token = JWTAuth::fromUser($user);
+        //generar token de acceso, duracion 24 horas
+        $token = JWTAuth::fromUser($user, ['exp' => time() + 60 * 60 * 24]);
 
         //asignar token de sesion a la cookie 1 semana, permitir en http y https
         //actualizar api_token del usuario

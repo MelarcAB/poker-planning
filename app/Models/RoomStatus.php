@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class RoomStatus extends Model
 {
     use HasFactory;
+
+    //tabla
+    protected $table = 'room_status';
+
+    //campos
+    protected $fillable = [
+        'name',
+    ];
 }
