@@ -25,10 +25,12 @@
     cursor: pointer;
     transition: all 0.15s ease-in-out;
     border-radius: 5px;
+    text-decoration: none;
 }
 
 .basic-options-box:hover{
    border : 1px solid #fff;
+   color : white;
    
 }
 
@@ -243,6 +245,8 @@ body{
 .custom-link
 {
     text-decoration: none;
+    color: inherit;
+    background-color: transparent;
 }
 .custom-label{
     color: #fff;

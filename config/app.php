@@ -184,6 +184,7 @@ return [
 
         //jwt
         PHPOpenSourceSaver\JWTAuth\Providers\LaravelServiceProvider::class,
+        //ratchet
 
         /*
          * Package Service Providers...
