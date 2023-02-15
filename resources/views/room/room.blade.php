@@ -4,6 +4,7 @@
 <input type="hidden" id="username" value="{{ Auth::user()->username }}">
 <div class="container">
     <x-game.users-list />
+    <x-game.user-deck :deck="$room->group->deck" />
 </div>
 @vite([ 'resources/js/game.js'])
 

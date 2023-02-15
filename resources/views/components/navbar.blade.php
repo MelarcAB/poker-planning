@@ -34,6 +34,9 @@
                         <a class="dropdown-item" href="{{ route('my-groups') }}">
                             {{ __('Mis grupos') }}
                         </a>
+                        <a class="dropdown-item" href="{{ route('my-decks') }}">
+                            {{ __('Decks') }}
+                        </a>
                         <a class="dropdown-item" href="{{ route('config') }}">
                             {{ __('Configuración') }}
                         </a>

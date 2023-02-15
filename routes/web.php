@@ -19,8 +19,9 @@ Route::controller(App\Http\Controllers\Auth\LoginController::class)->group(funct
 
 Route::controller(App\Http\Controllers\HomeController::class)->group(function () {
     Route::get('/home', 'home')->name('home');
-    Route::get('/my-groups', 'my_groups')->name('my-groups');
     Route::get('/config', 'config')->name('config');
+    Route::get('/my-groups', 'my_groups')->name('my-groups');
+    Route::get('/my-decks', 'my_decks')->name('my-decks');
     Route::post('/save-config', 'saveConfig')->name('save-config');
 });
 

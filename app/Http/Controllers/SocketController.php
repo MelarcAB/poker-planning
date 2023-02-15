@@ -22,6 +22,7 @@ class SocketController extends Controller implements MessageComponentInterface
     public function __construct()
     {
         $this->clients = new \SplObjectStorage;
+        echo ">Se ha iniciado el servidor de sockets\n";
     }
 
     function onOpen(ConnectionInterface $conn)
@@ -175,8 +176,8 @@ class SocketController extends Controller implements MessageComponentInterface
         //agregar usuario a la sala
         $this->rooms[$room_slug][$conn->resourceId] = [
             'conn' => $conn,
-            'username' => $user->image,
-            'image' => $user->username,
+            'username' => $user->username,
+            'image' => asset($user->image),
         ];
 
 

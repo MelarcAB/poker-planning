@@ -27,6 +27,11 @@ return new class extends Migration
             //soft delete
             $table->softDeletes();
 
+            //deck id
+            $table->bigInteger('deck_id')->unsigned()->nullable();
+
+            //foreign keys
+            $table->foreign('deck_id')->references('id')->on('decks')->onDelete('set null');
             $table->foreign('user_id')->references('id')->on('users');
         });
     }

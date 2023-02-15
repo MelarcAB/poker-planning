@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
-//auth
-use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
+//deck
+use App\Models\Deck;
+//user
+use App\Models\User;
+//auth
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -77,5 +81,14 @@ class HomeController extends Controller
         } catch (\Exception $e) {
             return redirect()->route('config')->with('error', $e->getMessage());
         }
+    }
+
+    public function my_decks()
+    {
+        //obtener deck del usuario logeado + deck publicos
+        $user = auth()->user();
+        //ordenar por id descendente
+        $decks = Deck::where('user_id', $user->id)->orWhere('public', 1)->orderBy('id', 'desc')->get();
+        return view('user.my-decks', compact('decks'));
     }
 }

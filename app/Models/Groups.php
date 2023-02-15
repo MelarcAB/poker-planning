@@ -23,6 +23,8 @@ class Groups extends Model
         'name',
         'slug',
         'code',
+        'description',
+        'deck_id',
         'user_id'
     ];
 
@@ -44,5 +46,10 @@ class Groups extends Model
     public function rooms()
     {
         return $this->hasMany(Room::class, 'group_id')->orderBy('created_at', 'desc');
+    }
+
+    public function deck()
+    {
+        return $this->belongsTo(Deck::class);
     }
 }

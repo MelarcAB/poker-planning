@@ -41,8 +41,9 @@ $(document).ready(function () {
         console.log(users);
         clearUsersListRender();
         users.forEach(function (user) {
-            //append div with class user-list-box and username
-            usersContainer.append('<div class="user-list-box">' + user.username + '</div>');
+            //append div with class user-list-box and username and image
+            let html = '<div class="user-list-box">' + '<img src="' + user.image + '" alt="">' + ' <div class="user-list-box-username">' + user.username + '</div>' + '</div>';
+            usersContainer.append(html);
         });
     }
 

@@ -12,6 +12,9 @@ use App\Models\UserGroups;
 use App\Models\Groups;
 use \PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
+//deck
+use App\Models\Deck;
 
 class User extends Authenticatable implements JWTSubject
 
@@ -96,5 +99,20 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    //deck
+    public function decks()
+    {
+        return $this->hasMany(Deck::class);
+    }
+
+
+
+    //decks
+    public function decks_disponibles()
+    {
+        //devolver decks del usuario + decks publicos
+        return Deck::where('user_id', $this->id)->orWhere('public', true)->get();
     }
 }

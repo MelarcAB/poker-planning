@@ -304,3 +304,87 @@ body{
     margin: auto;
     max-width: 300px;
   }
+  .user-list-box img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin: 0 10px 0 0;
+  }
+
+  .deck-collection-container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    margin: 10px;
+  }
+
+  .custom-option{
+    background: #150d19;
+    color: #fff;
+    border: 1px solid #150d19;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    transition: all 0.15s ease-in-out;
+    width: 100%;
+    resize: vertical;
+    margin: auto;
+    max-width: 300px;
+    }
+
+    .custom-option:hover{
+        border: 1px solid #fff;
+    }
+
+
+
+    .deck-collection-box{
+        background: #150d19;
+        color: #fff;
+        border: 1px solid #150d19;
+        border-radius: 5px;
+        padding: 10px;
+        font-size: 1.2rem;
+        font-weight: 600;
+        transition: all 0.15s ease-in-out;
+        width: 100%;
+        resize: vertical;
+        margin: auto;
+        max-width: 300px;
+    }
+
+    .deck-collection-box img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin: 0 10px 0 0;
+    }
+
+    /** bara pegada al bottom que mostrará las cartas del deck */
+    .user-deck-cards{
+        width: 100%; height: 50px; background-color: blue; color: white; text-align: center; 
+    }
+
+    .user-deck-card{
+        background: #150d19;
+        color: #fff;
+        border: 1px solid #150d19;
+        border-radius: 5px;
+        padding: 10px;
+        font-size: 1.2rem;
+        font-weight: 600;
+        transition: all 0.15s ease-in-out;
+        width: 100%;
+        resize: vertical;
+        margin: auto;
+        max-width: 300px;
+    }
+
+    .custom-selection{
+        border: 1px solid #646c70;
+    }

@@ -6,6 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 //room status
 use App\Models\RoomStatus;
+//user
+use App\Models\User;
+//group
+use App\Models\Groups;
+//entry
+use App\Models\Entry;
+//points
+use App\Models\Points;
+
 
 class Room extends Model
 {
@@ -38,5 +47,15 @@ class Room extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id',);
+    }
+
+    public function entries()
+    {
+        return $this->hasMany(Entry::class);
+    }
+
+    public function points()
+    {
+        return $this->hasMany(Points::class);
     }
 }

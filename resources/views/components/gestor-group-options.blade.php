@@ -11,6 +11,9 @@
         <div class="basic-options-box">
             Invitar al grupo
         </div>
+        <div class="basic-options-box">
+            Puntos
+        </div>
     </div>
     <x-gestor.new-password-form />
 </div>
