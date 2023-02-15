@@ -388,3 +388,30 @@ body{
     .custom-selection{
         border: 1px solid #646c70;
     }
+
+    .deck-room-container {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        display: flex;
+        overflow-x: auto;
+    }
+
+    .deck-room-options-box {
+        flex: 0 0 auto;
+        margin: 10px;
+        text-align: center;
+        background: #150d19;
+        color: #fff;
+        border: 1px solid #150d19;
+        border-radius: 5px;
+        padding: 10px 10px 10px 10px;
+        font-size: 1.2rem;
+        font-weight: 600;
+        transition: all 0.15s ease-in-out;
+        cursor: pointer;
+    }
+
+    .deck-room-options-box:hover {
+        border: 1px solid #fff;
+    }
