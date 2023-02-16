@@ -46,6 +46,15 @@ $(document).ready(function () {
         b_show_tickets.hide();
     });
 
+
+    //evento a todos los elementos con data-ticket-button="true"
+    $(document).on('click', '[data-ticket-button="true"]', function () {
+        clickTicket($(this).data('ticket-slug'));
+    });
+
+
+
+
     //iniciar socket
     socket.onopen = function (event) {
         socket.send(JSON.stringify({
@@ -88,11 +97,17 @@ $(document).ready(function () {
         }
     }
 
+    function clickTicket(slug) {
+        console.log("click ticket");
+        console.log(slug);
+
+    }
+
 
     function renderTicketsList(tickets) {
         tickets_list_container.html('');
         tickets.forEach(function (ticket) {
-            let html = '<div class="custom-card">' + '<div class="ticket-list-box-title">' + ticket.title + '</div>' + '</div>';
+            let html = '<div class="custom-card" data-ticket-button="true" data-ticket-slug="' + ticket.slug + '">' + '<div class="ticket-list-box-title">' + ticket.title + '</div>' + '</div>';
             tickets_list_container.append(html);
         });
 
