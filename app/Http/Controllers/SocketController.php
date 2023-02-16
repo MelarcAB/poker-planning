@@ -12,6 +12,12 @@ use Ratchet\Wamp\WampServerInterface;
 use \PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 //user
 use App\Models\User;
+//group
+use App\Models\Groups;
+//room
+use App\Models\Room;
+//entry
+use App\Models\Tickets;
 
 class SocketController extends Controller implements MessageComponentInterface
 {
@@ -79,7 +85,10 @@ class SocketController extends Controller implements MessageComponentInterface
     function onError(ConnectionInterface $conn, \Exception $e)
     {
         $userId = $this->connections[$conn->resourceId]['jwt'];
-        echo "An error has occurred with user $userId: {$e->getMessage()}\n";
+        //obtener nombre usuario
+        $user = User::where('api_token', $userId)->first();
+        $username = $user->username;
+        echo "An error has occurred with user $username: {$e->getMessage()}\n";
         unset($this->connections[$conn->resourceId]);
         $conn->close();
     }
@@ -93,15 +102,82 @@ class SocketController extends Controller implements MessageComponentInterface
     function onMessage(ConnectionInterface $conn, $msg)
     {
         $data = json_decode($msg);
+        echo 'recibe evento: ' . $data->event . "\n";
         switch ($data->event) {
             case 'join-room':
                 //print "User {$data->jwt} joined room {$data->room_slug}\n";
                 $this->connections[$conn->resourceId]['jwt'] = $data->jwt;
                 $this->onJoinRoom($conn, $data);
                 break;
+            case 'new-ticket':
+                echo "entra case new-ticket \n";
+
+                $this->onNewTicket($conn, $data);
+                break;
         }
     }
 
+    public function onNewTicket(ConnectionInterface $conn, $data)
+    {
+
+        $user = User::where('api_token', $data->jwt)->first();
+        $room_slug = $data->room_slug;
+
+        //obtener el objeto de la sala
+        $room = Room::where('slug', $room_slug)->first();
+
+        //verificar que el user es el creador de la sala (group)
+        $group = Groups::where('id', $room->group_id)->first();
+        if ($group->user_id != $user->id) {
+            $response =  json_encode([
+                'error' => 'No eres el creador de la sala',
+            ]);
+            $conn->send($response);
+            return;
+        }
+
+        //verificar que el ticket no existe por titulo
+        $tickets = $room->tickets;
+        if (count($tickets) == 0 || $tickets == null) {
+            $tickets = [];
+        }
+        foreach ($tickets as $ticket) {
+            if ($ticket->title == $data->data->title) {
+                $response = json_encode([
+                    'error' => 'Ya existe un ticket con ese titulo',
+                ]);
+                $conn->send($response);
+                return;
+            }
+        }
+
+
+        //guardar el ticket
+        $ticket = new Tickets();
+        $ticket->title = $data->data->title;
+        $ticket->description = $data->data->description;
+        $ticket->room_id = $room->id;
+        //generar slug
+        $ticket->slug = $room->slug . '-' .  $data->data->title;
+        $ticket->save();
+
+        //enviar al usuario que creo el ticket
+        $response = [
+            'event' => 'ticket-created',
+            'data' => [
+                'room_slug' => $room_slug,
+                'ticket' => [
+                    'title' => $ticket->title,
+                    'description' => $ticket->description,
+                    'slug' => $ticket->slug,
+                ],
+            ],
+        ];
+
+        $conn->send(json_encode($response));
+
+        //enviar actualizacion del listado de tickets a todos los usuarios de la sala
+    }
 
     public function sendUsersInRoom($slug)
     {

@@ -11,7 +11,7 @@ use App\Models\User;
 //group
 use App\Models\Groups;
 //entry
-use App\Models\Entry;
+use App\Models\Tickets;
 //points
 use App\Models\Points;
 
@@ -49,10 +49,14 @@ class Room extends Model
         return $this->belongsTo(User::class, 'user_id',);
     }
 
-    public function entries()
+
+    //tickets 
+    public function tickets()
     {
-        return $this->hasMany(Entry::class);
+        return $this->hasMany(Tickets::class);
     }
+
+    //
 
     public function points()
     {
