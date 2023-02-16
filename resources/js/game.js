@@ -17,11 +17,34 @@ $(document).ready(function () {
     var new_tickets_title = $('#new-ticket-title');
     var new_tickets_description = $('#new-ticket-description');
     var b_submit_ticket = $('#b-submit-ticket');
+    var tickets_list_container = $('#tickets-list-container');
+    var b_show_tickets = $('#b-show-ticket-form');
+    var b_cancel_ticket = $('#b-cancel-ticket');
+
+
+
+
+
+    //INIT
+    function init_room() {
+        //ocultar formulario de tickets
+        new_tickets_container.hide();
+    }
+
 
 
     //EVENTS
     //submit ticket
     b_submit_ticket.click(submitNewTicket);
+    b_cancel_ticket.click(function () {
+        new_tickets_container.hide();
+        b_show_tickets.show();
+    });
+
+    b_show_tickets.click(function () {
+        new_tickets_container.show();
+        b_show_tickets.hide();
+    });
 
     //iniciar socket
     socket.onopen = function (event) {
@@ -58,9 +81,25 @@ $(document).ready(function () {
             case 'ticket-created':
                 showSuccess("Ticket añadido");
                 break;
+
+            case 'update-tickets-list':
+                renderTicketsList(data.data.tickets);
+                break;
         }
     }
 
+
+    function renderTicketsList(tickets) {
+        tickets_list_container.html('');
+        tickets.forEach(function (ticket) {
+            let html = '<div class="custom-card">' + '<div class="ticket-list-box-title">' + ticket.title + '</div>' + '</div>';
+            tickets_list_container.append(html);
+        });
+
+        //hide new ticket form
+        new_tickets_container.hide();
+        b_show_tickets.show();
+    }
 
     function clearUsersListRender() {
         usersContainer.html('');

@@ -110,7 +110,6 @@ class SocketController extends Controller implements MessageComponentInterface
                 $this->onJoinRoom($conn, $data);
                 break;
             case 'new-ticket':
-                echo "entra case new-ticket \n";
 
                 $this->onNewTicket($conn, $data);
                 break;
@@ -177,7 +176,32 @@ class SocketController extends Controller implements MessageComponentInterface
         $conn->send(json_encode($response));
 
         //enviar actualizacion del listado de tickets a todos los usuarios de la sala
+        $this->sendTicketsInRoom($room_slug);
     }
+
+
+    public function sendTicketsInRoom($slug)
+    {
+        //obtener la sala a partir del slug
+        $room = Room::where('slug', $slug)->first();
+        $tickets = $room->tickets;
+        if (count($tickets) == 0 || $tickets == null) {
+            $tickets = [];
+        }
+
+        $response = [
+            'event' => 'update-tickets-list',
+            'data' => [
+                'room_slug' => $slug,
+                'tickets' => $tickets,
+            ],
+        ];
+
+        foreach ($this->rooms[$slug] as $user) {
+            $user['conn']->send(json_encode($response));
+        }
+    }
+
 
     public function sendUsersInRoom($slug)
     {
@@ -259,6 +283,8 @@ class SocketController extends Controller implements MessageComponentInterface
 
         //refrescar lista de usuarios en la sala
         $this->sendUsersList($conn, $data, $room_slug);
+        //refrescar lista de tickets en la sala
+        $this->sendTicketsInRoom($room_slug);
     }
 
     public function sendUsersList(ConnectionInterface $conn, $data, $slug)

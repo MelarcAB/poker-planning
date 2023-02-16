@@ -450,3 +450,9 @@ body{
     .deck-container img {
         width: 80px;
     }
+
+    
+    .custom-sidebar {
+        overflow-y: scroll;
+        scrollbar-width: none;
+    }
