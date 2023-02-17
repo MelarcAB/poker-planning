@@ -22,13 +22,13 @@ $(document).ready(function () {
     var b_cancel_ticket = $('#b-cancel-ticket');
 
 
-
+    init_room();
 
 
     //INIT
     function init_room() {
         //ocultar formulario de tickets
-        new_tickets_container.hide();
+        clearTablero()
     }
 
 
@@ -124,13 +124,31 @@ $(document).ready(function () {
         console.log("rendering users list");
         console.log(users);
         clearUsersListRender();
+        clearTablero();
         users.forEach(function (user) {
             //append div with class user-list-box and username and image
             let html = '<div class="user-list-box">' + '<img src="' + user.image + '" alt="">' + ' <div class="user-list-box-username">' + user.username + '</div>' + '</div>';
             usersContainer.append(html);
+            //añadir carta al tablero
+            printUserCardTablero(user);
+
         });
     }
 
+
+    function printUserCardTablero(user) {
+        //append div with class user-list-box and username and image
+        /* let html = '<div class="user-list-box">' + '<img src="' + user.image + '" alt="">' + ' <div class="user-list-box-username">' + user.username + '</div>' + '</div>';
+         $('#tablero-container').append(html);*/
+        /* 
+                <div class="tablero-card">
+                <span>Melarc</span>
+            </div> */
+
+        let html = '<div class="tablero-card">' + '<span>' + user.username + '</span>' + '</div>';
+        $('#tablero-container').append(html);
+
+    }
 
 
 
@@ -166,6 +184,12 @@ $(document).ready(function () {
             text: success,
             timeout: 2000
         }).show();
+    }
+
+
+    function clearTablero() {
+        //clear tablero
+        $('#tablero-container').html('');
     }
 
 

@@ -1,4 +1,4 @@
-<div class="tablero">
+<div class="tablero" id="tablero-container">
     <div class="tablero-card brillos">
         <span>Melarc</span>
     </div>
@@ -33,7 +33,7 @@
 <style>
     .tablero {
 
-        background: linear-gradient(to bottom right, #00bfff, #0066ff, #6600cc);
+        background: linear-gradient(to bottom right, #409366, #1eae5f);
         width: 80%;
         height: 500px;
         border-radius: 10px;

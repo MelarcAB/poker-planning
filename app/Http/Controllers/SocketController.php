@@ -287,6 +287,7 @@ class SocketController extends Controller implements MessageComponentInterface
         $this->sendTicketsInRoom($room_slug);
     }
 
+
     public function sendUsersList(ConnectionInterface $conn, $data, $slug)
     {
         //obtener usuarios de la sala a partir del slug
