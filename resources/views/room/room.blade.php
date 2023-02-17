@@ -5,6 +5,7 @@
 <div class="container">
     <x-game.users-list />
     <x-game.tickets-list :slug="$room->slug" />
+    <x-game.tablero />
     <x-game.user-deck :deck="$room->group->deck" />
 </div>
 @vite([ 'resources/js/game.js'])

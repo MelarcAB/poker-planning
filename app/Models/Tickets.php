@@ -5,6 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+//tickets 
+use App\Models\Room;
+use App\Models\TicketsVotation;
+
 class Tickets extends Model
 {
     use HasFactory;
@@ -20,5 +24,10 @@ class Tickets extends Model
     public function room()
     {
         return $this->belongsTo(Room::class);
+    }
+
+    public function votations()
+    {
+        return $this->hasMany(TicketsVotation::class);
     }
 }
