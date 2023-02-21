@@ -10,6 +10,8 @@ $(document).ready(function () {
     //users-container
     var usersContainer = $('#users-container');
 
+    var selected_ticket = null;
+    var votes = [];
 
 
     //TICKETS
@@ -29,6 +31,11 @@ $(document).ready(function () {
     function init_room() {
         //ocultar formulario de tickets
         clearTablero()
+        initVars();
+    }
+
+    function initVars() {
+
     }
 
 
@@ -52,6 +59,19 @@ $(document).ready(function () {
         clickTicket($(this).data('ticket-slug'));
     });
 
+    //evento al pulsar el boton de votar data-deck-card="true"
+    $(document).on('click', '[data-deck-card="true"]', function () {
+        clickDeckCard($(this).data('deck-card-value'));
+    });
+
+    function clickDeckCard(value) {
+        if (selected_ticket == null) {
+            showError("No hay ticket seleccionado");
+            return;
+        }
+        //seleccionar carta
+
+    }
 
 
 
@@ -98,10 +118,14 @@ $(document).ready(function () {
     }
 
     function clickTicket(slug) {
-        console.log("click ticket");
-        console.log(slug);
-
+        //recorrer todos los [data-ticket-button="true"] y quitarles la clase selected
+        $('[data-ticket-button="true"]').removeClass('custom-selection');
+        //añadir clase selected al elemento con data-ticket-slug = slug
+        $('[data-ticket-slug="' + slug + '"]').addClass('custom-selection');
+        //guardar el ticket seleccionado
+        selected_ticket = slug;
     }
+
 
 
     function renderTicketsList(tickets) {
