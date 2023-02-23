@@ -31,13 +31,7 @@ $(document).ready(function () {
     function init_room() {
         //ocultar formulario de tickets
         clearTablero()
-        initVars();
     }
-
-    function initVars() {
-
-    }
-
 
 
     //EVENTS
@@ -61,17 +55,51 @@ $(document).ready(function () {
 
     //evento al pulsar el boton de votar data-deck-card="true"
     $(document).on('click', '[data-deck-card="true"]', function () {
-        clickDeckCard($(this).data('deck-card-value'));
+        clickDeckCard($(this));
     });
 
-    function clickDeckCard(value) {
+
+    function checkUserVotation(username, ticket_slug) {
+        let voted = false;
+        votes.forEach(function (vote) {
+            if (vote.ticket == ticket_slug && vote.username == username) {
+                voted = true;
+            }
+        });
+        return voted;
+    }
+
+
+    function selectFirstTicket() {
+        let first_ticket = $('[data-ticket-button="true"]').first();
+        clickTicket(first_ticket.data('ticket-slug'));
+    }
+
+
+    function clickDeckCard(e) {
         if (selected_ticket == null) {
             showError("No hay ticket seleccionado");
             return;
         }
-        //seleccionar carta
+        let valor = $(e).data('deck-card-value');
+
+        //añadir brillos al elemento seleccionado
+        $('[data-deck-card="true"]').removeClass('brillos');
+        $(e).addClass('brillos');
+        //enviar voto
+        socket.send(JSON.stringify({
+            event: 'vote',
+            jwt: jwt,
+            room_slug: room_slug,
+            data: {
+                ticket_slug: selected_ticket,
+                value: valor,
+                username: username
+            }
+        }));
 
     }
+
 
 
 
@@ -84,16 +112,16 @@ $(document).ready(function () {
             data: {
             }
         }));
+        getVotes();
+
+
     }
 
     //recibir mensajes del socket
     socket.onmessage = function (event) {
-
         //si existe event.error, mostrar error
-
         var data = JSON.parse(event.data);
         console.log(data);
-
         //si existe event.error, mostrar error
         //sacar alerta de error
         if (data.error) {
@@ -114,18 +142,75 @@ $(document).ready(function () {
             case 'update-tickets-list':
                 renderTicketsList(data.data.tickets);
                 break;
+
+            case 'votes-list':
+                refreshVotes(data);
+
+                break;
+            case 'votes':
+                refreshVotesFromData(data);
+                break;
         }
     }
 
-    function clickTicket(slug) {
-        //recorrer todos los [data-ticket-button="true"] y quitarles la clase selected
-        $('[data-ticket-button="true"]').removeClass('custom-selection');
-        //añadir clase selected al elemento con data-ticket-slug = slug
-        $('[data-ticket-slug="' + slug + '"]').addClass('custom-selection');
-        //guardar el ticket seleccionado
-        selected_ticket = slug;
+    function refreshVotes(data) {
+        console.log(data)
+        //recorrer data.data 
+        let votes = data.data;
+        votes.forEach(function (vote) {
+            console.log("Ticket: " + vote.ticket_slug + " - Usuario: " + vote.user + " - Valor: " + vote.vote)
+            //comprobar si la ticket_slug es = a ticket seleccionado
+            if (vote.ticket_slug == selected_ticket) {
+                //si es asi, añadir la clase brillos al elemento con data-card-tablero = user
+                $('[data-card-tablero="' + vote.user + '"]').addClass('brillos');
+            }
+
+        });
     }
 
+    function refreshVotesFromData(data) {
+        //quitar brillo a todos data-card-tablero-img="true"
+        $('[data-card-tablero-img="true"]').removeClass('brillos');
+        console.log("refreshVotesFromData")
+        let votes = (data)
+        console.log(votes)
+        votes.forEach(function (vote) {
+
+        });
+    }
+
+
+    function clickTicket(slug) {
+        //recorrer todos los [data-ticket-button="true"] y quitarles la clase selected
+        $('[data-ticket-button="true"]').removeClass('brillos');
+        //añadir clase selected al elemento con data-ticket-slug = slug
+        $('[data-ticket-slug="' + slug + '"]').addClass('brillos');
+        //guardar el ticket seleccionado
+        selected_ticket = slug;
+        $('[data-card-tablero-img="true"]').removeClass('brillos');
+
+
+
+        //refrescar cartas seleccionadas y voto del ticket seleccionado
+    }
+
+    //funcion para llamar los votos de la sala
+    function getVotes() {
+        socket.send(JSON.stringify({
+            event: 'get-votes',
+            jwt: jwt,
+            room_slug: room_slug,
+            data: {
+            }
+        }));
+    }
+
+
+    function checkSelectedTableroCards() {
+        //obtener el div de la carta (data-card-tablero = username)
+        let card = $('[data-card-tablero="' + username + '"]');
+        //añadir clase brillos al div de la carta
+    }
 
 
     function renderTicketsList(tickets) {
@@ -134,10 +219,13 @@ $(document).ready(function () {
             let html = '<div class="custom-card" data-ticket-button="true" data-ticket-slug="' + ticket.slug + '">' + '<div class="ticket-list-box-title">' + ticket.title + '</div>' + '</div>';
             tickets_list_container.append(html);
         });
-
         //hide new ticket form
         new_tickets_container.hide();
         b_show_tickets.show();
+        //si no hay ticket seleccionado, seleccionar el primero
+        if (selected_ticket == null) {
+            selectFirstTicket();
+        }
     }
 
     function clearUsersListRender() {
@@ -145,8 +233,8 @@ $(document).ready(function () {
     }
 
     function renderUsersList(users) {
-        console.log("rendering users list");
-        console.log(users);
+        //console.log("rendering users list");
+        //console.log(users);
         clearUsersListRender();
         clearTablero();
         users.forEach(function (user) {
@@ -169,7 +257,7 @@ $(document).ready(function () {
                 <span>Melarc</span>
             </div> */
 
-        let html = '<div class="tablero-card">' + '<span>' + user.username + '</span>' + '</div>';
+        let html = '<div class="tablero-card" data-card-tablero-img="true" data-card-tablero="' + user.username + '">' + '<span>' + user.username + '</span>' + '</div>';
         $('#tablero-container').append(html);
 
     }
@@ -217,5 +305,9 @@ $(document).ready(function () {
     }
 
 
+
+    function renderTablero() {
+
+    }
 
 });

@@ -18,6 +18,7 @@ use App\Models\Groups;
 use App\Models\Room;
 //entry
 use App\Models\Tickets;
+use App\Models\TicketsVotation;
 
 class SocketController extends Controller implements MessageComponentInterface
 {
@@ -113,8 +114,116 @@ class SocketController extends Controller implements MessageComponentInterface
 
                 $this->onNewTicket($conn, $data);
                 break;
+
+            case 'vote':
+                $this->onVote($conn, $data);
+                break;
+
+            case 'get-votes':
+                $this->onGetVotes($conn, $data);
+                break;
         }
     }
+
+    public function onGetVotes(ConnectionInterface $conn, $data)
+    {
+        try {
+            //obtener todos los votos de la sala y devolverlos solo al usuario que lo solicita
+            $room_slug = $data->room_slug;
+            $jwt = $data->jwt;
+            $this->sendVotesInRoomToUser($room_slug, $jwt, $conn);
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    public function sendVotesInRoomToUser($room_slug, $jwt, $conn)
+    {
+        //obtener el room y todas las votaciones para todos los tickets
+        $room = Room::where('slug', $room_slug)->first();
+        $tickets = Tickets::where('room_id', $room->id)->get();
+        $votes = [];
+        foreach ($tickets as $ticket) {
+            $votations =  $ticket->votations();
+            foreach ($votations as $votation) {
+                $votes[] = [
+                    'ticket_slug' => $ticket->slug,
+                    'user_id' => $votation->user_id,
+                    'vote' => $votation->vote,
+                ];
+            }
+        }
+        //devolver los votos de la sala al usuario que lo solicito
+        $response =  json_encode([
+            'event' => 'votes',
+            'data' => $votes,
+        ]);
+        $user = User::where('api_token', $jwt)->first();
+
+        $conn->send($response);
+    }
+
+
+    public function onVote(ConnectionInterface $conn, $data)
+    {
+        try {
+            $room_slug = $data->room_slug;
+            $ticket_slug = $data->data->ticket_slug;
+            $user = User::where('api_token', $data->jwt)->first();
+            //obtener el ticket
+            $ticket = Tickets::where('slug', $ticket_slug)->first();
+            //obtener el room
+            $room = Room::where('slug', $room_slug)->first();
+            //check si existe el voto para este ticket y user
+            $votation = TicketsVotation::where('user_id', $user->id)->where('ticket_id', $ticket->id)->delete();
+            //añadir el voto
+            $votation = new TicketsVotation();
+            $votation->user_id = $user->id;
+            $votation->ticket_id = $ticket->id;
+            //value
+            $votation->vote = $data->data->value;
+            $votation->save();
+
+            //devolver los votos de la sala
+            $this->sendVotesInRoom($room_slug);
+        } catch (\Exception $e) {
+            $response =  json_encode([
+                'error' => 'Error al votar',
+            ]);
+            print $e->getMessage();
+            $conn->send($response);
+            return;
+        }
+    }
+
+    public function sendVotesInRoom($room_slug)
+    {
+        //obtener el room y todas las votaciones para todos los tickets
+        $room = Room::where('slug', $room_slug)->first();
+        $tickets = $room->tickets;
+        $tickets_arr = [];
+        foreach ($tickets as $ticket) {
+            $aux = [];
+            //de cada ticket obtener los votos y los usuarios
+            $votations = $ticket->votations;
+            foreach ($votations as $votation) {
+                $tickets_arr[] = [
+                    'user' => $votation->user->username,
+                    'vote' => $votation->vote,
+                    'ticket_slug' => $ticket->slug,
+                ];
+            }
+        }
+        $data = [
+            'event' => 'votes-list',
+            'data' => $tickets_arr,
+        ];
+        $response = json_encode($data);
+        foreach ($this->rooms[$room_slug] as $connection) {
+            $connection['conn']->send($response);
+        }
+    }
+
 
     public function onNewTicket(ConnectionInterface $conn, $data)
     {

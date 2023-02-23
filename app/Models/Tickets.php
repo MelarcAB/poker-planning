@@ -28,6 +28,6 @@ class Tickets extends Model
 
     public function votations()
     {
-        return $this->hasMany(TicketsVotation::class);
+        return $this->hasMany(TicketsVotation::class, 'ticket_id', 'id');
     }
 }
