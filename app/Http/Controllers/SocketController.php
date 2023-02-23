@@ -144,13 +144,19 @@ class SocketController extends Controller implements MessageComponentInterface
         $tickets = Tickets::where('room_id', $room->id)->get();
         $votes = [];
         foreach ($tickets as $ticket) {
-            $votations =  $ticket->votations();
-            foreach ($votations as $votation) {
-                $votes[] = [
-                    'ticket_slug' => $ticket->slug,
-                    'user_id' => $votation->user_id,
-                    'vote' => $votation->vote,
-                ];
+            $votations =  $ticket->votations;
+            // var_dump($votations);
+            print $ticket->slug . " count " . ($votations)->count() . "\n";
+            if ($votations->count() > 0) {
+                // $votes[$ticket->slug] = $votations->toArray();
+                foreach ($votations as $votation) {
+                    $votes[] = [
+                        'ticket_slug' => $ticket->slug,
+                        'user_id' => $votation->user_id,
+                        'user_name' => $votation->user->username,
+                        'vote' => $votation->vote,
+                    ];
+                }
             }
         }
         //devolver los votos de la sala al usuario que lo solicito
