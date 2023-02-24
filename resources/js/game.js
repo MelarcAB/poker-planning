@@ -12,6 +12,9 @@ $(document).ready(function () {
     //users-container
     var usersContainer = $('#users-container');
 
+    var actual_user = $('#username');
+
+
     var selected_ticket = null;
     var votes = [];
 
@@ -176,6 +179,7 @@ $(document).ready(function () {
             }
 
         });
+        selectDeckCard();
     }
 
     function refreshVotesFromVotes() {
@@ -216,6 +220,7 @@ $(document).ready(function () {
             }
 
         });
+        selectDeckCard();
 
     }
 
@@ -282,6 +287,23 @@ $(document).ready(function () {
         });
     }
 
+
+    function selectDeckCard() {
+        //a partir de votes miraremos si el ticket actual tiene un voto de este usuario y si es asi, seleccionaremos la carta
+        //recorrer votes
+        let username = actual_user.val();
+        votes.forEach(function (vote) {
+            //comprobar si el ticket es el actual
+            if (vote.ticket_slug == selected_ticket) {
+                //comprobar si el usuario es el actual
+                if (vote.user_name == username) {
+                    //si es asi, seleccionar la carta añadiendo la clase brillos
+                    $('[data-deck-card-value="' + vote.vote + '"]').addClass('brillos');
+                }
+            }
+        });
+
+    }
 
     function printUserCardTablero(user) {
         //append div with class user-list-box and username and image
