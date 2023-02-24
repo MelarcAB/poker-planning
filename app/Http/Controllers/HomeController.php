@@ -91,4 +91,9 @@ class HomeController extends Controller
         $decks = Deck::where('user_id', $user->id)->orWhere('public', 1)->orderBy('id', 'desc')->get();
         return view('user.my-decks', compact('decks'));
     }
+    public function search_group()
+    {
+        //obtener deck del usuario logeado + deck publicos
+        return view('user.search-group');
+    }
 }

@@ -87,4 +87,26 @@ class APIController extends Controller
         //refrescar la pagina
         return response()->json(['message' => 'Acceso concedido']);
     }
+
+    //searchGroup GET
+    public function searchGroup(Request $request)
+    {
+        try {
+            //obtener usuario que hace la peticion 
+            $user = $request->user();
+            //obtener el codigo del grupo
+            $code = $request->input('code');
+            //obtener el grupo
+            $group = Groups::where('code', $code)->first();
+            //comprobar que el grupo existe
+            if (!$group) {
+                return response()->json(['message' => 'El grupo no existe'], 404);
+            }
+            //comprobar que el usuario pertenece al grupo
+
+            return response()->json(['message' => 'El grupo existe', 'group' => $group]);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error al buscar el grupo'], 500);
+        }
+    }
 }

@@ -16,6 +16,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //controller APIController
 Route::controller(APIController::class)->middleware(['jwt.auth'])
     ->group(function () {
+        //get 
+        Route::get('/search-group', 'searchGroup')->name('search-group');
         Route::post('/update-group-code', 'updateGroupCode')->name('update-group-code');
         Route::post('/check-code', 'checkCode')->name('check-code');
     });

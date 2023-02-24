@@ -21,6 +21,7 @@ Route::controller(App\Http\Controllers\HomeController::class)->group(function ()
     Route::get('/home', 'home')->name('home');
     Route::get('/config', 'config')->name('config');
     Route::get('/my-groups', 'my_groups')->name('my-groups');
+    Route::get('/search-group', 'search_group')->name('search_group');
     Route::get('/my-decks', 'my_decks')->name('my-decks');
     Route::post('/save-config', 'saveConfig')->name('save-config');
 });

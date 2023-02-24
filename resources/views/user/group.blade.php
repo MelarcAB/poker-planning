@@ -43,19 +43,7 @@
                     @endforeach
                 </div>
             </div>
-            <div class="row justify-content-center">
-                <h3 class="custom-title">Salas terminadas</h3>
-                <div class="custom-card-container">
-                    @foreach($group->rooms->whereIn('room_status_id',[2,3]) as $room)
-                    <div class="custom-card-wb">
-                        <a class="custom-link" style="color:white" href="{{route('group.room',['group_slug'=>$group->slug,'room_slug'=>$room->slug])}}">
-                            {{ $room->name }}
-                            <span class="floating-right">{{$room->status->name}} <i class="fa fa-circle"></i></span>
-                        </a>
-                    </div>
-                    @endforeach
-                </div>
-            </div>
+
 
             <div class="custom-card-100">
                 <h4 class="custom-title">Miembros</h4>
@@ -71,6 +59,20 @@
                                 </div>
 
                             </div>
+                        </a>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+
+            <div class="row justify-content-center">
+                <h3 class="custom-title">Salas terminadas</h3>
+                <div class="custom-card-container">
+                    @foreach($group->rooms->whereIn('room_status_id',[2,3]) as $room)
+                    <div class="custom-card-wb">
+                        <a class="custom-link" style="color:white" href="{{route('group.room',['group_slug'=>$group->slug,'room_slug'=>$room->slug])}}">
+                            {{ $room->name }}
+                            <span class="floating-right">{{$room->status->name}} <i class="fa fa-circle"></i></span>
                         </a>
                     </div>
                     @endforeach
