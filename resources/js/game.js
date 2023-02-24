@@ -167,7 +167,33 @@ $(document).ready(function () {
         $('[data-card-tablero-img="true"]').removeClass('brillos');
         console.log("refreshVotesFromData")
         votes = data.data;
+        votes.forEach(function (vote) {
+            //comprobar si la ticket_slug es = a ticket seleccionado
+            if (vote.ticket_slug == selected_ticket) {
+                console.log("Ticket: " + vote.ticket_slug + " - Usuario: " + vote.user_name + " - Valor: " + vote.vote)
+                //si es asi, añadir la clase brillos al elemento con data-card-tablero = user
+                $('[data-card-tablero="' + vote.user_name + '"]').addClass('brillos');
+            }
+
+        });
     }
+
+    function refreshVotesFromVotes() {
+        //quitar brillo a todos data-card-tablero-img="true"
+        $('[data-card-tablero-img="true"]').removeClass('brillos');
+
+        votes.forEach(function (vote) {
+            //comprobar si la ticket_slug es = a ticket seleccionado
+            if (vote.ticket_slug == selected_ticket) {
+                console.log("Ticket: " + vote.ticket_slug + " - Usuario: " + vote.user_name + " - Valor: " + vote.vote)
+                //si es asi, añadir la clase brillos al elemento con data-card-tablero = user
+                $('[data-card-tablero="' + vote.user_name + '"]').addClass('brillos');
+            }
+
+        });
+    }
+
+
 
 
     function clickTicket(slug) {
@@ -252,7 +278,7 @@ $(document).ready(function () {
             usersContainer.append(html);
             //añadir carta al tablero
             printUserCardTablero(user);
-
+            refreshVotesFromVotes();
         });
     }
 
