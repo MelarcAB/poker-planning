@@ -1,3 +1,5 @@
+import { get } from "jquery";
+
 //on document ready
 $(document).ready(function () {
     var socket = new WebSocket("ws://localhost:8090");
@@ -97,6 +99,7 @@ $(document).ready(function () {
                 username: username
             }
         }));
+        getVotes();
 
     }
 
@@ -112,7 +115,7 @@ $(document).ready(function () {
             data: {
             }
         }));
-        getVotes();
+        getVotesUser();
 
 
     }
@@ -154,29 +157,16 @@ $(document).ready(function () {
     }
 
     function refreshVotes(data) {
-        console.log(data)
         //recorrer data.data 
-        let votes = data.data;
-        votes.forEach(function (vote) {
-            console.log("Ticket: " + vote.ticket_slug + " - Usuario: " + vote.user + " - Valor: " + vote.vote)
-            //comprobar si la ticket_slug es = a ticket seleccionado
-            if (vote.ticket_slug == selected_ticket) {
-                //si es asi, añadir la clase brillos al elemento con data-card-tablero = user
-                $('[data-card-tablero="' + vote.user + '"]').addClass('brillos');
-            }
-
-        });
+        votes = data.data;
+        refreshVotesFromData(data);
     }
 
     function refreshVotesFromData(data) {
         //quitar brillo a todos data-card-tablero-img="true"
         $('[data-card-tablero-img="true"]').removeClass('brillos');
         console.log("refreshVotesFromData")
-        let votes = (data)
-        console.log(votes)
-        votes.forEach(function (vote) {
-
-        });
+        votes = data.data;
     }
 
 
@@ -188,16 +178,35 @@ $(document).ready(function () {
         //guardar el ticket seleccionado
         selected_ticket = slug;
         $('[data-card-tablero-img="true"]').removeClass('brillos');
-
-
-
         //refrescar cartas seleccionadas y voto del ticket seleccionado
+        //primero deseleccionar todas las cartas
+        $('[data-deck-card="true"]').removeClass('brillos');
+        votes.forEach(function (vote) {
+            //comprobar si la ticket_slug es = a ticket seleccionado
+            if (vote.ticket_slug == selected_ticket) {
+                console.log("Ticket: " + vote.ticket_slug + " - Usuario: " + vote.user_name + " - Valor: " + vote.vote)
+                //si es asi, añadir la clase brillos al elemento con data-card-tablero = user
+                $('[data-card-tablero="' + vote.user_name + '"]').addClass('brillos');
+            }
+
+        });
+
     }
 
     //funcion para llamar los votos de la sala
     function getVotes() {
         socket.send(JSON.stringify({
             event: 'get-votes',
+            jwt: jwt,
+            room_slug: room_slug,
+            data: {
+            }
+        }));
+    }
+    //funcion para llamar los votos de la sala
+    function getVotesUser() {
+        socket.send(JSON.stringify({
+            event: 'get-votes-user',
             jwt: jwt,
             room_slug: room_slug,
             data: {

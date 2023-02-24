@@ -20,6 +20,7 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+
 </head>
 
 <x-navbar />

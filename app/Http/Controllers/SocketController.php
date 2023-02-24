@@ -119,19 +119,29 @@ class SocketController extends Controller implements MessageComponentInterface
                 $this->onVote($conn, $data);
                 break;
 
+            case 'get-votes-user':
+                $this->onGetVotes($conn, $data, $user = true);
+                break;
             case 'get-votes':
                 $this->onGetVotes($conn, $data);
                 break;
         }
     }
 
-    public function onGetVotes(ConnectionInterface $conn, $data)
+    public function onGetVotes(ConnectionInterface $conn, $data, $user = false)
     {
         try {
             //obtener todos los votos de la sala y devolverlos solo al usuario que lo solicita
             $room_slug = $data->room_slug;
             $jwt = $data->jwt;
-            $this->sendVotesInRoomToUser($room_slug, $jwt, $conn);
+
+            if ($user) {
+                print "User {$jwt} get votes in room {$room_slug}\n";
+                $this->sendVotesInRoomToUser($room_slug, $jwt, $conn);
+            } else {
+                print "User {$jwt} get votes in room {$room_slug}\n";
+                $this->sendVotesInRoomToPublicRoom($room_slug, $jwt, $conn);
+            }
         } catch (\Exception $e) {
             echo $e->getMessage();
         }
@@ -167,6 +177,39 @@ class SocketController extends Controller implements MessageComponentInterface
         $user = User::where('api_token', $jwt)->first();
 
         $conn->send($response);
+    }
+
+
+    public function sendVotesInRoomToPublicRoom($room_slug, $jwt, $conn)
+    {
+        //obtener el room y todas las votaciones para todos los tickets
+        $room = Room::where('slug', $room_slug)->first();
+        $tickets = Tickets::where('room_id', $room->id)->get();
+        $votes = [];
+        foreach ($tickets as $ticket) {
+            $votations =  $ticket->votations;
+            // var_dump($votations);
+            print $ticket->slug . " count " . ($votations)->count() . "\n";
+            if ($votations->count() > 0) {
+                // $votes[$ticket->slug] = $votations->toArray();
+                foreach ($votations as $votation) {
+                    $votes[] = [
+                        'ticket_slug' => $ticket->slug,
+                        'user_id' => $votation->user_id,
+                        'user_name' => $votation->user->username,
+                        'vote' => $votation->vote,
+                    ];
+                }
+            }
+        }
+        //devolver los votos de la sala al usuario que lo solicito
+        $response =  json_encode([
+            'event' => 'votes',
+            'data' => $votes,
+        ]);
+        foreach ($this->rooms[$room_slug] as $connection) {
+            $connection['conn']->send($response);
+        }
     }
 
 
@@ -317,6 +360,26 @@ class SocketController extends Controller implements MessageComponentInterface
         }
     }
 
+    public function sendTicketsInRoomToUser($slug, $conn)
+    {
+        //obtener la sala a partir del slug
+        $room = Room::where('slug', $slug)->first();
+        $tickets = $room->tickets;
+        if (count($tickets) == 0 || $tickets == null) {
+            $tickets = [];
+        }
+
+        $response = [
+            'event' => 'update-tickets-list',
+            'data' => [
+                'room_slug' => $slug,
+                'tickets' => $tickets,
+            ],
+        ];
+
+        $conn->send(json_encode($response));
+    }
+
 
     public function sendUsersInRoom($slug)
     {
@@ -399,7 +462,7 @@ class SocketController extends Controller implements MessageComponentInterface
         //refrescar lista de usuarios en la sala
         $this->sendUsersList($conn, $data, $room_slug);
         //refrescar lista de tickets en la sala
-        $this->sendTicketsInRoom($room_slug);
+        $this->sendTicketsInRoomToUser($room_slug, $conn);
     }
 
 
