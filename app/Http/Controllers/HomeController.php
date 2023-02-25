@@ -60,6 +60,13 @@ class HomeController extends Controller
                 'image' => 'image | mimes:jpeg,png,jpg,gif,svg | max:2048'
             ]);
 
+            //verificar si el nombre de usuario ya existe
+            $userExists = User::where('username', $request->username)->first();
+            if ($userExists && $userExists->id != $user->id) {
+                return redirect()->route('config')->with('error', 'El nombre de usuario ya existe');
+            }
+
+
             //actualizar datos
             $user->username = $request->username;
             $user->save();
