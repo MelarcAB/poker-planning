@@ -95,16 +95,29 @@ class APIController extends Controller
             //obtener usuario que hace la peticion 
             $user = $request->user();
             //obtener el codigo del grupo
-            $code = $request->input('code');
-            //obtener el grupo
-            $group = Groups::where('code', $code)->first();
+            $code = $request->input('q');
+            //obtener los
+            $groups = Groups::where('name', $code)->get();
             //comprobar que el grupo existe
-            if (!$group) {
-                return response()->json(['message' => 'El grupo no existe'], 404);
+            if ($groups->count() < 1) {
+                return response()->json(['message' => 'No hay grupos con ese nombre '], 404);
             }
-            //comprobar que el usuario pertenece al grupo
+            $groups_arr = [];
 
-            return response()->json(['message' => 'El grupo existe', 'group' => $group]);
+            foreach ($groups as $group) {
+                //obtener la info necesaria
+                $group_arr = [];
+                $group_arr['name'] = $group->name;
+                $group_arr['slug'] = $group->slug;
+                //numero de usuarios
+                $group_arr['users'] = $group->users->count();
+                //username del creador
+                $group_arr['creator'] = $group->user->username;
+                //añadir al array
+                $groups_arr[] = $group_arr;
+            }
+            //devolver los grupos con mensaje de exito
+            return response()->json(['message' => 'Grupos encontrados', 'groups' => $groups_arr]);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Error al buscar el grupo'], 500);
         }

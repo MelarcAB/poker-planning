@@ -12,27 +12,24 @@ $(document).ready(function () {
 
     //functions
     function searchGroup() {
-
-        //axios check-code
         let url = '/api/search-group';
+        //axios get
         axios.get(url, {
-            q: inpt_group_name.val(),
-        }, {
+            params: {
+                q: inpt_group_name.val(),
+            },
             headers: {
                 'Authorization': 'Bearer ' + bearer,
-                'X-CSRF-TOKEN': token,
-
+                'X-CSRF-TOKEN': token
             }
         })
             .then(function (response) {
+                console.log(response)
                 showSuccess(response.data.message);
-
-
             })
             .catch(function (error) {
                 showError(error.response.data.message);
             });
-
     }
 
 
