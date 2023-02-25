@@ -187,6 +187,18 @@ body{
     resize: vertical;
     margin: auto;
 }
+.custom-card-100-invisible{
+    background: none;
+    color: #fff;
+    border-radius: 5px;
+    padding: 15px 10px 15px 10px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    transition: all 0.15s ease-in-out;
+    width: 100%;
+    resize: vertical;
+    margin: auto;
+}
 
 .custom-card-100:hover{
 }

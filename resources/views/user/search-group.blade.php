@@ -20,10 +20,8 @@
             @csrf
         </form>
     </div>
-    <div class="custom-card-100 ">
-        <div class="custom-card">
-            <span>Titulo</span>
-        </div>
+    <div id="results-container" class="custom-card-100-invisible ">
+
     </div>
 </div>
 @vite([ 'resources/js/search-group.js'])

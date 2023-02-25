@@ -113,6 +113,8 @@ class APIController extends Controller
                 $group_arr['users'] = $group->users->count();
                 //username del creador
                 $group_arr['creator'] = $group->user->username;
+                //group url
+                $group_arr['url'] = route('group', ['slug' => $group->slug]);
                 //añadir al array
                 $groups_arr[] = $group_arr;
             }
