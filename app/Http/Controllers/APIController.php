@@ -108,6 +108,7 @@ class APIController extends Controller
                 //obtener la info necesaria
                 $group_arr = [];
                 $group_arr['name'] = $group->name;
+                $group_arr['description'] = $group->description;
                 $group_arr['slug'] = $group->slug;
                 //numero de usuarios
                 $group_arr['users'] = $group->users->count();

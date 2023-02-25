@@ -16,12 +16,13 @@
                     <button class="custom-button-lt" type="button" id="bt-search-group" style="display: inline-block;min-width:50px"><i class="fas fa-search"></i></button>
                 </div>
             </div>
-
             @csrf
         </form>
     </div>
-    <div id="results-container" class="custom-card-100-invisible ">
-
+    <div id="loading-gif-container" style="text-align:center ; ">
+        <span class="loader"></span>
+    </div>
+    <div id="results-container" class="custom-card-100-invisible">
     </div>
 </div>
 @vite([ 'resources/js/search-group.js'])

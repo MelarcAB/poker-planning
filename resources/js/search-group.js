@@ -6,14 +6,21 @@ $(document).ready(function () {
     var inpt_group_name = $('#group-name');
     var results_container = $('#results-container');
 
+    var loading_spinner = $('#loading-gif-container');
+    loading_spinner.hide();
     //event click on button search group
     bt_search_group.click(searchGroup);
 
 
     //functions
     function searchGroup() {
+
         let url = '/api/search-group';
         //axios get
+        generateResultsHtml([]);
+        loading_spinner.show();
+        console.log(loading_spinner.show());
+
         axios.get(url, {
             params: {
                 q: inpt_group_name.val(),
@@ -36,6 +43,8 @@ $(document).ready(function () {
 
     function generateResultsHtml(groups) {
         //clear results
+        loading_spinner.hide();
+
         results_container.html('');
 
         //generate html
@@ -44,6 +53,9 @@ $(document).ready(function () {
             let html = '<a href="' + group.url + '" class="custom-link ">' +
                 '<div class="custom-card" style="margin-top:10px;width:100%">' +
                 group.name +
+                '<span class="floating-right" ><i class="fa-solid fa-users"></i>' + group.users + '</span>' +
+                '<p class="custom-text">Creador: ' + group.creator + '</p>' +
+                //  '<p class="custom-text">' + group.description + '</p>' +
                 '</div>' +
                 '</a>';
             results_container.append(html);
