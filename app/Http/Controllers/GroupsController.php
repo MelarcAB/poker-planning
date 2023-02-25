@@ -8,6 +8,9 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 //str
 use Illuminate\Support\Str;
 
+//modelos
+use App\Models\Deck;
+
 class GroupsController extends Controller
 {
     use ValidatesRequests;
@@ -41,6 +44,15 @@ class GroupsController extends Controller
         $group->name = $request->name;
         $group->description = $request->description;
         $group->user_id = $user_id;
+
+        //asignar "Default"" deck
+        $deck_id_default = Deck::where('title', 'Default')->first()->id;
+        //verificar si el deck existe
+        if (!$deck_id_default) {
+            //redireccionar con un mensaje de error
+            return redirect()->route('my-groups')->with('error', 'Error al asignar el deck por defecto');
+        }
+        $group->deck_id = $deck_id_default;
 
         //generar slug
         $group->slug = $this->generateUniqueSlug($request->name);
