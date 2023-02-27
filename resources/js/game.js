@@ -60,8 +60,30 @@ $(document).ready(function () {
 
     //evento al pulsar el boton de votar data-deck-card="true"
     $(document).on('click', '[data-deck-card="true"]', function () {
-        clickDeckCard($(this));
+        //verificar si tiene la clase activo, de ser asi se deselecciona y eliminamos el voto
+        if ($(this).hasClass('activo')) {
+            // $(this).removeClass('activo');
+            quitarVoto($(this).data('deck-card-value'), $(this));
+        } else {
+
+            clickDeckCard($(this));
+        }
     });
+
+
+    //FUNCIONES
+    function quitarVoto(valorm, obj) {
+        socket.send(JSON.stringify({
+            event: 'remove-vote',
+            jwt: jwt,
+            room_slug: room_slug,
+            ticket_slug: selected_ticket,
+            data: {
+            }
+        }));
+        getVotes();
+        $(obj).removeClass('activo');
+    }
 
 
     function checkUserVotation(username, ticket_slug) {

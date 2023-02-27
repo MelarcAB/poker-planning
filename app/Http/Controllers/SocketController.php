@@ -125,8 +125,34 @@ class SocketController extends Controller implements MessageComponentInterface
             case 'get-votes':
                 $this->onGetVotes($conn, $data);
                 break;
+
+            case 'remove-vote':
+                $this->onRemoveVote($conn, $data);
+                break;
         }
     }
+
+    public function onRemoveVote(ConnectionInterface $conn, $data)
+    {
+        try {
+            $room_slug = $data->room_slug;
+            $ticket_slug = $data->ticket_slug;
+            $jwt = $data->jwt;
+
+            $user = User::where('api_token', $jwt)->first();
+            $ticket = Tickets::where('slug', $ticket_slug)->first();
+            $votation = TicketsVotation::where('user_id', $user->id)->where('ticket_id', $ticket->id)->first();
+            if ($votation) {
+
+                $votation->delete();
+            }
+
+            $this->sendVotesInRoomToPublicRoom($room_slug, $jwt, $conn);
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
 
     public function onGetVotes(ConnectionInterface $conn, $data, $user = false)
     {
