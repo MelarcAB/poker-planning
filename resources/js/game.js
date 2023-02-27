@@ -89,8 +89,8 @@ $(document).ready(function () {
         let valor = $(e).data('deck-card-value');
 
         //añadir brillos al elemento seleccionado
-        $('[data-deck-card="true"]').removeClass('brillos');
-        $(e).addClass('brillos');
+        $('[data-deck-card="true"]').removeClass('activo');
+        $(e).addClass('activo');
         //enviar voto
         socket.send(JSON.stringify({
             event: 'vote',
@@ -202,15 +202,15 @@ $(document).ready(function () {
 
     function clickTicket(slug) {
         //recorrer todos los [data-ticket-button="true"] y quitarles la clase selected
-        $('[data-ticket-button="true"]').removeClass('brillos');
+        $('[data-ticket-button="true"]').removeClass('activo');
         //añadir clase selected al elemento con data-ticket-slug = slug
-        $('[data-ticket-slug="' + slug + '"]').addClass('brillos');
+        $('[data-ticket-slug="' + slug + '"]').addClass('activo');
         //guardar el ticket seleccionado
         selected_ticket = slug;
         $('[data-card-tablero-img="true"]').removeClass('brillos');
         //refrescar cartas seleccionadas y voto del ticket seleccionado
         //primero deseleccionar todas las cartas
-        $('[data-deck-card="true"]').removeClass('brillos');
+        $('[data-deck-card="true"]').removeClass('activo');
         votes.forEach(function (vote) {
             //comprobar si la ticket_slug es = a ticket seleccionado
             if (vote.ticket_slug == selected_ticket) {
@@ -298,7 +298,7 @@ $(document).ready(function () {
                 //comprobar si el usuario es el actual
                 if (vote.user_name == username) {
                     //si es asi, seleccionar la carta añadiendo la clase brillos
-                    $('[data-deck-card-value="' + vote.vote + '"]').addClass('brillos');
+                    $('[data-deck-card-value="' + vote.vote + '"]').addClass('activo');
                 }
             }
         });

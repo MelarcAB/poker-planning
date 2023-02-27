@@ -5,15 +5,9 @@ $(document).ready(function () {
     const token = $('meta[name="csrf-token"]').attr('content');
     const bearer = $('meta[name="jwt"]').attr('content');
 
-
     //on click b check code
     b_check_code.click(checkCode);
-
-
-
-
     function checkCode(e) {
-
         //axios check-code
         let url = '/api/check-code';
         let code = $('#code').val();
