@@ -105,13 +105,55 @@ class HomeController extends Controller
     }
 
 
-
-    public function new_deck($id = 0)
+    public function save_deck(Request $request)
     {
-        if ($id == 0) {
+        try {
+            //obtener usuario logeado
+            $user = Auth::user();
+
+            //validar datos
+            $validatedData = $request->validate([
+                'title' => 'required | min:3 | max:20',
+                'description' => 'required | min:3 | max:100',
+            ]);
+
+            //verificar si el deck ya existe
+            $deckExists = Deck::where('title', $request->title)->first();
+            if ($deckExists) {
+                return redirect()->route('new-deck')->with('error', 'El deck ya existe')->withInput();
+            }
+
+            //guardar deck
+            $deck = new Deck();
+            $deck->title = $request->title;
+            $deck->description = $request->description;
+            $deck->public = false;
+            $deck->user_id = $user->id;
+            $deck->save();
+
+            //eliminar todas las cartas del deck
+            $deck->cards()->delete();
+            //crer nuevas cartas
+            $cards = $request->cards;
+            foreach ($cards as $card) {
+                $card = $deck->cards()->create([
+                    'value' => $card,
+                ]);
+            }
+
+            return redirect()->route('deck', $deck->title)->with('success', 'Deck creado correctamente');
+        } catch (\Exception $e) {
+            return redirect()->route('new-deck')->with('error', $e->getMessage())->withInput();
+        }
+    }
+
+    public function new_deck($title = 0)
+    {
+        if ($title == 0) {
             $deck = new Deck();
         } else {
-            $deck = Deck::find($id);
+            //buscar deck por titulo
+            $deck = Deck::where('title', $title)->first();
             if (!$deck) {
                 return redirect()->route('my-decks')->with('error', 'Deck no encontrado');
             }

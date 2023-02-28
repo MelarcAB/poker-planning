@@ -512,6 +512,22 @@ body{
         scrollbar-width: none;
     }
 
+    .carta-deck {
+        width: 75px;
+        height: 125px;
+        background: #ffffff;
+        border: 1px solid #000;
+        color : #000;
+        border-radius: 10px;
+        margin: 10px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+      }
+      
+
     
 
     .loader {
