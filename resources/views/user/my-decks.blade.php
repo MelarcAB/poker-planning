@@ -13,10 +13,13 @@
                 </div>
             </a>
             @foreach($decks as $deck)
-            <div class="deck-container" style="">
-                <img src="{{asset($deck->image)}}">
-                <div class="deck-name">{{$deck->title}}</div>
-            </div>
+            <a href="{{route('deck',['slug'=>$deck->slug])}}" class="custom-link">
+
+                <div class="deck-container" style="">
+                    <img src="{{asset($deck->image)}}">
+                    <div class="deck-name">{{$deck->title}}</div>
+                </div>
+            </a>
             @endforeach
 
 

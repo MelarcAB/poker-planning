@@ -111,20 +111,41 @@ class HomeController extends Controller
             //obtener usuario logeado
             $user = Auth::user();
 
+            //verificar si tiene slug
+            if ($request->slug != '') {
+                //buscar deck por titulo
+                $deck = Deck::where('slug', $request->slug)->first();
+                if (!$deck) {
+                    return redirect()->route('my-decks')->with('error', 'Deck no encontrado');
+                }
+                //verificar si el deck pertenece al usuario
+                if ($deck->user_id != $user->id) {
+                    return redirect()->route('my-decks')->with('error', 'No tienes permisos para editar este deck');
+                }
+                //veroificar si el deck es publico
+                if ($deck->public) {
+                    return redirect()->route('my-decks')->with('error', 'No puedes editar un deck público');
+                }
+            } else {
+                $deck = new Deck();
+                //verificar si el deck ya existe
+                $deckExists = Deck::where('title', $request->title)->first();
+                if ($deckExists) {
+                    return redirect()->route('new-deck')->with('error', 'Ya existe un deck con ese título')->withInput();
+                }
+                //generar slug
+                $deck->slug = $this->generateUniqueSlug($request->title);
+            }
+
+
             //validar datos
             $validatedData = $request->validate([
                 'title' => 'required | min:3 | max:20',
                 'description' => 'required | min:3 | max:100',
             ]);
 
-            //verificar si el deck ya existe
-            $deckExists = Deck::where('title', $request->title)->first();
-            if ($deckExists) {
-                return redirect()->route('new-deck')->with('error', 'El deck ya existe')->withInput();
-            }
 
             //guardar deck
-            $deck = new Deck();
             $deck->title = $request->title;
             $deck->description = $request->description;
             $deck->public = false;
@@ -134,26 +155,32 @@ class HomeController extends Controller
             //eliminar todas las cartas del deck
             $deck->cards()->delete();
             //crer nuevas cartas
-            $cards = $request->cards;
-            foreach ($cards as $card) {
-                $card = $deck->cards()->create([
-                    'value' => $card,
-                ]);
+            //si hay cards
+            if ($request->cards) {
+                //recorrer cards
+                foreach ($request->cards as $card) {
+                    //crear nueva carta
+                    if ($card != '') {
+                        $deck->cards()->create([
+                            'value' => $card
+                        ]);
+                    }
+                }
             }
 
-            return redirect()->route('deck', $deck->title)->with('success', 'Deck creado correctamente');
+            return redirect()->route('deck', $deck->slug)->with('success', 'Deck creado correctamente');
         } catch (\Exception $e) {
             return redirect()->route('new-deck')->with('error', $e->getMessage())->withInput();
         }
     }
 
-    public function new_deck($title = 0)
+    public function new_deck($slug = 0)
     {
-        if ($title == 0) {
+        if ($slug == 0) {
             $deck = new Deck();
         } else {
             //buscar deck por titulo
-            $deck = Deck::where('title', $title)->first();
+            $deck = Deck::where('slug', $slug)->first();
             if (!$deck) {
                 return redirect()->route('my-decks')->with('error', 'Deck no encontrado');
             }
@@ -161,5 +188,12 @@ class HomeController extends Controller
 
 
         return view('user.deck-new', compact('deck'));
+    }
+
+    function generateUniqueSlug($title)
+    {
+        $slug = str_slug($title);
+        $count = Deck::where('title', 'LIKE', "{$slug}%")->count();
+        return $count ? "{$slug}-{$count}" : $slug;
     }
 }
