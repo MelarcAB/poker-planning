@@ -14,7 +14,7 @@ class Deck extends Model
         'description',
         'public',
         'user_id',
-        //image
+        'slug',
         'image',
     ];
 

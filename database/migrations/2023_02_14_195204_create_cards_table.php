@@ -32,6 +32,7 @@ return new class extends Migration
         $deck->title = 'Default';
         $deck->description = 'Default deck';
         $deck->public = true;
+        $deck->slug = "default-deck";
         $deck->save();
 
         //crear cartas

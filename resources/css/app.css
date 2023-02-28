@@ -260,6 +260,15 @@ body{
     color: inherit;
     background-color: transparent;
 }
+
+.custom-link:hover
+{
+    text-decoration: none;
+    color: inherit;
+    background-color: transparent;
+}
+
+
 .custom-label{
     color: #fff;
     font-size: 1rem;

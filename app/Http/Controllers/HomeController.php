@@ -103,4 +103,21 @@ class HomeController extends Controller
         //obtener deck del usuario logeado + deck publicos
         return view('user.search-group');
     }
+
+
+
+    public function new_deck($id = 0)
+    {
+        if ($id == 0) {
+            $deck = new Deck();
+        } else {
+            $deck = Deck::find($id);
+            if (!$deck) {
+                return redirect()->route('my-decks')->with('error', 'Deck no encontrado');
+            }
+        }
+
+
+        return view('user.deck-new', compact('deck'));
+    }
 }

@@ -25,6 +25,11 @@ return new class extends Migration
             //public 
             $table->boolean('public')->default(false);
 
+
+            //slug
+            $table->string('slug')->unique()->nullable();
+
+
             //timestamps
             $table->softDeletes();
             $table->timestamps();
