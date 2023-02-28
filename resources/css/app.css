@@ -90,10 +90,40 @@ label{
     display: block;
 }
 
+.m5{
+    margin: 5px;
+}
+.mt15{
+    margin-top: 15px;
+    margin-left:5px;
+}
+
+.custom-input-gray-100{
+    background: #251e28;
+    color: #fff;
+    border: 1px solid #150d19;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    transition: all 0.15s ease-in-out;
+    display: block;
+    width: 100%;
+}
+
 /***los input gray disabled */ 
 .custom-input-gray:disabled{
    color : #858286;
 }
+
+.custom-input-gray-100:hover{
+    border: 1px solid #fff;
+}
+
+.custom-input-gray-100:focus{
+    border: 1px solid #fff;
+}
+
 
 .custom-textarea{
     background: #150d19;
