@@ -5,7 +5,7 @@
         <div class="custom-card-header">
             <h3>My Decks</h3>
         </div>
-        <div class="" style="display: flex;">
+        <div class="" style="display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; padding: 10px;">
             <a href="{{route('new-deck')}}" class="custom-link">
                 <div class="deck-container" style="">
                     <img src="">
