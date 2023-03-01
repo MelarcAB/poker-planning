@@ -323,11 +323,33 @@ body{
     max-width: 200px;
     width: 30%;
 }
+.custom-button-lt-danger
+{
+    background: #751424;
+    color: #fff;
+    border: 1px solid #3f0e0e;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+    margin: 10px;
+    border: 1px solid rgb(135, 135, 135);
+    max-width: 200px;
+    width: 30%;
+}
 
 .custom-button-lt:hover
 {
     border: 1px solid #fff;
     background: #1f1723;
+}
+
+.custom-button-lt-danger:hover
+{
+    border: 1px solid #fff;
+    background: #570f1b;
 }
 
 
@@ -483,17 +505,17 @@ body{
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        margin: 10px;
         width: 200px;
         height: 200px;
         border: 1px solid #000;
         border-radius: 10px;
         cursor: pointer;
+        border: 1px solid rgb(161, 157, 157);
     }
 
     .deck-container:hover {
-        border: 1px solid #000;
-        box-shadow: 0 0 10px #000;
+        border: 1px solid #ffffff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.103);
     }
 
     .deck-name {

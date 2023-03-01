@@ -28,6 +28,8 @@ Route::controller(App\Http\Controllers\HomeController::class)->group(function ()
     //post
     Route::post('/save-deck', 'save_deck')->name('save-deck');
     Route::post('/save-config', 'saveConfig')->name('save-config');
+    //delete deck delete-deck 
+    Route::delete('/delete-deck', 'delete_deck')->name('delete-deck');
 });
 
 //controller GerenteController

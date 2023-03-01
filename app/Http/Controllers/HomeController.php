@@ -11,6 +11,9 @@ use App\Models\User;
 //auth
 use Illuminate\Support\Facades\Auth;
 
+//Validator
+use Illuminate\Support\Facades\Validator;
+
 class HomeController extends Controller
 {
     /**
@@ -139,17 +142,44 @@ class HomeController extends Controller
 
 
             //validar datos
-            $validatedData = $request->validate([
+
+            $validator = Validator::make($request->all(), [
                 'title' => 'required | min:3 | max:20',
                 'description' => 'required | min:3 | max:100',
+                'image' => 'image | mimes:jpeg,png,jpg,gif,svg | max:2048'
             ]);
+            if ($validator->fails()) {
 
+                //validar si tiene ID, si es así redirigir a editar
+                if ($deck->id > 0) {
+                    return redirect()->route('deck', $deck->slug)->with('error', $validator->errors()->first())->withInput();
+                } else {
+                    return redirect()->route('new-deck')->with('error', $validator->errors()->first())->withInput();
+                }
+            }
 
             //guardar deck
             $deck->title = $request->title;
             $deck->description = $request->description;
             $deck->public = false;
             $deck->user_id = $user->id;
+
+
+
+
+            //comprobar si tiene imagen
+            if ($request->hasFile('image')) {
+                //obtener la imagen
+                $image = $request->file('image');
+                $filename = $image->getClientOriginalName();
+                //guardar  la imagen con el slug del deck y en su formato original. Se guarda en la carpeta public / img / decks / username / slug.extension
+                $image->move(public_path('img/decks/' . $user->username), $deck->slug . '.' . $image->getClientOriginalExtension());
+                //actualizar la ruta de la imagen en la base de datos
+                $deck->image = 'img/decks/' . $user->username . '/' . $deck->slug . '.' . $image->getClientOriginalExtension();
+            }
+
+
+
             $deck->save();
 
             //eliminar todas las cartas del deck
@@ -168,7 +198,12 @@ class HomeController extends Controller
                 }
             }
 
-            return redirect()->route('deck', $deck->slug)->with('success', 'Deck creado correctamente');
+
+
+
+
+
+            return redirect()->route('deck', $deck->slug)->with('success', 'Deck guardado');
         } catch (\Exception $e) {
             return redirect()->route('new-deck')->with('error', $e->getMessage())->withInput();
         }
@@ -195,5 +230,37 @@ class HomeController extends Controller
         $slug = str_slug($title);
         $count = Deck::where('title', 'LIKE', "{$slug}%")->count();
         return $count ? "{$slug}-{$count}" : $slug;
+    }
+
+
+
+    //delete_deck - method delete (post)
+    public function delete_deck(Request $request)
+    {
+        try {
+            //obtener usuario logeado
+            $user = Auth::user();
+            //buscar deck por titulo
+            $deck = Deck::where('slug', $request->slug)->first();
+            if (!$deck) {
+                return redirect()->route('my-decks')->with('error', 'Deck no encontrado');
+            }
+            //verificar si el deck pertenece al usuario
+            if ($deck->user_id != $user->id) {
+                return redirect()->route('my-decks')->with('error', 'No tienes permisos para eliminar este deck');
+            }
+            //veroificar si el deck es publico
+            if ($deck->public) {
+                return redirect()->route('my-decks')->with('error', 'No puedes eliminar un deck público');
+            }
+            //eliminar deck soft delete
+            //eliminar primero las cartas
+            $deck->cards()->delete();
+            $deck->delete();
+
+            return redirect()->route('my-decks')->with('success', 'Deck eliminado');
+        } catch (\Exception $e) {
+            return redirect()->route('my-decks')->with('error', $e->getMessage());
+        }
     }
 }
