@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Auth;
 //Validator
 use Illuminate\Support\Facades\Validator;
 
+//groups
+use App\Models\Groups;
+
 class HomeController extends Controller
 {
     /**
@@ -252,6 +255,16 @@ class HomeController extends Controller
             //veroificar si el deck es publico
             if ($deck->public) {
                 return redirect()->route('my-decks')->with('error', 'No puedes eliminar un deck público');
+            }
+
+            //reasignar el deck Default a los grupos que usen el deck a eliminar
+            $groups = Groups::where('deck_id', $deck->id)->get();
+            //obtener id del deck default (1)
+            $default_deck = Deck::where('title', 'Default')->first();
+
+            foreach ($groups as $group) {
+                $group->deck_id = $default_deck->id;
+                $group->save();
             }
             //eliminar deck soft delete
             //eliminar primero las cartas

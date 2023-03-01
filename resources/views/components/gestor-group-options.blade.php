@@ -6,13 +6,10 @@
             </a>
         </div>
         <div class="basic-options-box" id="b-new-code">
-            Código de acceso
+            Código
         </div>
         <div class="basic-options-box">
-            Invitar al grupo
-        </div>
-        <div class="basic-options-box">
-            Puntos
+            Invitar
         </div>
     </div>
     <x-gestor.new-password-form />
