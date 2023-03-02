@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Groups;
 //general api calls
 //llamadas desde la misma aplicación
+
+use App\Models\Invitation;
+use \App\Models\User;
+
 class APIController extends Controller
 {
 
@@ -123,6 +127,65 @@ class APIController extends Controller
             return response()->json(['message' => 'Grupos encontrados', 'groups' => $groups_arr]);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Error al buscar el grupo'], 500);
+        }
+    }
+
+
+    //invitate POST
+    public function invitate(Request $request)
+    {
+        try {
+
+            //validar group_slug
+            $this->validate($request, [
+                'group_slug' => 'required|string|max:500',
+                'username' => 'required|string|max:500',
+            ]);
+
+            //sender from auth
+            $sender = $request->user();
+            //obtener el slug del grupo
+            $group_slug = $request->input('group_slug');
+            //obtener el grupo
+            $group = Groups::where('slug', $group_slug)->first();
+            //comprobar que el grupo existe
+            if (!$group) {
+                return response()->json(['message' => 'El grupo no existe'], 404);
+            }
+            //obtener el usuario al que se le va a invitar
+            $username = $request->input('username');
+            //comprobar que el usuario existe
+            $receiver = User::where('username', $username)->first();
+            if (!$receiver) {
+                return response()->json(['message' => 'El usuario no existe'], 404);
+            }
+
+            //comprobar que el usuario no pertenece al grupo
+            if ($receiver->groups->contains($group)) {
+                return response()->json(['message' => 'El usuario ya pertenece al grupo'], 403);
+            }
+
+            //comprobar que no hay una invitacion pendiente
+            $invitation = Invitation::where('sender_id', $sender->id)
+                ->where('receiver_id', $receiver->id)
+                ->where('group_id', $group->id)
+                //status = pending
+                ->where('status', 'pending')
+                ->first();
+            if ($invitation) {
+                return response()->json(['message' => 'Ya hay una invitación pendiente'], 403);
+            }
+
+            //crear la invitacion
+            $invitation = new Invitation();
+            $invitation->sender_id = $sender->id;
+            $invitation->receiver_id = $receiver->id;
+            $invitation->group_id = $group->id;
+            $invitation->status = 'pending';
+            $invitation->save();
+            return response()->json(['message' => 'Invitación enviada correctamente']);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error al actualizar la contraseña'], 500);
         }
     }
 }

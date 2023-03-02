@@ -115,4 +115,19 @@ class User extends Authenticatable implements JWTSubject
         //devolver decks del usuario + decks publicos
         return Deck::where('user_id', $this->id)->orWhere('public', true)->get();
     }
+
+
+
+
+    //invitaciones enviadas (campo sender)
+    public function invitations_sent()
+    {
+        return $this->hasMany(Invitation::class, 'sender_id');
+    }
+
+    //invitaciones recibidas (campo receiver)
+    public function invitations_received()
+    {
+        return $this->hasMany(Invitation::class, 'receiver_id');
+    }
 }

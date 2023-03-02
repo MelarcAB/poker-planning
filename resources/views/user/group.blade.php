@@ -3,6 +3,7 @@
 @section('content')
 <div class="container">
     <h3 class=" custom-title">Grupo {{$group->name}}</h3>
+    <input type="hidden" id="slug" value="{{$group->slug}}">
     @if(Auth::user()->isGestor() && Auth::user()->id == $group->user_id )
     <x-gestor-group-options :group="$group" />
     @endif

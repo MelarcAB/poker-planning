@@ -8,9 +8,10 @@
         <div class="basic-options-box" id="b-new-code">
             Código
         </div>
-        <div class="basic-options-box">
+        <div class="basic-options-box" id="b-new-invitation">
             Invitar
         </div>
     </div>
     <x-gestor.new-password-form />
+    <x-group.invitation-form :group="$group" :user="Auth::user()" />
 </div>

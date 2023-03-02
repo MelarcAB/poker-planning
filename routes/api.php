@@ -20,4 +20,5 @@ Route::controller(APIController::class)->middleware(['jwt.auth'])
         Route::get('/search-group', 'searchGroup')->name('search-group');
         Route::post('/update-group-code', 'updateGroupCode')->name('update-group-code');
         Route::post('/check-code', 'checkCode')->name('check-code');
+        Route::post('/invitate', 'invitate')->name('check-code');
     });
