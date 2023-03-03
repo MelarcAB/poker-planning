@@ -4,11 +4,18 @@ import { get } from "jquery";
 $(document).ready(function () {
 
     let baseURI = document.baseURI;
+    console.log(baseURI);
     //si url tiene un puerto se elimina, lo mismo para el protocolo
     baseURI = baseURI.replace("http://", "");
     baseURI = baseURI.replace("https://", "");
     baseURI = baseURI.replace(":8000/", "");
     baseURI = baseURI.replace(":8000", "");
+    baseURI = baseURI.replace(":8080/", "");
+    baseURI = baseURI.replace(":8080", "");
+    console.log(baseURI);
+    console.log("peticion a:")
+    console.log("ws://" + baseURI + ":8090");
+
 
 
 
