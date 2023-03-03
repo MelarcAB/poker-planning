@@ -287,7 +287,7 @@ class HomeController extends Controller
         //obtener usuario logeado
         $user = Auth::user();
         //obtener invitaciones
-        $invitations = Invitation::where('receiver_id', $user->id)->get();
+        $invitations = $user->invitations_pending;
         return view('user.invitations', compact('invitations'));
     }
 }

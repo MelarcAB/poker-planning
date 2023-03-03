@@ -201,6 +201,104 @@ class APIController extends Controller
     public function manageInvitation(Request $request)
     {
         try {
+
+            //verificar el action
+            $this->validate($request, [
+                'action' => 'required|string|max:500',
+                'group_slug' => 'required|string|max:500',
+            ]);
+
+            //obtener el usuario que hace la peticion
+            $user = $request->user();
+            //obtener el slug del grupo
+            $group_slug = $request->input('group_slug');
+            //obtener el grupo
+            $group = Groups::where('slug', $group_slug)->first();
+            //comprobar que el grupo existe
+            if (!$group) {
+                return response()->json(['message' => 'El grupo no existe'], 404);
+            }
+
+            //validar que el usuario esta invitado al grupo
+            $invitation = Invitation::where('receiver_id', $user->id)
+                ->where('group_id', $group->id)
+                ->where('status', 'LIKE', 'pending')
+                ->first();
+            if (!$invitation) {
+                return response()->json(['message' => 'No tienes una invitación pendiente a este grupo'], 403);
+            }
+
+            //obtener el action
+            $action = $request->input('action');
+            //comprobar que el action es correcto
+            if ($action != 'accept' && $action != 'reject') {
+                return response()->json(['message' => 'Acción no válida'], 403);
+            }
+
+            switch ($action) {
+                case 'accept':
+                    //validar que el usuario no pertenece al grupo
+                    if ($user->groups->contains($group)) {
+                        //rechazar la invitacion
+                        $invitation->status = 'rejected';
+                        $invitation->save();
+                        //rechazar si tiene más invitaciones pendientes al mismo grupo
+                        $invitations =
+                            Invitation::where('receiver_id', $user->id)
+                            ->where('group_id', $group->id)
+                            ->where('status', 'LIKE', 'pending')
+                            ->get();
+                        foreach ($invitations as $invi) {
+                            $invi->status = 'rejected';
+                            $invi->save();
+                        }
+                        return response()->json(['message' => 'Ya perteneces a este grupo'], 403);
+                    }
+                    //añadir al usuario al grupo
+                    $user->groups()->attach($group->id);
+                    //cambiar el estado de la invitacion
+                    $invitation->status = 'accepted';
+                    $invitation->save();
+                    //devolver mensaje de exito
+
+                    //mirar si tiene más invitaciones pendientes al mismo grupo y rechazarlas
+                    $invitations =
+                        Invitation::where('receiver_id', $user->id)
+                        ->where('group_id', $group->id)
+                        ->where('status', 'LIKE', 'pending')
+                        ->get();
+
+                    foreach ($invitations as $invi) {
+                        throw new \Exception($invi->id);
+                        $invi->status = 'rejected';
+                        $invi->save();
+                    }
+
+
+                    return response()->json(['message' => 'Invitación aceptada correctamente', 'group_slug' => $group_slug]);
+                    break;
+                case 'reject':
+                    //cambiar el estado de la invitacion
+                    $invitation->status = 'rejected';
+                    $invitation->save();
+
+                    //verificar si tiene más invitaciones pendientes al mismo grupo y rechazarlas
+                    $invitations = Invitation::where('receiver_id', $user->id)
+                        ->where('group_id', $group->id)
+                        ->where('status', 'LIKE', 'pending')
+                        ->get();
+
+                    foreach ($invitations as $invitation) {
+                        $invitation->status = 'rejected';
+                        $invitation->save();
+                    }
+                    //devolver mensaje de exito
+                    return response()->json(['message' => 'Invitación rechazada correctamente', 'group_slug' => $group_slug]);
+                    break;
+                default:
+                    return response()->json(['message' => 'Error al gestionar la invitación'], 500);
+                    break;
+            }
         } catch (\Exception $e) {
             return response()->json(['message' => 'Error gestionar la invitación'], 500);
         }

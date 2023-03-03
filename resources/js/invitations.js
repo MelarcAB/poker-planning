@@ -9,25 +9,47 @@ $(document).ready(function () {
     const bearer = $('meta[name="jwt"]').attr('content');
 
 
+
+
+    initPage();
+
+
+
+
+
+    function initPage() {
+        //ocultar data-spinner-loading
+        $('[data-spinner-loading]').hide();
+    }
+
+
     //onclik de los botones
     decline_buttons.click(function (e) {
         e.preventDefault();
         let group_slug = $(this).data('group-slug');
-        let action = "decline";
-
-
+        let action = "reject";
+        sendInvitationResponse(group_slug, action, e);
+        $(this).hide();
+        $(this).siblings().hide();
+        $(this).siblings('[data-spinner-loading]').show();
     });
 
     accept_buttons.click(function (e) {
         e.preventDefault();
         let group_slug = $(this).data('group-slug');
         let action = "accept";
-
+        sendInvitationResponse(group_slug, action, e);
+        //ocultar boton aceptar y rechazar, mostrar spinner
+        $(this).hide();
+        $(this).siblings().hide();
+        $(this).siblings('[data-spinner-loading]').show();
     });
 
 
 
-    function sendInvitationResponse(group_slug, action) {
+
+
+    function sendInvitationResponse(group_slug, action, e) {
         let url = '/api/manage-invitation';
         axios.post(url, {
             group_slug: group_slug,
@@ -39,13 +61,17 @@ $(document).ready(function () {
             }
         })
             .then(function (response) {
-                console.log(response);
-
+                let msg = response.data.message;
+                let group_slug = response.data.group_slug;
+                showSuccess(msg);
+                //eliminar EL PRIMER  elemento que tenga data-invitat(ion-box = group_slug
+                $(`[data-invitation-box="${group_slug}"]`).hide();
             })
             .catch(function (error) {
-                showError(error + ' ' + error.response.data.message);
+                showError(error.response.data.message);
+                console.log($(e.target))
+                $(`[data-invitation-box="${group_slug}"]`).hide();
             });
-
     }
 
 

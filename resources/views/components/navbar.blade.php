@@ -38,7 +38,7 @@
                             {{ __('Decks') }}
                         </a>
                         <a class="dropdown-item" href="{{ route('invitations') }}">
-                            {{ __('Invitaciones ('.Auth::user()->invitations_pending->count().')') }}
+                            {{ __('Invitaciones' ) }}
                         </a>
                         <a class="dropdown-item" href="{{ route('config') }}">
                             {{ __('Configuración') }}
