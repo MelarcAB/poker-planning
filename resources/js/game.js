@@ -4,7 +4,6 @@ import { get } from "jquery";
 $(document).ready(function () {
 
     let baseURI = document.getElementById('base_url').value;
-    console.log(baseURI);
     //si url tiene un puerto se elimina, lo mismo para el protocolo
     baseURI = baseURI.replace("http://", "");
     baseURI = baseURI.replace("https://", "");
@@ -12,11 +11,6 @@ $(document).ready(function () {
     baseURI = baseURI.replace(":8000", "");
     baseURI = baseURI.replace(":8080/", "");
     baseURI = baseURI.replace(":8080", "");
-    console.log(baseURI);
-    console.log("peticion a:")
-    console.log("ws://" + baseURI + ":8090");
-
-
 
 
     var socket = new WebSocket("ws://" + baseURI + ":8090");
