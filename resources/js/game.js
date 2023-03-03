@@ -2,7 +2,17 @@ import { get } from "jquery";
 
 //on document ready
 $(document).ready(function () {
-    var socket = new WebSocket("ws://localhost:8090");
+
+    let baseURI = document.baseURI;
+    //si url tiene un puerto se elimina, lo mismo para el protocolo
+    baseURI = baseURI.replace("http://", "");
+    baseURI = baseURI.replace("https://", "");
+    baseURI = baseURI.replace(":8000/", "");
+    baseURI = baseURI.replace(":8000", "");
+
+
+
+    var socket = new WebSocket("ws://" + baseURI + ":8090");
 
 
     //USERS LIST
