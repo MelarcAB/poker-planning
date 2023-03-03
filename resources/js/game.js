@@ -311,6 +311,10 @@ $(document).ready(function () {
         clearUsersListRender();
         clearTablero();
         users.forEach(function (user) {
+            //si user.image contiene localhost/, sustituirlo por ""
+            if (user.image.includes("localhost/")) {
+                user.image = user.image.replace("localhost/", "");
+            }
             //append div with class user-list-box and username and image
             let html = '<div class="user-list-box">' + '<img src="' + user.image + '" alt="">' + ' <div class="user-list-box-username">' + user.username + '</div>' + '</div>';
             usersContainer.append(html);
