@@ -1,6 +1,6 @@
 <div class="custom-card center-elements" style="width:80%;margin:auto">
     <form method="post" action="{{route('save-room')}}" enctype="multipart/form-data">
-        <h4 class="custom-title">{{$group->name}} > Nueva sala</h4>
+        <h4 class="custom-title">Nueva sala para {{$group->name}}</h4>
         @csrf
 
         <div class="form-group">
