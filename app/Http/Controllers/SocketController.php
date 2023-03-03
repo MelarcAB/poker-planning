@@ -481,7 +481,7 @@ class SocketController extends Controller implements MessageComponentInterface
         $this->rooms[$room_slug][$conn->resourceId] = [
             'conn' => $conn,
             'username' => $user->username,
-            'image' => ($user->image),
+            'image' => asset($user->image),
         ];
 
 
