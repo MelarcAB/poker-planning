@@ -3,7 +3,7 @@ import { get } from "jquery";
 //on document ready
 $(document).ready(function () {
 
-    let baseURI = document.baseURI;
+    let baseURI = document.getElementById('base_url').value;
     console.log(baseURI);
     //si url tiene un puerto se elimina, lo mismo para el protocolo
     baseURI = baseURI.replace("http://", "");
