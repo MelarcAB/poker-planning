@@ -29,7 +29,8 @@ class UserDeck extends Component
     public function render()
     {
         //obtener las cartas del deck
+        $deck = $this->deck;
         $cards = $this->deck->cards;
-        return view('components.game.user-deck', compact('cards'));
+        return view('components.game.user-deck', compact('deck'));
     }
 }
