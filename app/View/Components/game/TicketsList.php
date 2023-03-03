@@ -16,9 +16,9 @@ class TicketsList extends Component
      *
      * @return void
      */
-    public function __construct($slug)
+    public function __construct($room)
     {
-        $this->room = Room::where('slug', $slug)->first();
+        $this->room = $room;
     }
 
     /**
