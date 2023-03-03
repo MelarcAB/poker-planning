@@ -17,6 +17,9 @@ use Illuminate\Support\Facades\Validator;
 //groups
 use App\Models\Groups;
 
+//invitations
+use App\Models\Invitation;
+
 class HomeController extends Controller
 {
     /**
@@ -275,5 +278,16 @@ class HomeController extends Controller
         } catch (\Exception $e) {
             return redirect()->route('my-decks')->with('error', $e->getMessage());
         }
+    }
+
+
+    //invitations
+    public function invitations()
+    {
+        //obtener usuario logeado
+        $user = Auth::user();
+        //obtener invitaciones
+        $invitations = Invitation::where('receiver_id', $user->id)->get();
+        return view('user.invitations', compact('invitations'));
     }
 }

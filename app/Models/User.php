@@ -130,4 +130,10 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Invitation::class, 'receiver_id');
     }
+
+    //invitaciones pendientes
+    public function invitations_pending()
+    {
+        return $this->invitations_received()->where('status', 'pending');
+    }
 }

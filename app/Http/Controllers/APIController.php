@@ -197,4 +197,12 @@ class APIController extends Controller
             return response()->json(['message' => 'Error al invitar al usuario'], 500);
         }
     }
+
+    public function manageInvitation(Request $request)
+    {
+        try {
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error gestionar la invitación'], 500);
+        }
+    }
 }

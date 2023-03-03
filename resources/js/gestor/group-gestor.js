@@ -6,8 +6,6 @@ $(document).ready(function () {
     var b_new_code = $('#b-new-code');
     var loading_spinner_code = $('#loading-spinner-code');
 
-
-
     //invitation
     var invitation_input = $('#invitation');
     var loading_spinner_invitation = $('#loading-spinner-invitation');
@@ -15,10 +13,7 @@ $(document).ready(function () {
     var b_new_invitation = $('#b-new-invitation');
     var invitation_group = $('#invitation-group');
 
-
-
     const token = $('meta[name="csrf-token"]').attr('content');
-
     const bearer = $('meta[name="jwt"]').attr('content');
     //init components
     initComponents();
@@ -31,13 +26,14 @@ $(document).ready(function () {
             invitation_group.hide();
         }
     });
+
     b_save_code.click(submitGroupCode);
+
     b_new_invitation.click(function () {
         invitation_group.toggle();
         if (invitation_group.is(':visible')) {
             new_password_group.hide();
         }
-
     });
 
     b_save_invitation.click(submitInvitation);
@@ -53,9 +49,7 @@ $(document).ready(function () {
             showError('La invitación no puede estar vacía');
             return;
         }
-
         loading_spinner_invitation.show();
-
         //obtener el slug del grupo a partir de la url
         let slug = $("#slug").val();
         let url = '/api/invitate';
@@ -75,24 +69,11 @@ $(document).ready(function () {
                 loading_spinner_invitation.hide();
                 invitation_input.val('');
                 invitation_group.hide();
-                /* 
-                 loading_spinner_invitation.hide();
-                 invitation_input.val('');
-                 b_new_invitation.hide();
-                 b_save_invitation.hide();
-                 invitation_input.hide();
-                 new_password_group.slideUp();*/
-
-
             })
             .catch(function (error) {
                 loading_spinner_invitation.hide();
                 showError(error.response.data.message);
             });
-
-
-
-
     }
 
 

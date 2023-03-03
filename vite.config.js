@@ -10,7 +10,8 @@ export default defineConfig({
                 'resources/js/app.js',
                 'resources/js/game.js',
                 'resources/js/search-group.js',
-                'resources/js/deck-form.js'
+                'resources/js/deck-form.js',
+                'resources/js/invitations.js',
             ],
             refresh: true,
         }),

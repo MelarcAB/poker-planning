@@ -197,6 +197,24 @@ body{
     cursor: pointer;
     margin: 5px 15px;
 }
+.custom-card-wb-100{
+    background: #150d19;
+    color: #fff;
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    transition: all 0.15s ease-in-out;
+    width: 90%;
+    resize: vertical;
+    cursor: pointer;
+    margin: 5px 15px;
+}
+
+.custom-card-wb-100:hover{
+    background: #332e35;
+}
 
 
 .custom-card-wb:hover{
@@ -323,6 +341,52 @@ body{
     max-width: 200px;
     width: 30%;
 }
+
+
+.lt-button{
+    background: #150d19;
+    color: #fff;
+    border: 1px solid #150d19;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+    border: 1px solid rgb(135, 135, 135);
+    max-width: 200px;
+    width: auto;
+}
+
+.lt-button:hover{
+    background: #332e35;
+    border: 1px solid #fff;
+}
+
+.lt-button-danger{
+    background: #530f0f;
+    color: #fff;
+    border: 1px solid #150d19;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+    border: 1px solid rgb(135, 135, 135);
+    max-width: 200px;
+    width: auto;
+}
+
+.lt-button-danger:hover{
+    background: #751424;
+    border: 1px solid #fff;
+}
+
+/*click mostrara una animacion en el color de fondo de un circulo expandiendose*/
+
+
+
 .custom-button-lt-danger
 {
     background: #751424;

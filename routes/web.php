@@ -30,6 +30,9 @@ Route::controller(App\Http\Controllers\HomeController::class)->group(function ()
     Route::post('/save-config', 'saveConfig')->name('save-config');
     //delete deck delete-deck 
     Route::delete('/delete-deck', 'delete_deck')->name('delete-deck');
+
+    //invitaciones
+    Route::get('/invitations', 'invitations')->name('invitations');
 });
 
 //controller GerenteController
