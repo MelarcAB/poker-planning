@@ -54,6 +54,8 @@ $(document).ready(function () {
             return;
         }
 
+        loading_spinner_invitation.show();
+
         //obtener el slug del grupo a partir de la url
         let slug = $("#slug").val();
         let url = '/api/invitate';
@@ -69,13 +71,19 @@ $(document).ready(function () {
         })
             .then(function (response) {
                 console.log(response);
-                /* showSuccess(response.data.message);
+                showSuccess(response.data.message);
+                loading_spinner_invitation.hide();
+                invitation_input.val('');
+                invitation_group.hide();
+                /* 
                  loading_spinner_invitation.hide();
                  invitation_input.val('');
                  b_new_invitation.hide();
                  b_save_invitation.hide();
                  invitation_input.hide();
                  new_password_group.slideUp();*/
+
+
             })
             .catch(function (error) {
                 loading_spinner_invitation.hide();

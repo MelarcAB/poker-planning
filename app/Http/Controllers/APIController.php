@@ -154,6 +154,13 @@ class APIController extends Controller
             }
             //obtener el usuario al que se le va a invitar
             $username = $request->input('username');
+
+            //verificar que no es el mismo usuario (verificar con to_lower)
+            if (strtolower($sender->username) == strtolower($username)) {
+                return response()->json(['message' => 'No puedes invitarte a ti mismo'], 403);
+            }
+
+
             //comprobar que el usuario existe
             $receiver = User::where('username', $username)->first();
             if (!$receiver) {
@@ -170,7 +177,7 @@ class APIController extends Controller
                 ->where('receiver_id', $receiver->id)
                 ->where('group_id', $group->id)
                 //status = pending
-                ->where('status', 'pending')
+                ->where('status', "LIKE", 'pending')
                 ->first();
             if ($invitation) {
                 return response()->json(['message' => 'Ya hay una invitación pendiente'], 403);
@@ -185,7 +192,9 @@ class APIController extends Controller
             $invitation->save();
             return response()->json(['message' => 'Invitación enviada correctamente']);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Error al actualizar la contraseña'], 500);
+            //devolver error
+            // return response()->json(['message' => $e->getMessage()], 500);
+            return response()->json(['message' => 'Error al invitar al usuario'], 500);
         }
     }
 }
