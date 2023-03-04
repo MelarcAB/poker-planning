@@ -54,7 +54,10 @@
                             @endif
                             <div id="cards-container" class="col-md-12" style="display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; padding: 10px;">
                                 @foreach($deck->cards as $card)
-                                <div class="carta-deck">
+                                <div class="carta-deck" @if(!$deck->public)
+                                    data-card="true"
+                                    @endif
+                                    >
                                     {{$card->value}}
                                     <input type="hidden" name="cards[]" value="{{$card->value}}">
                                 </div>

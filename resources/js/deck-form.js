@@ -8,7 +8,15 @@ $(document).ready(function () {
 
     b_add_card.click(addCard);
 
+    initListenerCards();
 
+
+    function initListenerCards() {
+        //todos los elementos con data-card=true onclick
+        $('[data-card="true"]').click(function () {
+            $(this).remove();
+        });
+    }
 
 
 
@@ -18,12 +26,14 @@ $(document).ready(function () {
         if (card_value === '') {
             return;
         }
-        let card = `<div class="carta-deck">
+        let card = `<div class="carta-deck" data-card="true">
                             ${card_value}
                             <input type="hidden" name="cards[]" value="${card_value}">
                         </div>`;
         cards_container.append(card);
         inp_card_value.val('');
+        initListenerCards();
+
     }
 
 
