@@ -552,6 +552,13 @@ body{
     .deck-room-options-box:hover {
         border: 1px solid #fff;
     }
+
+    .card-deck {
+        width: auto;
+        border-radius: 5px;
+        margin: 5px;
+        border: 1px solid #ffffff00;
+    }
     .activo{
         border: 1px solid #fff;
 
@@ -598,10 +605,14 @@ body{
         scrollbar-width: none;
     }
 
+    .bg-color-primary{
+        background: #150d19;
+    }
+
     .carta-deck {
         width: 75px;
         height: 125px;
-        background: #ffffff;
+        background: rgba(255, 255, 255, 0);
         border: 1px solid #000;
         color : #000;
         border-radius: 10px;

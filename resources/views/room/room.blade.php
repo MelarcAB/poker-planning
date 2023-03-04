@@ -7,6 +7,12 @@
     <x-game.tickets-list :room="$room" />
     <x-game.tablero />
     <x-game.user-deck :deck="$room->group->deck" />
+
+
+
+
+
+
 </div>
 @vite([ 'resources/js/game.js'])
 
