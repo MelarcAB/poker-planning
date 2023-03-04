@@ -477,13 +477,24 @@ class SocketController extends Controller implements MessageComponentInterface
             $this->rooms[$room_slug] = [];
         }
 
-        //agregar usuario a la sala
-        $this->rooms[$room_slug][$conn->resourceId] = [
-            'conn' => $conn,
-            'username' => $user->username,
-            'image' => asset($user->image),
-        ];
 
+        //verificar que el usuario no este en la sala
+        $in_room = false;
+        foreach ($this->rooms[$room_slug] as $user) {
+            if ($user['username'] == $user->username) {
+                $in_room = true;
+            }
+        }
+
+
+        //agregar usuario a la sala
+        if (!$in_room) {
+            $this->rooms[$room_slug][$conn->resourceId] = [
+                'conn' => $conn,
+                'username' => $user->username,
+                'image' => asset($user->image),
+            ];
+        }
 
         //refrescar lista de usuarios en la sala
         $this->sendUsersList($conn, $data, $room_slug);
