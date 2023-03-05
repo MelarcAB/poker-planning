@@ -1,5 +1,8 @@
-<div class="sidebar d-flex flex-column flex-shrink-0 position-fixed end-0" style="width: 250px;height: 95vh;overflow-y: auto;">
-    <div class="sidebar  custom-sidebar" style="right: 0; top: 0; bottom: 0;z-index:1;margin-bottom:150px">
+<div id="" class="sidebar d-flex flex-column flex-shrink-0 position-fixed end-0" style="width: 250px;height: 75vh;">
+    <span id="toggle-tickets-btn" class="custom-button-lt" style="align-self: flex-end; width:auto">
+        <i class="fa-sharp fa-solid fa-list"></i>
+    </span>
+    <div id="tickets-list-full-container" class="sidebar  custom-sidebar" style="right: 0; top: 0; bottom: 0;z-index:1;overflow-y: auto;">
         <div class="nav-link">
             @if($room->group->user->id== Auth::user()->id)
             <div id="b-show-ticket-form" class="custom-card-auto" style="text-align: center;">

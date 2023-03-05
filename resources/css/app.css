@@ -432,11 +432,20 @@ body{
 }
 
 
+
+.sidebar{
+    display: block;
+}
+
 @media (max-width: 768px) {
     .sidebar {
         display: none;
     }
+    #toggle-tickets-btn{
+        display: block;
+    }
 }
+
 
   .center-elements{
     display: flex;

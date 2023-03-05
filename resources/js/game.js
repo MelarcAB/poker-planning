@@ -40,6 +40,12 @@ $(document).ready(function () {
     var b_cancel_ticket = $('#b-cancel-ticket');
 
 
+    var toggle_tickets_btn = $("#toggle-tickets-btn");
+    var full_tickets_list = $('#tickets-list-full-container');
+
+
+
+
     init_room();
 
 
@@ -62,6 +68,15 @@ $(document).ready(function () {
         new_tickets_container.show();
         b_show_tickets.hide();
     });
+
+    toggle_tickets_btn.click(function () {
+        console.log("toggle");
+        full_tickets_list.toggle();
+    });
+
+
+
+
 
 
     //evento a todos los elementos con data-ticket-button="true"
