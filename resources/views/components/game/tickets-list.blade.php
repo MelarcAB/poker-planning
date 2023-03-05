@@ -1,5 +1,5 @@
-<div class="sidebar d-flex flex-column flex-shrink-0 bg-light position-fixed end-0" style="width: 250px;height: 100vh;">
-    <div class="sidebar  custom-sidebar" style="right: 0; top: 0; bottom: 0; background:rgba(255, 255, 255, .1);;z-index:1;">
+<div class="sidebar d-flex flex-column flex-shrink-0 position-fixed end-0" style="width: 250px;height: 95vh;overflow-y: auto;">
+    <div class="sidebar  custom-sidebar" style="right: 0; top: 0; bottom: 0;z-index:1;margin-bottom:150px">
         <div class="nav-link">
             @if($room->group->user->id== Auth::user()->id)
             <div id="b-show-ticket-form" class="custom-card-auto" style="text-align: center;">
@@ -9,14 +9,15 @@
                 <input class="custom-input" id="new-ticket-title" style="border:1px solid white;margin-bottom:10px;width:100%;" placeholder="Título">
                 <textarea class="custom-input" id="new-ticket-description" style="border:1px solid white; width:100%" placeholder="Descripción"></textarea>
                 <div>
-                    <button id="b-submit-ticket" class="custom-button-lt"><i class="fa-solid fa-plus"></i></button>
                     <button id="b-cancel-ticket" class="custom-button-lt"><i class="fa fa-times" aria-hidden="true"></i></button>
+                    <button id="b-submit-ticket" class="custom-button-lt"><i class="fa-solid fa-plus"></i></button>
                 </div>
             </div>
             @endif
 
             <div id="tickets-list-container">
-                <div class="custom-card">
+                <div class="custom-card-auto" style="text-align: center;">
+                    <i class="fas fa-spinner fa-spin" style="transform: rotate(180deg);"></i>
                 </div>
             </div>
         </div>
