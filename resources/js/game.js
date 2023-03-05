@@ -289,7 +289,7 @@ $(document).ready(function () {
     function renderTicketsList(tickets) {
         tickets_list_container.html('');
         tickets.forEach(function (ticket) {
-            let html = '<div class="custom-card" data-ticket-button="true" data-ticket-slug="' + ticket.slug + '">' + '<div class="ticket-list-box-title">' + ticket.title + '</div>' + '</div>';
+            let html = '<div class="custom-card-auto" data-ticket-button="true" data-ticket-slug="' + ticket.slug + '">' + '<div class="ticket-list-box-title">' + ticket.title + '</div>' + '</div>';
             tickets_list_container.append(html);
         });
         //hide new ticket form

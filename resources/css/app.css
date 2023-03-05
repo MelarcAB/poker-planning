@@ -183,6 +183,21 @@ body{
     cursor: pointer;
     margin: 5px 15px;
 }
+
+.custom-card-auto{
+    background: #150d19;
+    color: #fff;
+    border: 1px solid #150d19;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    transition: all 0.15s ease-in-out;
+    width: auto;
+    resize: vertical;
+    cursor: pointer;
+    margin: 5px 15px;
+}
 .custom-card-wb{
     background: #150d19;
     color: #fff;
@@ -417,6 +432,12 @@ body{
 }
 
 
+@media (max-width: 768px) {
+    .sidebar {
+        display: none;
+    }
+}
+
   .center-elements{
     display: flex;
     justify-content: center;
@@ -558,7 +579,10 @@ body{
         border-radius: 5px;
         margin: 5px;
         border: 1px solid #ffffff00;
+        font-size: 1.5em;
     }
+
+   
     .activo{
         border: 1px solid #fff;
 
@@ -601,8 +625,6 @@ body{
 
     
     .custom-sidebar {
-        overflow-y: scroll;
-        scrollbar-width: none;
     }
 
     .bg-color-primary{
@@ -646,3 +668,8 @@ body{
             transform: rotate(360deg);
         }
         } 
+
+        .b-text{
+            font-size: 1.5em;
+        }
+

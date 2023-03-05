@@ -3,10 +3,9 @@
 
         @foreach($deck->cards as $card)
         <div class="card-deck" style="" data-deck-card="true" data-deck-card-value="{{$card->value}}">
-            <button type="button" class="btn btn-secondary" style=""> {{$card->value}}</button>
+            <button type="button" class="btn btn-secondary" style="font-size:1.2em;"> {{$card->value}}</button>
         </div>
         @endforeach
-
     </div>
 </div>
 
