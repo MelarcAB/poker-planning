@@ -5,7 +5,7 @@
 <x-game.tickets-list :room="$room" />
 <div class="container">
     <x-game.users-list />
-    <x-game.tablero />
+    <x-game.tablero :deck="$room->group->deck" />
     <x-game.user-deck :deck="$room->group->deck" />
 
 
