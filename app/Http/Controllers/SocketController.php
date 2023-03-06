@@ -480,8 +480,8 @@ class SocketController extends Controller implements MessageComponentInterface
 
         //verificar que el usuario no este en la sala
         $in_room = false;
-        foreach ($this->rooms[$room_slug] as $user) {
-            if ($user['username'] == $user->username) {
+        foreach ($this->rooms[$room_slug] as $users) {
+            if ($users['username'] == $user->username) {
                 $in_room = true;
             }
         }
