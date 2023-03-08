@@ -1,18 +1,14 @@
 <div class="tablero" id="tablero-container">
-
     <div class="tablero-card brillos">
         <span>Melarc</span>
     </div>
     <div class="tablero-card">
-        <span>Melarc</span>
     </div>
-
 </div>
 
 
 <style>
     .tablero {
-
         background: linear-gradient(to bottom right, #409366, #1eae5f);
         width: 80%;
         height: 500px;
@@ -22,7 +18,6 @@
         align-items: center;
         flex-wrap: wrap;
         padding: 20px;
-
     }
 
     .tablero-card {
@@ -35,7 +30,6 @@
         align-items: center;
         font-size: 2rem;
         font-weight: bold;
-
         background-image: url("{{ asset($deck->image) }}");
         background-size: cover;
         background-position: center;

@@ -4,6 +4,7 @@ window._ = _;
 import 'bootstrap';
 import '../css/app.css';
 import Noty from 'noty';
+import swal from 'sweetalert';
 
 import $ from 'jquery';
 window.$ = $;
@@ -31,6 +32,9 @@ if (token) {
 
 //noty 
 window.Noty = Noty;
+
+//sweet alert
+window.swal = swal;
 
 
 /**

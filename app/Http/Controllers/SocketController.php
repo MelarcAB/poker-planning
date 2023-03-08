@@ -191,6 +191,8 @@ class SocketController extends Controller implements MessageComponentInterface
                         'user_id' => $votation->user_id,
                         'user_name' => $votation->user->username,
                         'vote' => $votation->vote,
+                        'visible' => $ticket->visible,
+
                     ];
                 }
             }
@@ -224,6 +226,7 @@ class SocketController extends Controller implements MessageComponentInterface
                         'user_id' => $votation->user_id,
                         'user_name' => $votation->user->username,
                         'vote' => $votation->vote,
+                        'visible' => $ticket->visible,
                     ];
                 }
             }

@@ -38,6 +38,7 @@ $(document).ready(function () {
     var tickets_list_container = $('#tickets-list-container');
     var b_show_tickets = $('#b-show-ticket-form');
     var b_cancel_ticket = $('#b-cancel-ticket');
+    var b_vote_ticket = $('#b-vote-ticket');
 
 
     var toggle_tickets_btn = $("#toggle-tickets-btn");
@@ -74,9 +75,49 @@ $(document).ready(function () {
         full_tickets_list.toggle();
     });
 
+    b_vote_ticket.click(function () {
+        if (selected_ticket == null) {
+            showError("No hay ticket seleccionado");
+            return;
+        }
+
+        if (!checkAllUsersVoted()) {
+            swal({
+                title: "¿Estás seguro?",
+                text: "No todos los usuarios han votado",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
 
 
+                    } else {
+                        showSuccess("Votación cancelada");
+                    }
+                });
+        }
 
+
+        console.log(votes)
+
+    });
+
+
+    function checkAllUsersVoted() {
+        //verificar si el ticket actual está votado por todos los usuarios en la sala
+        //todos los elementos data-card-tablero-img="true" deberian tener la clase brillos
+        let voted = true;
+        $('[data-card-tablero-img="true"]').each(function () {
+            if (!$(this).hasClass('brillos')) {
+                voted = false;
+            }
+        }
+        );
+        return voted;
+
+    }
 
 
     //evento a todos los elementos con data-ticket-button="true"

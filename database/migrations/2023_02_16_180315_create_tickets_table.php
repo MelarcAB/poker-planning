@@ -20,6 +20,8 @@ return new class extends Migration
             $table->text('description')->nullable();
             //status
             $table->string('status')->default('open');
+            //bool
+            $table->string('visible')->default('false');
             //room_id
             $table->unsignedBigInteger('room_id')->nullable();
             //soft delete

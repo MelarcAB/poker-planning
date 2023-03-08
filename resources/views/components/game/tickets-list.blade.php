@@ -5,6 +5,9 @@
     <div id="tickets-list-full-container" class="sidebar  custom-sidebar" style="right: 0; top: 0; bottom: 0;z-index:1;overflow-y: auto;">
         <div class="nav-link">
             @if($room->group->user->id== Auth::user()->id)
+            <div id="b-vote-ticket" class="custom-card-auto" style="text-align: center;">
+                <i class="fa fa-eye" aria-hidden="true"></i> </i>Votar
+            </div>
             <div id="b-show-ticket-form" class="custom-card-auto" style="text-align: center;">
                 <i class="fa fa-plus-circle" aria-hidden="true"></i> </i>Añadir
             </div>
@@ -17,7 +20,6 @@
                 </div>
             </div>
             @endif
-
             <div id="tickets-list-container">
                 <div class="custom-card-auto" style="text-align: center;">
                     <i class="fas fa-spinner fa-spin" style="transform: rotate(180deg);"></i>
@@ -25,14 +27,4 @@
             </div>
         </div>
     </div>
-
-
-
-
-
 </div>
-
-
-<style>
-
-</style>

@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
 <div class="container">
     <div class="custom-card-100 ">
@@ -34,7 +33,6 @@
                         <img src=" {{asset($deck->image)}}" alt="" style="width: auto; height: 100px;margin:auto">
                     </div>
                     @endif
-
                 </div>
                 <div class="row">
                     <div class="form-group ">
