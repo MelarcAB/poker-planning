@@ -14,6 +14,8 @@ use App\Models\Groups;
 
 use App\Models\Invitation;
 use \App\Models\User;
+//deck
+use App\Models\Deck;
 
 class APIController extends Controller
 {
@@ -301,6 +303,53 @@ class APIController extends Controller
             }
         } catch (\Exception $e) {
             return response()->json(['message' => 'Error gestionar la invitación'], 500);
+        }
+    }
+
+    //updateGroupDeck
+    public function updateGroupDeck(Request $request)
+    {
+        try {
+            //obtener el usuario que hace la peticion
+            $user = $request->user();
+            //obtener el slug del grupo
+            $group_slug = $request->input('group_slug');
+            //obtener el grupo
+            $group = Groups::where('slug', $group_slug)->first();
+            //comprobar que el grupo existe
+            if (!$group) {
+                return response()->json(['message' => 'El grupo no existe'], 404);
+            }
+            //comprobar que el usuario pertenece al grupo
+            if (!$user->groups->contains($group)) {
+                return response()->json(['message' => 'No perteneces a este grupo'], 403);
+            }
+            //obtener el deck
+            $deck_slug = $request->input('deck');
+            //comprobar que el deck existe
+            $deck = Deck::where('slug', $deck_slug)->first();
+            if (!$deck) {
+                return response()->json(['message' => 'El deck no existe'], 404);
+            }
+            //verificar que el creador del grupo es el mismo que hace la peticion
+            if ($group->user_id != $user->id) {
+                return response()->json(['message' => 'No tienes permisos para asignar un deck a este grupo' . $group->user_id . " i " .
+                    $user->id], 403);
+            }
+            //es el deck publico?
+            if ($deck->public < 1) {
+                //verificar que el deck pertenece al usuario
+                if ($deck->user_id != $user->id) {
+                    return response()->json(['message' => 'No tienes permisos para asignar este deck a este grupo'], 403);
+                }
+            }
+            //asignar el deck al grupo
+            $group->deck_id = $deck->id;
+            $group->save();
+            //devolver mensaje de exito
+            return response()->json(['message' => 'Deck asignado correctamente']);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error al asignar el deck'], 500);
         }
     }
 }

@@ -22,4 +22,6 @@ Route::controller(APIController::class)->middleware(['jwt.auth'])
         Route::post('/check-code', 'checkCode')->name('check-code');
         Route::post('/invitate', 'invitate')->name('check-code');
         Route::post('/manage-invitation', 'manageInvitation')->name('manage-invitation');
+        //update-group-deck
+        Route::post('/update-group-deck', 'updateGroupDeck')->name('update-group-deck');
     });

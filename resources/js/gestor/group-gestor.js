@@ -18,6 +18,8 @@ $(document).ready(function () {
     //init components
     initComponents();
 
+    var b_change_deck = $('#select-deck');
+
 
     //events
     b_new_code.click(function () {
@@ -38,7 +40,30 @@ $(document).ready(function () {
 
     b_save_invitation.click(submitInvitation);
 
+    b_change_deck.change(function (e) {
+        //obtener el slug del grupo a partir del input hidden
+        let slug = $("#slug").val();
+        //obtener el deck seleccionado
+        let deck = b_change_deck.val();
 
+        let url = '/api/update-group-deck';
+
+        axios.post(url, {
+            group_slug: slug,
+            deck: deck,
+        }, {
+            headers: {
+                'X-CSRF-TOKEN': token,
+                'Authorization': 'Bearer ' + bearer
+            }
+        })
+            .then(function (response) {
+                showSuccess(response.data.message);
+            })
+            .catch(function (error) {
+                showError(error.response.data.message);
+            });
+    });
 
 
     function submitInvitation(e) {

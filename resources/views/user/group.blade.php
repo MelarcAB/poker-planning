@@ -18,19 +18,25 @@
         <span class="floating-right"><i class="fa-solid fa-users"></i>{{$group->users()->count()}}</span>
         <div>
             <label>Deck</label>
-            <select class="custom-input">
+            @if($group->user_id == Auth::user()->id)
+            <select class="custom-input" id="select-deck">
                 @foreach(Auth::user()->decks_disponibles() as $deck)
-                <option class="custom-option" value="{{$deck->id}}" @if($deck->id == $group->deck_id)
+                <option class="custom-option" value="{{$deck->slug}}" @if($deck->id == $group->deck_id)
                     selected
                     @endif
                     >{{$deck->title}}</option>
                 @endforeach
             </select>
+            @else
+            <input type="text" class="custom-input" readonly value="{{$group->deck->title}}">
+            @endif
+
         </div>
         <div>
+            <label>Descripción</label>
             <p class="custom-text">{{$group->description}}</p>
         </div>
-        <div class="custom-card-100">
+        <div class=" custom-card-100">
             <div class="row justify-content-center">
                 <h3 class="custom-title">Salas por empezar</h3>
                 <div class="custom-card-container">
