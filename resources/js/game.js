@@ -91,8 +91,7 @@ $(document).ready(function () {
             })
                 .then((willDelete) => {
                     if (willDelete) {
-
-
+                        submitVotes(selected_ticket);
                     } else {
                         showSuccess("Votación cancelada");
                     }
@@ -102,6 +101,18 @@ $(document).ready(function () {
         // console.log(votes)
 
     });
+
+    function submitVotes(ticket_slug) {
+        //cambiar ticket a visible = true al websocet
+        socket.send(JSON.stringify({
+            event: 'submit-votes',
+            jwt: jwt,
+            room_slug: room_slug,
+            data: {
+                ticket_slug: ticket_slug,
+            }
+        }));
+    }
 
 
     function checkAllUsersVoted() {

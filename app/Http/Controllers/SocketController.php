@@ -129,6 +129,48 @@ class SocketController extends Controller implements MessageComponentInterface
             case 'remove-vote':
                 $this->onRemoveVote($conn, $data);
                 break;
+
+            case 'submit-votes':
+                $this->onSubmitVotes($conn, $data);
+                break;
+        }
+    }
+
+    public function onSubmitVotes(ConnectionInterface $conn, $data)
+    {
+        try {
+            $room_slug = $data->room_slug;
+            $jwt = $data->jwt;
+            //ticket slug on data
+            $ticket_slug = $data->data->ticket_slug;
+
+            $user = User::where('api_token', $jwt)->first();
+            $ticket = Tickets::where('slug', $ticket_slug)->first();
+            //verificar que el usuario es el creador del grupo
+
+            $room = Room::where('slug', $room_slug)->first();
+            $group = Groups::where('id', $room->group_id)->first();
+
+            //verificar que el usuario es el creador del grupo
+            if ($group->user_id != $user->id) {
+                $conn->send(json_encode([
+                    'event' => 'error',
+                    'data' => 'No eres el creador del grupo',
+                ]));
+                return;
+            }
+
+            //si el ticket visible = false se cambia a true, si es true se cambia a false
+            if ($ticket->visible == "false") {
+                $ticket->visible = "true";
+            } else {
+                $ticket->visible = "false";
+            }
+            $ticket->save();
+
+            $this->sendVotesInRoomToPublicRoom($room_slug, $jwt, $conn);
+        } catch (\Exception $e) {
+            echo $e->getMessage();
         }
     }
 
