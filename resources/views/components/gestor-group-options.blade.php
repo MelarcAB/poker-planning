@@ -12,6 +12,6 @@
             Invitar
         </div>
     </div>
-    <x-gestor.new-password-form />
+    <x-gestor.new-password-form :group="$group" />
     <x-group.invitation-form :group="$group" :user="Auth::user()" />
 </div>

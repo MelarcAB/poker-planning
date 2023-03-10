@@ -96,6 +96,9 @@ $(document).ready(function () {
                         showSuccess("Votación cancelada");
                     }
                 });
+        } else {
+            submitVotes(selected_ticket);
+
         }
 
         // console.log(votes)

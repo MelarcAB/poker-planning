@@ -2,7 +2,7 @@
     <div class="row justify-content-center" style="text-align: center;" id="new-password-group-content">
         <label class="custom-label">Código</label>
         <div>
-            <input type="text" id="code" name="code" class="custom-input-gray" style="width: 50%;min-width:150px;max-width:250px;display:inline-block">
+            <input type="text" id="code" name="code" class="custom-input-gray" style="width: 50%;min-width:150px;max-width:250px;display:inline-block" value="{{$group->code}}">
             <i id="loading-spinner-code" class="fas fa-spinner fa-spin" style="transform: rotate(180deg);display:inline-block"></i>
         </div>
         <div>
