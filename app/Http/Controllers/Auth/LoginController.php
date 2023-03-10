@@ -80,8 +80,9 @@ class LoginController extends Controller
             $user->username = $this->generateUniqueUsername($user->email);
 
             //asignar tipo de usuario
-            $user->user_type_id = 1;
-
+            //$user->user_type_id = 1;
+            //10/03/2023 Por ahora dejaremos tipo = 2 para que los que se registran puedan probar del todo la app
+            $user->user_type_id = 2;
             //asignar avatar por defecto
             $user->image = 'img/default_user.jpg';
             $user->save();
