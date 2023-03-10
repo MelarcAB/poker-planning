@@ -258,12 +258,24 @@ class SocketController extends Controller implements MessageComponentInterface
             $votation = new TicketsVotation();
             $votation->user_id = $user->id;
             $votation->ticket_id = $ticket->id;
+
+            //validar si el voto es visible o no (ticket visible)
+            if ($ticket->visible == "true") {
+                $response =  json_encode([
+                    'error' => 'No puedes votar un ticket revelado',
+                ]);
+                $conn->send($response);
+                return;
+            }
+
             //value
             $votation->vote = $data->data->value;
             $votation->save();
 
             //devolver los votos de la sala
-            $this->sendVotesInRoom($room_slug);
+            // $this->sendVotesInRoom($room_slug);
+            //sendVotesInRoomToPublicRoom
+            $this->sendVotesInRoomToPublicRoom($room_slug, $data->jwt, $conn);
         } catch (\Exception $e) {
             $response =  json_encode([
                 'error' => 'Error al votar',
@@ -273,7 +285,7 @@ class SocketController extends Controller implements MessageComponentInterface
             return;
         }
     }
-
+    /*
     public function sendVotesInRoom($room_slug)
     {
         //obtener el room y todas las votaciones para todos los tickets
@@ -301,8 +313,7 @@ class SocketController extends Controller implements MessageComponentInterface
             $connection['conn']->send($response);
         }
     }
-
-
+*/
     public function onNewTicket(ConnectionInterface $conn, $data)
     {
 
@@ -499,10 +510,10 @@ class SocketController extends Controller implements MessageComponentInterface
             ];
         }
 
-        //refrescar lista de usuarios en la sala
-        $this->sendUsersList($conn, $data, $room_slug);
         //refrescar lista de tickets en la sala
         $this->sendTicketsInRoomToUser($room_slug, $conn);
+        //refrescar lista de usuarios en la sala
+        $this->sendUsersList($conn, $data, $room_slug);
     }
 
 

@@ -71,7 +71,7 @@ $(document).ready(function () {
     });
 
     toggle_tickets_btn.click(function () {
-        console.log("toggle");
+        // console.log("toggle");
         full_tickets_list.toggle();
     });
 
@@ -99,8 +99,7 @@ $(document).ready(function () {
                 });
         }
 
-
-        console.log(votes)
+        // console.log(votes)
 
     });
 
@@ -136,6 +135,66 @@ $(document).ready(function () {
             clickDeckCard($(this));
         }
     });
+
+
+
+    //websocket 
+
+
+    //iniciar socket
+    socket.onopen = function (event) {
+        socket.send(JSON.stringify({
+            event: 'join-room',
+            jwt: jwt,
+            room_slug: room_slug,
+            data: {
+            }
+        }));
+        getVotesUser();
+
+
+    }
+
+    //recibir mensajes del socket
+    socket.onmessage = function (event) {
+        //si existe event.error, mostrar error
+        var data = JSON.parse(event.data);
+        // console.log(data);
+        //si existe event.error, mostrar error
+        //sacar alerta de error
+        if (data.error) {
+            showError(data.error);
+            //    console.log(data.error);
+            return;
+        }
+
+        //   console.log("RECIBIENDO EVENTO: " + data.event + "")
+        switch (data.event) {
+            case "users-in-room":
+                //obtener los usuarios de la sala
+                renderUsersList(data.data.users);
+                break;
+            case 'ticket-created':
+                showSuccess("Ticket añadido");
+                break;
+
+            case 'update-tickets-list':
+                renderTicketsList(data.data.tickets);
+                break;
+
+            case 'votes-list':
+                refreshVotes(data);
+
+                break;
+            case 'votes':
+                refreshVotesFromData(data);
+                break;
+        }
+    }
+
+
+
+
 
 
     //FUNCIONES
@@ -198,56 +257,6 @@ $(document).ready(function () {
 
 
 
-    //iniciar socket
-    socket.onopen = function (event) {
-        socket.send(JSON.stringify({
-            event: 'join-room',
-            jwt: jwt,
-            room_slug: room_slug,
-            data: {
-            }
-        }));
-        getVotesUser();
-
-
-    }
-
-    //recibir mensajes del socket
-    socket.onmessage = function (event) {
-        //si existe event.error, mostrar error
-        var data = JSON.parse(event.data);
-        console.log(data);
-        //si existe event.error, mostrar error
-        //sacar alerta de error
-        if (data.error) {
-            showError(data.error);
-            console.log(data.error);
-            return;
-        }
-
-        switch (data.event) {
-            case "users-in-room":
-                //obtener los usuarios de la sala
-                renderUsersList(data.data.users);
-                break;
-            case 'ticket-created':
-                showSuccess("Ticket añadido");
-                break;
-
-            case 'update-tickets-list':
-                renderTicketsList(data.data.tickets);
-                break;
-
-            case 'votes-list':
-                refreshVotes(data);
-
-                break;
-            case 'votes':
-                refreshVotesFromData(data);
-                break;
-        }
-    }
-
     function refreshVotes(data) {
         //recorrer data.data 
         votes = data.data;
@@ -257,14 +266,23 @@ $(document).ready(function () {
     function refreshVotesFromData(data) {
         //quitar brillo a todos data-card-tablero-img="true"
         $('[data-card-tablero-img="true"]').removeClass('brillos');
-        console.log("refreshVotesFromData")
+        // console.log("refreshVotesFromData")
         votes = data.data;
         votes.forEach(function (vote) {
             //comprobar si la ticket_slug es = a ticket seleccionado
             if (vote.ticket_slug == selected_ticket) {
-                console.log("Ticket: " + vote.ticket_slug + " - Usuario: " + vote.user_name + " - Valor: " + vote.vote)
+                //console.log("Ticket: " + vote.ticket_slug + " - Usuario: " + vote.user_name + " - Valor: " + vote.vote)
                 //si es asi, añadir la clase brillos al elemento con data-card-tablero = user
-                $('[data-card-tablero="' + vote.user_name + '"]').addClass('brillos');
+                let carta = $('[data-card-tablero="' + vote.user_name + '"]')
+                carta.addClass('brillos');
+                if (vote.visible == "true") {
+                    //  console.log("visible")
+                    //mostrar valor de vote.vote
+                    carta.html(vote.vote);
+                } else {
+                    //mostrar vote.username
+                    carta.html(vote.user_name);
+                }
             }
 
         });
@@ -278,10 +296,19 @@ $(document).ready(function () {
         votes.forEach(function (vote) {
             //comprobar si la ticket_slug es = a ticket seleccionado
             if (vote.ticket_slug == selected_ticket) {
-                console.log("Ticket: " + vote.ticket_slug + " - Usuario: " + vote.user_name + " - Valor: " + vote.vote)
+                // console.log("Ticket: " + vote.ticket_slug + " - Usuario: " + vote.user_name + " - Valor: " + vote.vote)
                 //si es asi, añadir la clase brillos al elemento con data-card-tablero = user
                 $('[data-card-tablero="' + vote.user_name + '"]').addClass('brillos');
+                if (vote.visible == "true") {
+                    //mostrar "vote.vote" en el elemento con data-card-tablero-img="true" y data-card-tablero="vote.user_name"
+                    $('[data-card-tablero-img="true"][data-card-tablero="' + vote.user_name + '"]').html(vote.vote);
+
+                } else {
+                    //mostrar username
+                    $('[data-card-tablero-img="true"][data-card-tablero="' + vote.user_name + '"]').html(vote.user_name);
+                }
             }
+
 
         });
     }
@@ -303,9 +330,13 @@ $(document).ready(function () {
         votes.forEach(function (vote) {
             //comprobar si la ticket_slug es = a ticket seleccionado
             if (vote.ticket_slug == selected_ticket) {
-                console.log("Ticket: " + vote.ticket_slug + " - Usuario: " + vote.user_name + " - Valor: " + vote.vote)
+                //  console.log("Ticket: " + vote.ticket_slug + " - Usuario: " + vote.user_name + " - Valor: " + vote.vote)
                 //si es asi, añadir la clase brillos al elemento con data-card-tablero = user
                 $('[data-card-tablero="' + vote.user_name + '"]').addClass('brillos');
+                $('[data-card-tablero-img="true"][data-card-tablero="' + vote.user_name + '"]').html(vote.user_name);
+                if (vote.visible == "true") {
+                    $('[data-card-tablero-img="true"][data-card-tablero="' + vote.user_name + '"]').html(vote.vote);
+                }
             }
 
         });
@@ -372,8 +403,8 @@ $(document).ready(function () {
                 user.image = user.image.replace("localhost/", "");
             }
             //append div with class user-list-box and username and image
-            let html = '<div class="user-list-box">' + '<img src="' + user.image + '" alt="">' + ' <div class="user-list-box-username">' + user.username + '</div>' + '</div>';
-            usersContainer.append(html);
+            //  let html = '<div class="user-list-box">' + '<img src="' + user.image + '" alt="">' + ' <div class="user-list-box-username">' + user.username + '</div>' + '</div>';
+            //  usersContainer.append(html);
             //añadir carta al tablero
             printUserCardTablero(user);
             refreshVotesFromVotes();
@@ -416,15 +447,20 @@ $(document).ready(function () {
 
     //TICKETS
     function submitNewTicket() {
-        console.log("submitting new ticket");
+
+        //validar titulo y descripcion
+        if (new_tickets_title.val().trim() == "") {
+            showError("Verifica los campos antes de añadir un ticket");
+            return;
+        }
 
         socket.send(JSON.stringify({
             event: 'new-ticket',
             jwt: jwt,
             room_slug: room_slug,
             data: {
-                title: new_tickets_title.val(),
-                description: new_tickets_description.val()
+                title: new_tickets_title.val().trim(),
+                description: new_tickets_description.val().trim()
             }
         }));
     }
