@@ -3,12 +3,13 @@
 }
 
 
-.basic-options-container{
-    display: flex;   
+.basic-options-container {
+    display: flex;
 
 
 }
-.basic-options-box{
+
+.basic-options-box {
     border: 1px solid #150d19;
     display: flex;
     flex-direction: column;
@@ -28,25 +29,26 @@
     text-decoration: none;
 }
 
-.basic-options-box:hover{
-   border : 1px solid #fff;
-   color : white;
-   
+.basic-options-box:hover {
+    border: 1px solid #fff;
+    color: white;
+
 }
 
-.nostyle{
+.nostyle {
     text-decoration: none;
     color: #fff;
 }
-label{
-    color:white;
+
+label {
+    color: white;
 }
 
-.custom-margins{
+.custom-margins {
     margin: 15px 10px 0 0;
 }
 
-.custom-buttom{
+.custom-buttom {
     background: #150d19;
     color: #fff;
     border: 1px solid #150d19;
@@ -58,13 +60,13 @@ label{
     transition: all 0.15s ease-in-out;
 }
 
-.custom-buttom:hover{
+.custom-buttom:hover {
     background: #fff;
     color: #150d19;
     border: 1px solid #fff;
 }
 
-.custom-input{
+.custom-input {
     background: #150d19;
     color: #fff;
     border: 1px solid #150d19;
@@ -78,7 +80,7 @@ label{
 
 
 
-.custom-input-gray{
+.custom-input-gray {
     background: #251e28;
     color: #fff;
     border: 1px solid #150d19;
@@ -90,15 +92,16 @@ label{
     display: block;
 }
 
-.m5{
+.m5 {
     margin: 5px;
 }
-.mt15{
+
+.mt15 {
     margin-top: 15px;
-    margin-left:5px;
+    margin-left: 5px;
 }
 
-.custom-input-gray-100{
+.custom-input-gray-100 {
     background: #251e28;
     color: #fff;
     border: 1px solid #150d19;
@@ -111,21 +114,21 @@ label{
     width: 100%;
 }
 
-/***los input gray disabled */ 
-.custom-input-gray:disabled{
-   color : #858286;
+/***los input gray disabled */
+.custom-input-gray:disabled {
+    color: #858286;
 }
 
-.custom-input-gray-100:hover{
+.custom-input-gray-100:hover {
     border: 1px solid #fff;
 }
 
-.custom-input-gray-100:focus{
+.custom-input-gray-100:focus {
     border: 1px solid #fff;
 }
 
 
-.custom-textarea{
+.custom-textarea {
     background: #150d19;
     color: #fff;
     border: 1px solid #150d19;
@@ -139,37 +142,38 @@ label{
     resize: vertical;
 }
 
-.custom-textarea:focus{
+.custom-textarea:focus {
     border: 1px solid #fff;
 }
 
-.custom-input:hover{
-    
+.custom-input:hover {
+
     border: 1px solid #fff;
 }
 
-.custom-input:focus{
+.custom-input:focus {
     border: 1px solid #fff;
 }
 
-.custom-title{
+.custom-title {
     color: #fff;
     font-size: 2rem;
     font-weight: 600;
     margin: 0 0 10px 0;
 }
 
-.error-custom-text{
+.error-custom-text {
     color: rgb(238, 120, 120);
     font-size: 1.2rem;
     font-weight: 600;
     margin: 0 0 10px 0;
 }
-body{
-    color:white;
+
+body {
+    color: white;
 }
 
-.custom-card{
+.custom-card {
     background: #150d19;
     color: #fff;
     border: 1px solid #150d19;
@@ -184,7 +188,7 @@ body{
     margin: 5px 15px;
 }
 
-.custom-card-auto{
+.custom-card-auto {
     background: #150d19;
     color: #fff;
     border: 1px solid #150d19;
@@ -198,7 +202,8 @@ body{
     cursor: pointer;
     margin: 5px 15px;
 }
-.custom-card-wb{
+
+.custom-card-wb {
     background: #150d19;
     color: #fff;
     border: 1px solid white;
@@ -212,7 +217,8 @@ body{
     cursor: pointer;
     margin: 5px 15px;
 }
-.custom-card-wb-100{
+
+.custom-card-wb-100 {
     background: #150d19;
     color: #fff;
     border: 1px solid white;
@@ -227,17 +233,17 @@ body{
     margin: 5px 15px;
 }
 
-.custom-card-wb-100:hover{
+.custom-card-wb-100:hover {
     background: #332e35;
 }
 
 
-.custom-card-wb:hover{
-    
+.custom-card-wb:hover {
+
     background: #332e35;
 }
 
-.custom-card-100{
+.custom-card-100 {
     background: #150d19;
     color: #fff;
     border: 1px solid #150d19;
@@ -250,7 +256,8 @@ body{
     resize: vertical;
     margin: auto;
 }
-.custom-card-100-invisible{
+
+.custom-card-100-invisible {
     background: none;
     color: #fff;
     border-radius: 5px;
@@ -263,10 +270,9 @@ body{
     margin: auto;
 }
 
-.custom-card-100:hover{
-}
+.custom-card-100:hover {}
 
-.custom-card-secondary{
+.custom-card-secondary {
     background: #150d19;
     color: #fff;
     border: 1px solid #fff;
@@ -281,16 +287,16 @@ body{
     max-width: 300px;
 }
 
-.custom-card-secondary:hover{
+.custom-card-secondary:hover {
     border: 1px solid #fff;
 
 }
 
-.custom-card:hover{
+.custom-card:hover {
     border: 1px solid #fff;
 }
 
-.custom-card-container{
+.custom-card-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -301,47 +307,73 @@ body{
     margin: 10px;
 }
 
-.custom-text{
+.custom-text {
     color: #fff;
     font-size: 1rem;
     font-weight: 600;
     margin: 0 0 10px 0;
-    white-space:pre-wrap;
+    white-space: pre-wrap;
 
 }
 
 /** span que se situará a la derecha del div parent */
-.floating-right
-{
+.floating-right {
     float: right;
     font-size: 0.8em;
 }
 
-.custom-link
-{
+.custom-link {
     text-decoration: none;
     color: inherit;
     background-color: transparent;
 }
 
-.custom-link:hover
-{
+.custom-link:hover {
     text-decoration: none;
     color: inherit;
     background-color: transparent;
 }
 
 
-.custom-label{
+.custom-label {
     color: #fff;
     font-size: 1rem;
     font-weight: 600;
     margin: 0 0 10px 0;
-    white-space:pre-wrap;
+    white-space: pre-wrap;
     display: block;
 }
-.custom-button-lt
-{
+
+.custom-button {
+    display: inline-block;
+    padding: 0.75rem 1.25rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    cursor: pointer;
+    background-color: #343a40;
+    /* Navbar dark color */
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    color: #ffffff;
+    /* White color for the text */
+    width: 100%;
+}
+
+.custom-button:hover {
+    background-color: #23272b;
+    color: #ffffff;
+}
+
+.custom-button i {
+    margin-right: 0.5rem;
+}
+
+.custom-button-lt {
     background: #150d19;
     color: #fff;
     border: 1px solid #150d19;
@@ -358,7 +390,7 @@ body{
 }
 
 
-.lt-button{
+.lt-button {
     background: #150d19;
     color: #fff;
     border: 1px solid #150d19;
@@ -373,12 +405,12 @@ body{
     width: auto;
 }
 
-.lt-button:hover{
+.lt-button:hover {
     background: #332e35;
     border: 1px solid #fff;
 }
 
-.lt-button-danger{
+.lt-button-danger {
     background: #530f0f;
     color: #fff;
     border: 1px solid #150d19;
@@ -393,7 +425,7 @@ body{
     width: auto;
 }
 
-.lt-button-danger:hover{
+.lt-button-danger:hover {
     background: #751424;
     border: 1px solid #fff;
 }
@@ -413,8 +445,7 @@ body{
     border-color: #c23321;
 }
 
-.custom-button-lt-danger
-{
+.custom-button-lt-danger {
     background: #751424;
     color: #fff;
     border: 1px solid #3f0e0e;
@@ -430,21 +461,19 @@ body{
     width: 30%;
 }
 
-.custom-button-lt:hover
-{
+.custom-button-lt:hover {
     border: 1px solid #fff;
     background: #1f1723;
 }
 
-.custom-button-lt-danger:hover
-{
+.custom-button-lt-danger:hover {
     border: 1px solid #fff;
     background: #570f1b;
 }
 
 
 
-.sidebar{
+.sidebar {
     display: block;
 }
 
@@ -452,13 +481,14 @@ body{
     .sidebar {
         display: none;
     }
-    #toggle-tickets-btn{
+
+    #toggle-tickets-btn {
         display: block;
     }
 }
 
 
-  .center-elements{
+.center-elements {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -466,9 +496,9 @@ body{
     height: 100%;
     padding: 10px;
     margin: 10px;
-  }
+}
 
-  .user-list-box{
+.user-list-box {
     background: #150d19;
     color: #fff;
     border: 1px solid #150d19;
@@ -481,15 +511,16 @@ body{
     resize: vertical;
     margin: auto;
     max-width: 300px;
-  }
-  .user-list-box img {
+}
+
+.user-list-box img {
     width: 50px;
     height: 50px;
     border-radius: 50%;
     margin: 0 10px 0 0;
-  }
+}
 
-  .deck-collection-container{
+.deck-collection-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -498,9 +529,9 @@ body{
     height: 100%;
     padding: 10px;
     margin: 10px;
-  }
+}
 
-  .custom-option{
+.custom-option {
     background: #150d19;
     color: #fff;
     border: 1px solid #150d19;
@@ -513,184 +544,187 @@ body{
     resize: vertical;
     margin: auto;
     max-width: 300px;
+}
+
+.custom-option:hover {
+    border: 1px solid #fff;
+}
+
+
+
+.deck-collection-box {
+    background: #150d19;
+    color: #fff;
+    border: 1px solid #150d19;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    transition: all 0.15s ease-in-out;
+    width: 100%;
+    resize: vertical;
+    margin: auto;
+    max-width: 300px;
+}
+
+.deck-collection-box img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin: 0 10px 0 0;
+}
+
+/** bara pegada al bottom que mostrará las cartas del deck */
+.user-deck-cards {
+    width: 100%;
+    height: 50px;
+    background-color: blue;
+    color: white;
+    text-align: center;
+}
+
+.user-deck-card {
+    background: #150d19;
+    color: #fff;
+    border: 1px solid #150d19;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    transition: all 0.15s ease-in-out;
+    width: 100%;
+    resize: vertical;
+    margin: auto;
+    max-width: 300px;
+}
+
+.custom-selection {
+    border: 1px solid white;
+}
+
+.deck-room-container {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    overflow-x: auto;
+}
+
+.deck-room-options-box {
+    flex: 0 0 auto;
+    margin: 10px;
+    text-align: center;
+    background: #150d19;
+    border: 1px solid transparent;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px 10px 10px 10px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    transition: all 0.15s ease-in-out;
+    cursor: pointer;
+}
+
+.deck-room-options-box:hover {
+    border: 1px solid #fff;
+}
+
+.card-deck {
+    width: auto;
+    border-radius: 5px;
+    margin: 5px;
+    border: 1px solid #ffffff00;
+    font-size: 1.5em;
+}
+
+
+.activo {
+    border: 1px solid #fff;
+
+}
+
+.deck-collection-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: l;
+}
+
+.deck-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 200px;
+    border: 1px solid #000;
+    border-radius: 10px;
+    cursor: pointer;
+    border: 1px solid rgb(161, 157, 157);
+}
+
+.deck-container:hover {
+    border: 1px solid #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.103);
+}
+
+.deck-name {
+    margin-top: 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.deck-container img {
+    width: 80px;
+}
+
+
+.custom-sidebar {}
+
+.bg-color-primary {
+    background: #150d19;
+}
+
+
+.carta-deck {
+    width: 75px;
+    height: 125px;
+    background: rgba(255, 255, 255, 0.856);
+    border: 1px solid #000;
+    color: #000;
+    border-radius: 10px;
+    margin: 10px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+
+
+
+.loader {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #FFF;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
     }
 
-    .custom-option:hover{
-        border: 1px solid #fff;
+    100% {
+        transform: rotate(360deg);
     }
+}
 
-
-
-    .deck-collection-box{
-        background: #150d19;
-        color: #fff;
-        border: 1px solid #150d19;
-        border-radius: 5px;
-        padding: 10px;
-        font-size: 1.2rem;
-        font-weight: 600;
-        transition: all 0.15s ease-in-out;
-        width: 100%;
-        resize: vertical;
-        margin: auto;
-        max-width: 300px;
-    }
-
-    .deck-collection-box img {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        margin: 0 10px 0 0;
-    }
-
-    /** bara pegada al bottom que mostrará las cartas del deck */
-    .user-deck-cards{
-        width: 100%; height: 50px; background-color: blue; color: white; text-align: center; 
-    }
-
-    .user-deck-card{
-        background: #150d19;
-        color: #fff;
-        border: 1px solid #150d19;
-        border-radius: 5px;
-        padding: 10px;
-        font-size: 1.2rem;
-        font-weight: 600;
-        transition: all 0.15s ease-in-out;
-        width: 100%;
-        resize: vertical;
-        margin: auto;
-        max-width: 300px;
-    }
-
-    .custom-selection{
-        border: 1px solid white;
-    }
-
-    .deck-room-container {
-        position: fixed;
-        bottom: 0;
-        width: 100%;
-        display: flex;
-        overflow-x: auto;
-    }
-
-    .deck-room-options-box {
-        flex: 0 0 auto;
-        margin: 10px;
-        text-align: center;
-        background: #150d19;
-        border: 1px solid transparent;
-        color: #fff;
-        border-radius: 5px;
-        padding: 10px 10px 10px 10px;
-        font-size: 1.2rem;
-        font-weight: 600;
-        transition: all 0.15s ease-in-out;
-        cursor: pointer;
-    }
-
-    .deck-room-options-box:hover {
-        border: 1px solid #fff;
-    }
-
-    .card-deck {
-        width: auto;
-        border-radius: 5px;
-        margin: 5px;
-        border: 1px solid #ffffff00;
-        font-size: 1.5em;
-    }
-
-   
-    .activo{
-        border: 1px solid #fff;
-
-    }
-
-    .deck-collection-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: l;
-    }
-
-    .deck-container {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 200px;
-        height: 200px;
-        border: 1px solid #000;
-        border-radius: 10px;
-        cursor: pointer;
-        border: 1px solid rgb(161, 157, 157);
-    }
-
-    .deck-container:hover {
-        border: 1px solid #ffffff;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.103);
-    }
-
-    .deck-name {
-        margin-top: 10px;
-        font-size: 20px;
-        font-weight: bold;
-    }
-
-    .deck-container img {
-        width: 80px;
-    }
-
-    
-    .custom-sidebar {
-    }
-
-    .bg-color-primary{
-        background: #150d19;
-    }
- 
-
-    .carta-deck {
-        width: 75px;
-        height: 125px;
-        background: rgba(255, 255, 255, 0.856);
-        border: 1px solid #000;
-        color : #000;
-        border-radius: 10px;
-        margin: 10px;
-        cursor: pointer;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-      }
-      
-
-    
-
-    .loader {
-        width: 48px;
-        height: 48px;
-        border: 5px solid #FFF;
-        border-bottom-color: transparent;
-        border-radius: 50%;
-        display: inline-block;
-        box-sizing: border-box;
-        animation: rotation 1s linear infinite;
-        }
-    
-        @keyframes rotation {
-        0% {
-            transform: rotate(0deg);
-        }
-        100% {
-            transform: rotate(360deg);
-        }
-        } 
-
-        .b-text{
-            font-size: 1.5em;
-        }
-
+.b-text {
+    font-size: 1.5em;
+}

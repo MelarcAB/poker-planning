@@ -22,13 +22,10 @@ $(document).ready(function () {
     var room_slug = window.location.pathname.split("/")[2];
     //users-container
     var usersContainer = $('#users-container');
-
     var actual_user = $('#username');
-
 
     var selected_ticket = null;
     var votes = [];
-
 
     //TICKETS
     var new_tickets_container = $('#new-ticket-container');
@@ -44,9 +41,6 @@ $(document).ready(function () {
     var toggle_tickets_btn = $("#toggle-tickets-btn");
     var full_tickets_list = $('#tickets-list-full-container');
 
-
-
-
     init_room();
 
 
@@ -56,31 +50,41 @@ $(document).ready(function () {
         clearTablero()
     }
 
+    //funcion para limpiar el tablero
+    function clearTablero() {
+        $('#tablero-container').html('');
+    }
+
+
 
     //EVENTS
     //submit ticket
+    //añadir nuevo ticket a la sala
     b_submit_ticket.click(submitNewTicket);
     b_cancel_ticket.click(function () {
         new_tickets_container.hide();
         b_show_tickets.show();
     });
 
+    //mostrar formulario de tickets al pulsar el boton de añadir ticket
     b_show_tickets.click(function () {
         new_tickets_container.show();
         b_show_tickets.hide();
     });
 
+
+    //mostrar/ocultar lista de tickets
     toggle_tickets_btn.click(function () {
-        // console.log("toggle");
         full_tickets_list.toggle();
     });
 
+
+    //votar los tickets pulsando el boton de votar (creador de la sala)
     b_vote_ticket.click(function () {
         if (selected_ticket == null) {
             showError("No hay ticket seleccionado");
             return;
         }
-
         if (!checkAllUsersVoted()) {
             swal({
                 title: "¿Estás seguro?",
@@ -105,6 +109,8 @@ $(document).ready(function () {
 
     });
 
+
+    //funcion para enviar los votos de los usuarios al websocket y mostrar los resultados del ticket
     function submitVotes(ticket_slug) {
         //cambiar ticket a visible = true al websocet
         socket.send(JSON.stringify({
@@ -118,6 +124,7 @@ $(document).ready(function () {
     }
 
 
+    //verificar si todos los usuarios han votado return true/false
     function checkAllUsersVoted() {
         //verificar si el ticket actual está votado por todos los usuarios en la sala
         //todos los elementos data-card-tablero-img="true" deberian tener la clase brillos
@@ -129,15 +136,16 @@ $(document).ready(function () {
         }
         );
         return voted;
-
     }
 
 
+    //cambiar de ticket seleccionado
     //evento a todos los elementos con data-ticket-button="true"
     $(document).on('click', '[data-ticket-button="true"]', function () {
         clickTicket($(this).data('ticket-slug'));
     });
 
+    //cambiar de carta seleccionada
     //evento al pulsar el boton de votar data-deck-card="true"
     $(document).on('click', '[data-deck-card="true"]', function () {
         //verificar si tiene la clase activo, de ser asi se deselecciona y eliminamos el voto
@@ -151,10 +159,9 @@ $(document).ready(function () {
     });
 
 
-
-    //websocket 
-
-
+    //----------------------------------------------------------------------------------------------------------------------------
+    //websocket-----------------------------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------------------------------
     //iniciar socket
     socket.onopen = function (event) {
         socket.send(JSON.stringify({
@@ -165,24 +172,18 @@ $(document).ready(function () {
             }
         }));
         getVotesUser();
-
-
     }
 
     //recibir mensajes del socket
     socket.onmessage = function (event) {
-        //si existe event.error, mostrar error
         var data = JSON.parse(event.data);
-        // console.log(data);
-        //si existe event.error, mostrar error
-        //sacar alerta de error
         if (data.error) {
+            //sacar alerta de error
             showError(data.error);
             //    console.log(data.error);
             return;
         }
 
-        //   console.log("RECIBIENDO EVENTO: " + data.event + "")
         switch (data.event) {
             case "users-in-room":
                 //obtener los usuarios de la sala
@@ -206,7 +207,23 @@ $(document).ready(function () {
         }
     }
 
-
+    //funcion submit ticket nuevo (creador de la sala)
+    function submitNewTicket() {
+        //validar titulo y descripcion
+        if (new_tickets_title.val().trim() == "") {
+            showError("Verifica los campos antes de añadir un ticket");
+            return;
+        }
+        socket.send(JSON.stringify({
+            event: 'new-ticket',
+            jwt: jwt,
+            room_slug: room_slug,
+            data: {
+                title: new_tickets_title.val().trim(),
+                description: new_tickets_description.val().trim()
+            }
+        }));
+    }
 
 
 
@@ -272,7 +289,6 @@ $(document).ready(function () {
 
 
     function refreshVotes(data) {
-        //recorrer data.data 
         votes = data.data;
         refreshVotesFromData(data);
     }
@@ -280,7 +296,6 @@ $(document).ready(function () {
     function refreshVotesFromData(data) {
         //quitar brillo a todos data-card-tablero-img="true"
         $('[data-card-tablero-img="true"]').removeClass('brillos');
-        // console.log("refreshVotesFromData")
         votes = data.data;
         votes.forEach(function (vote) {
             //comprobar si la ticket_slug es = a ticket seleccionado
@@ -447,7 +462,7 @@ $(document).ready(function () {
         //append div with class user-list-box and username and image
         /* let html = '<div class="user-list-box">' + '<img src="' + user.image + '" alt="">' + ' <div class="user-list-box-username">' + user.username + '</div>' + '</div>';
          $('#tablero-container').append(html);*/
-        /* 
+        /*
                 <div class="tablero-card">
                 <span>Melarc</span>
             </div> */
@@ -459,27 +474,8 @@ $(document).ready(function () {
 
 
 
-    //TICKETS
-    function submitNewTicket() {
 
-        //validar titulo y descripcion
-        if (new_tickets_title.val().trim() == "") {
-            showError("Verifica los campos antes de añadir un ticket");
-            return;
-        }
-
-        socket.send(JSON.stringify({
-            event: 'new-ticket',
-            jwt: jwt,
-            room_slug: room_slug,
-            data: {
-                title: new_tickets_title.val().trim(),
-                description: new_tickets_description.val().trim()
-            }
-        }));
-    }
-
-
+    //funcion para mostrar alerta de error
     function showError(error = "Error") {
         new Noty({
             type: 'error',
@@ -489,6 +485,8 @@ $(document).ready(function () {
         }).show();
     }
 
+
+    //funcion para mostrar alerta de success
     function showSuccess(success = "Success") {
         new Noty({
             type: 'success',
@@ -499,15 +497,46 @@ $(document).ready(function () {
     }
 
 
-    function clearTablero() {
-        //clear tablero
-        $('#tablero-container').html('');
+
+
+
+    function showTimer() {
+        let timerInterval
+        Swal.fire({
+            title: 'Mostrando los resultados de las votaciones...',
+            html:
+                'En <strong></strong> segundos<br/><br/>'
+            ,
+            timer: 3000,
+            showConfirmButton: false,  // Esconde el botón de confirmación
+            didOpen: () => {
+                const content = Swal.getHtmlContainer()
+                const $ = content.querySelector.bind(content)
+                timerInterval = setInterval(() => {
+                    content.querySelector('strong')
+                        .textContent = (Swal.getTimerLeft() / 1000)
+                            .toFixed(0)
+                }, 100)
+            },
+            willClose: () => {
+                clearInterval(timerInterval)
+            }
+        }).then((result) => {
+            if (result.dismiss === Swal.DismissReason.timer) {
+                showResults();
+            }
+        })
     }
 
 
 
-    function renderTablero() {
 
-    }
+
+
+
+
+
+
+
 
 });
