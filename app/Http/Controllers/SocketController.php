@@ -168,7 +168,7 @@ class SocketController extends Controller implements MessageComponentInterface
             }
             $ticket->save();
 
-            $this->sendVotesInRoomToPublicRoom($room_slug, $jwt, $conn);
+            $this->sendVotesInRoomToPublicRoom($room_slug, $jwt, $conn, true);
         } catch (\Exception $e) {
             echo $e->getMessage();
         }
@@ -250,7 +250,7 @@ class SocketController extends Controller implements MessageComponentInterface
     }
 
 
-    public function sendVotesInRoomToPublicRoom($room_slug, $jwt, $conn)
+    public function sendVotesInRoomToPublicRoom($room_slug, $jwt, $conn, $revelation = false)
     {
         //obtener el room y todas las votaciones para todos los tickets
         $room = Room::where('slug', $room_slug)->first();
@@ -278,6 +278,15 @@ class SocketController extends Controller implements MessageComponentInterface
             'event' => 'votes',
             'data' => $votes,
         ]);
+        //revelation
+        if ($revelation) {
+            $response =  json_encode([
+                'event' => 'votes',
+                'data' => $votes,
+                'revelation' => true,
+            ]);
+        }
+
         foreach ($this->rooms[$room_slug] as $connection) {
             $connection['conn']->send($response);
         }

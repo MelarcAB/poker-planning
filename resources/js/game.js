@@ -202,7 +202,14 @@ $(document).ready(function () {
 
                 break;
             case 'votes':
-                refreshVotesFromData(data);
+                console.log("votes")
+                console.log(data)
+                //si data tiene el campo revelation y ademas es = true, mostrar los resultados de las votaciones con el alert
+                if (data.revelation == true) {
+                    showTimerVotes(data);
+                } else {
+                    refreshVotesFromData(data);
+                }
                 break;
         }
     }
@@ -500,7 +507,7 @@ $(document).ready(function () {
 
 
 
-    function showTimer() {
+    function showTimerVotes(data) {
         let timerInterval
         Swal.fire({
             title: 'Mostrando los resultados de las votaciones...',
@@ -523,7 +530,7 @@ $(document).ready(function () {
             }
         }).then((result) => {
             if (result.dismiss === Swal.DismissReason.timer) {
-                showResults();
+                refreshVotesFromData(data);
             }
         })
     }
