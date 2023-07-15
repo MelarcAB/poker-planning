@@ -1,3 +1,7 @@
+<div class="ticket-info bg-color-primary">
+    <label id="ticketName">Ticket seleccionado: <span id="selectedTicket" style="font-weight: bold;">NOMBRE</span></label>
+    <label id="ticketStatus">Estado: <span id="selectedTicketStatus" style="font-weight: bold;">POR VOTAR</span></label>
+</div>
 <div class="tablero" id="tablero-container">
     <div class="tablero-card brillos">
         <span>Melarc</span>
@@ -42,6 +46,36 @@
         animation: brillo 2s ease-in-out infinite;
 
     }
+
+    /* Estilos para las etiquetas */
+    .ticket-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding: 10px;
+        border-radius: 5px;
+        width: 80%;
+        box-sizing: border-box;
+        flex-wrap: wrap;
+    }
+
+    .ticket-info label {
+        font-size: 1.2rem;
+        margin: 5px;
+        flex: 1 0 100%;
+        box-sizing: border-box;
+        text-align: center;
+        color: #fff;
+
+    }
+
+    @media (min-width: 576px) {
+        .ticket-info label {
+            flex: 1;
+        }
+    }
+
 
     @keyframes brillo {
         0% {

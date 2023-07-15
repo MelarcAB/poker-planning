@@ -35,7 +35,7 @@ class APIController extends Controller
                 'slug' => 'required|string|max:500',
             ]);
 
-            //obtener usuario que hace la peticion 
+            //obtener usuario que hace la peticion
             $user = $request->user();
             //obtener el codigo del grupo
             $code = $request->input('code');
@@ -98,12 +98,13 @@ class APIController extends Controller
     public function searchGroup(Request $request)
     {
         try {
-            //obtener usuario que hace la peticion 
+            //obtener usuario que hace la peticion
             $user = $request->user();
             //obtener el codigo del grupo
             $code = $request->input('q');
             //obtener los
-            $groups = Groups::where('name', $code)->get();
+            //añadir %% para que busque en cualquier parte del nombre y like para que sea case insensitive
+            $groups = Groups::where('name', 'LIKE', '%' . $code . '%')->get();
             //comprobar que el grupo existe
             if ($groups->count() < 1) {
                 return response()->json(['message' => 'No hay grupos con ese nombre '], 404);

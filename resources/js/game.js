@@ -37,6 +37,10 @@ $(document).ready(function () {
     var b_cancel_ticket = $('#b-cancel-ticket');
     var b_vote_ticket = $('#b-vote-ticket');
 
+    //header vars
+    var selectedTicket = $('#selectedTicket');
+    var selectedTicketStatus = $('#selectedTicketStatus');
+
 
     var toggle_tickets_btn = $("#toggle-tickets-btn");
     var full_tickets_list = $('#tickets-list-full-container');
@@ -48,6 +52,8 @@ $(document).ready(function () {
     function init_room() {
         //ocultar formulario de tickets
         clearTablero()
+        selectedTicket.html("-");
+        selectedTicketStatus.html("-");
     }
 
     //funcion para limpiar el tablero
@@ -143,6 +149,7 @@ $(document).ready(function () {
     //evento a todos los elementos con data-ticket-button="true"
     $(document).on('click', '[data-ticket-button="true"]', function () {
         clickTicket($(this).data('ticket-slug'));
+        selectedTicket.html($(this).data('ticket-title'));
     });
 
     //cambiar de carta seleccionada
@@ -264,6 +271,8 @@ $(document).ready(function () {
     function selectFirstTicket() {
         let first_ticket = $('[data-ticket-button="true"]').first();
         clickTicket(first_ticket.data('ticket-slug'));
+
+        selectedTicket.html(first_ticket.data('ticket-title'));
     }
 
 
@@ -402,17 +411,10 @@ $(document).ready(function () {
     }
 
 
-    function checkSelectedTableroCards() {
-        //obtener el div de la carta (data-card-tablero = username)
-        let card = $('[data-card-tablero="' + username + '"]');
-        //añadir clase brillos al div de la carta
-    }
-
-
     function renderTicketsList(tickets) {
         tickets_list_container.html('');
         tickets.forEach(function (ticket) {
-            let html = '<div class="custom-card-auto" data-ticket-button="true" data-ticket-slug="' + ticket.slug + '">' + '<div class="ticket-list-box-title">' + ticket.title + '</div>' + '</div>';
+            let html = '<div class="custom-card-auto" data-ticket-title="' + ticket.title + '" data-ticket-button="true" data-ticket-slug="' + ticket.slug + '">' + '<div class="ticket-list-box-title">' + ticket.title + '</div>' + '</div>';
             tickets_list_container.append(html);
         });
         //hide new ticket form
