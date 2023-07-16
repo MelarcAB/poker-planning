@@ -168,7 +168,9 @@ class SocketController extends Controller implements MessageComponentInterface
             }
             $ticket->save();
 
-            $this->sendVotesInRoomToPublicRoom($room_slug, $jwt, $conn, true);
+            $this->sendVotesInRoomToPublicRoom($room_slug, $jwt, $conn, true, $ticket_slug);
+            //refrescar lista de tickets en la sala
+            $this->sendTicketsInRoom($room_slug);
         } catch (\Exception $e) {
             echo $e->getMessage();
         }
@@ -250,7 +252,7 @@ class SocketController extends Controller implements MessageComponentInterface
     }
 
 
-    public function sendVotesInRoomToPublicRoom($room_slug, $jwt, $conn, $revelation = false)
+    public function sendVotesInRoomToPublicRoom($room_slug, $jwt, $conn, $revelation = false, $ticket_slug_updated = null)
     {
         //obtener el room y todas las votaciones para todos los tickets
         $room = Room::where('slug', $room_slug)->first();
@@ -263,13 +265,28 @@ class SocketController extends Controller implements MessageComponentInterface
             if ($votations->count() > 0) {
                 // $votes[$ticket->slug] = $votations->toArray();
                 foreach ($votations as $votation) {
-                    $votes[] = [
-                        'ticket_slug' => $ticket->slug,
-                        'user_id' => $votation->user_id,
-                        'user_name' => $votation->user->username,
-                        'vote' => $votation->vote,
-                        'visible' => $ticket->visible,
-                    ];
+                    //si $ticket_slug_updated es diferente de null, se envia updated solo para ese ticket
+
+                    if ($ticket_slug_updated != null) {
+                        if ($ticket_slug_updated == $ticket->slug) {
+                            $votes[] = [
+                                'ticket_slug' => $ticket->slug,
+                                'user_id' => $votation->user_id,
+                                'user_name' => $votation->user->username,
+                                'vote' => $votation->vote,
+                                'visible' => $ticket->visible,
+                                'updated_now' => 'true',
+                            ];
+                        }
+                    } else {
+                        $votes[] = [
+                            'ticket_slug' => $ticket->slug,
+                            'user_id' => $votation->user_id,
+                            'user_name' => $votation->user->username,
+                            'vote' => $votation->vote,
+                            'visible' => $ticket->visible,
+                        ];
+                    }
                 }
             }
         }

@@ -119,14 +119,21 @@ $(document).ready(function () {
 
     //votar los tickets pulsando el boton de votar (creador de la sala)
     b_vote_ticket.click(function () {
+        //validar si hay ticket seleccionado o si el ticket seleccionado ya ha sido votado
         if (selected_ticket == null) {
             showError("No hay ticket seleccionado");
             return;
         }
 
+        //obtener si el ticket ya ha revelado los votos
+        let ticket = $('[data-ticket-slug="' + selected_ticket + '"]');
+        let status = ticket.data('voted-finish');
+        if (status) {
+            showError("El ticket ya ha sido votado");
+            return;
+        }
+
         //validar si el ticket seleccionado ya ha revelado los votos
-
-
         if (!checkAllUsersVoted()) {
             swal({
                 title: "¿Estás seguro?",
@@ -144,10 +151,7 @@ $(document).ready(function () {
                 });
         } else {
             submitVotes(selected_ticket);
-
         }
-
-        // console.log(votes)
 
     });
 
@@ -244,13 +248,13 @@ $(document).ready(function () {
 
                 break;
             case 'votes':
-
                 //si data tiene el campo revelation y ademas es = true, mostrar los resultados de las votaciones con el alert
                 if (data.revelation == true) {
                     showTimerVotes(data);
                 } else {
                     refreshVotesFromData(data);
                 }
+
                 break;
         }
 
@@ -353,6 +357,7 @@ $(document).ready(function () {
         //quitar brillo a todos data-card-tablero-img="true"
         $('[data-card-tablero-img="true"]').removeClass('brillos');
         votes = data.data;
+        console.log(data)
         votes.forEach(function (vote) {
             //comprobar si la ticket_slug es = a ticket seleccionado
             if (vote.ticket_slug == selected_ticket) {
@@ -512,11 +517,7 @@ $(document).ready(function () {
                 }
             }
         });
-        if (!votado) {
-            selectedTicketStatus.html(getTicketStatus(0));
-        } else {
-            selectedTicketStatus.html(getTicketStatus(1));
-        }
+
         refreshStatusTablero();
 
     }
@@ -524,10 +525,15 @@ $(document).ready(function () {
 
     function refreshStatusTablero() {
         //obtener ticket seleccionado
-        console.log("ticket: " + selected_ticket)
         let selected_card = getSelectedCard();
-        console.log("card:" + selected_card)
         let ticket = $('[data-ticket-slug="' + selected_ticket + '"]');
+
+        //obtener el html del ticket seleccionado
+        let ticket_title = ticket.text();
+        console.log(ticket_title)
+
+        selectedTicket.html(ticket_title);
+
         //obtener el estado del ticket
         let status = ticket.data('voted-finish');
         console.log(status)
@@ -602,6 +608,8 @@ $(document).ready(function () {
         }).then((result) => {
             if (result.dismiss === Swal.DismissReason.timer) {
                 refreshVotesFromData(data);
+                //añadir un tick delante del titulo del ticket
+                let ticket_revelado = $('[data-ticket-slug="' + selected_ticket + '"]');
             }
         })
     }
