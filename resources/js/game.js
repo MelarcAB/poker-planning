@@ -12,6 +12,29 @@ $(document).ready(function () {
     baseURI = baseURI.replace(":8080/", "");
     baseURI = baseURI.replace(":8080", "");
 
+    //constante con array estados de los tickets ( 0 por votar  ,1 votado ,2 Resultados visibles )
+    const ticket_status = {
+        "0": "Por votar",
+        "1": "Votado",
+        "2": "Resultados visibles"
+    };
+
+    //getter de ticket_status
+    function getTicketStatus(status) {
+        return ticket_status[status];
+    }
+
+    //get the current selected card (data-deck-card="true" and class="activo")
+    function getSelectedCard() {
+        let selected_card = null;
+        $('[data-deck-card="true"]').each(function () {
+            if ($(this).hasClass('activo')) {
+                selected_card = $(this).data('deck-card-value');
+            }
+        });
+        return selected_card;
+    }
+
 
     var socket = new WebSocket("ws://" + baseURI + ":8090");
 
@@ -24,7 +47,6 @@ $(document).ready(function () {
     var usersContainer = $('#users-container');
     var actual_user = $('#username');
 
-    var selected_ticket = null;
     var votes = [];
 
     //TICKETS
@@ -37,23 +59,30 @@ $(document).ready(function () {
     var b_cancel_ticket = $('#b-cancel-ticket');
     var b_vote_ticket = $('#b-vote-ticket');
 
+
+
+    //selected_ticket will be the slug of the ticket selected
+    var selected_ticket = null;
+    var selected_card = null;
     //header vars
     var selectedTicket = $('#selectedTicket');
     var selectedTicketStatus = $('#selectedTicketStatus');
 
 
+    //sidebar tickets
     var toggle_tickets_btn = $("#toggle-tickets-btn");
     var full_tickets_list = $('#tickets-list-full-container');
 
     init_room();
 
 
-    //INIT
+    //----------------------------------------------------------------------------------------------------------------------------
+    //INIT----------------------------------------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------------------------------
     function init_room() {
         //ocultar formulario de tickets
         clearTablero()
-        selectedTicket.html("-");
-        selectedTicketStatus.html("-");
+        refreshStatusTablero();
     }
 
     //funcion para limpiar el tablero
@@ -61,6 +90,9 @@ $(document).ready(function () {
         $('#tablero-container').html('');
     }
 
+
+    //----------------------------------------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------------------------------
 
 
     //EVENTS
@@ -91,6 +123,10 @@ $(document).ready(function () {
             showError("No hay ticket seleccionado");
             return;
         }
+
+        //validar si el ticket seleccionado ya ha revelado los votos
+
+
         if (!checkAllUsersVoted()) {
             swal({
                 title: "¿Estás seguro?",
@@ -149,7 +185,7 @@ $(document).ready(function () {
     //evento a todos los elementos con data-ticket-button="true"
     $(document).on('click', '[data-ticket-button="true"]', function () {
         clickTicket($(this).data('ticket-slug'));
-        selectedTicket.html($(this).data('ticket-title'));
+        refreshStatusTablero();
     });
 
     //cambiar de carta seleccionada
@@ -160,7 +196,6 @@ $(document).ready(function () {
             // $(this).removeClass('activo');
             quitarVoto($(this).data('deck-card-value'), $(this));
         } else {
-
             clickDeckCard($(this));
         }
     });
@@ -199,18 +234,17 @@ $(document).ready(function () {
             case 'ticket-created':
                 showSuccess("Ticket añadido");
                 break;
-
             case 'update-tickets-list':
                 renderTicketsList(data.data.tickets);
                 break;
+
 
             case 'votes-list':
                 refreshVotes(data);
 
                 break;
             case 'votes':
-                console.log("votes")
-                console.log(data)
+
                 //si data tiene el campo revelation y ademas es = true, mostrar los resultados de las votaciones con el alert
                 if (data.revelation == true) {
                     showTimerVotes(data);
@@ -219,6 +253,8 @@ $(document).ready(function () {
                 }
                 break;
         }
+
+
     }
 
     //funcion submit ticket nuevo (creador de la sala)
@@ -286,6 +322,10 @@ $(document).ready(function () {
         //añadir brillos al elemento seleccionado
         $('[data-deck-card="true"]').removeClass('activo');
         $(e).addClass('activo');
+
+        //asignar valor al selected_card
+        selected_card = valor;
+
         //enviar voto
         socket.send(JSON.stringify({
             event: 'vote',
@@ -386,6 +426,7 @@ $(document).ready(function () {
 
         });
         selectDeckCard();
+        refreshStatusTablero();
 
     }
 
@@ -414,7 +455,12 @@ $(document).ready(function () {
     function renderTicketsList(tickets) {
         tickets_list_container.html('');
         tickets.forEach(function (ticket) {
-            let html = '<div class="custom-card-auto" data-ticket-title="' + ticket.title + '" data-ticket-button="true" data-ticket-slug="' + ticket.slug + '">' + '<div class="ticket-list-box-title">' + ticket.title + '</div>' + '</div>';
+            let html = "";
+            if (ticket.visible == "true") {
+                html = '<div class="custom-card-auto" data-voted-finish="true" data-ticket-title="' + ticket.title + '" data-ticket-button="true" data-ticket-slug="' + ticket.slug + '">' + '<div class="ticket-list-box-title"><i class="fa-solid fa-check"></i> ' + ticket.title + '</div>' + '</div>';
+            } else {
+                html = '<div class="custom-card-auto" data-voted-finish="false" data-ticket-title="' + ticket.title + '" data-ticket-button="true" data-ticket-slug="' + ticket.slug + '">' + '<div class="ticket-list-box-title">' + ticket.title + '</div>' + '</div>';
+            }
             tickets_list_container.append(html);
         });
         //hide new ticket form
@@ -424,6 +470,8 @@ $(document).ready(function () {
         if (selected_ticket == null) {
             selectFirstTicket();
         }
+        refreshStatusTablero();
+
     }
 
     function clearUsersListRender() {
@@ -431,8 +479,6 @@ $(document).ready(function () {
     }
 
     function renderUsersList(users) {
-        //console.log("rendering users list");
-        //console.log(users);
         clearUsersListRender();
         clearTablero();
         users.forEach(function (user) {
@@ -454,6 +500,7 @@ $(document).ready(function () {
         //a partir de votes miraremos si el ticket actual tiene un voto de este usuario y si es asi, seleccionaremos la carta
         //recorrer votes
         let username = actual_user.val();
+        let votado = false;
         votes.forEach(function (vote) {
             //comprobar si el ticket es el actual
             if (vote.ticket_slug == selected_ticket) {
@@ -461,24 +508,46 @@ $(document).ready(function () {
                 if (vote.user_name == username) {
                     //si es asi, seleccionar la carta añadiendo la clase brillos
                     $('[data-deck-card-value="' + vote.vote + '"]').addClass('activo');
+                    votado = true;
                 }
             }
         });
+        if (!votado) {
+            selectedTicketStatus.html(getTicketStatus(0));
+        } else {
+            selectedTicketStatus.html(getTicketStatus(1));
+        }
+        refreshStatusTablero();
 
     }
 
-    function printUserCardTablero(user) {
-        //append div with class user-list-box and username and image
-        /* let html = '<div class="user-list-box">' + '<img src="' + user.image + '" alt="">' + ' <div class="user-list-box-username">' + user.username + '</div>' + '</div>';
-         $('#tablero-container').append(html);*/
-        /*
-                <div class="tablero-card">
-                <span>Melarc</span>
-            </div> */
 
+    function refreshStatusTablero() {
+        //obtener ticket seleccionado
+        console.log("ticket: " + selected_ticket)
+        let selected_card = getSelectedCard();
+        console.log("card:" + selected_card)
+        let ticket = $('[data-ticket-slug="' + selected_ticket + '"]');
+        //obtener el estado del ticket
+        let status = ticket.data('voted-finish');
+        console.log(status)
+        //if true = votacion finalizada
+        if (status == true) {
+            selectedTicketStatus.html(getTicketStatus(2));
+        } else {
+            //comprobar si el usuario actual tiene una carta seleccionada en el ticket seleccionado
+            if (selected_card == null) {
+                selectedTicketStatus.html(getTicketStatus(0));
+            } else {
+                selectedTicketStatus.html(getTicketStatus(1));
+            }
+
+        }
+    }
+
+    function printUserCardTablero(user) {
         let html = '<div class="tablero-card" data-card-tablero-img="true" data-card-tablero="' + user.username + '">' + '<span>' + user.username + '</span>' + '</div>';
         $('#tablero-container').append(html);
-
     }
 
 
