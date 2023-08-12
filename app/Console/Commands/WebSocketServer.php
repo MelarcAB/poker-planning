@@ -32,19 +32,23 @@ class WebSocketServer extends Command
      */
     public function handle()
     {
-        $port = 8090;
-        if (app()->environment('production')) {
-            // Asegúrate de que este código esté actualizado para usar SSL en producción
-        } else {
-            $server = IoServer::factory(
-                new HttpServer(
-                    new WsServer(
-                        new SocketController()
-                    )
-                ),
-                $port
-            );
-            $server->run();
+        try {
+            $port = 8090;
+            if (app()->environment('production')) {
+                // Asegúrate de que este código esté actualizado para usar SSL en producción
+            } else {
+                $server = IoServer::factory(
+                    new HttpServer(
+                        new WsServer(
+                            new SocketController()
+                        )
+                    ),
+                    $port
+                );
+                $server->run();
+            }
+        } catch (\Exception $e) {
+            echo $e->getMessage();
         }
     }
 }
