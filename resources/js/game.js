@@ -35,9 +35,14 @@ $(document).ready(function () {
         return selected_card;
     }
 
-    console.log("baseURI: " + baseURI);
-    var socket = new WebSocket("wss://" + baseURI + "/laravel-websockets");
-    console.log(socket);
+    //si la url actual tiene https, se usa wss, si no, se usa ws
+
+    if (window.location.protocol == "https:") {
+        var socket = new WebSocket("wss://" + baseURI + "/laravel-websockets");
+    } else {
+        var socket = new WebSocket("ws://" + baseURI + ":8090");
+    }
+
     console.log("socket.readyState: " + socket.readyState);
 
     //USERS LIST
