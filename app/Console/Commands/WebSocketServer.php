@@ -39,8 +39,8 @@ class WebSocketServer extends Command
             if (app()->environment('production')) {
                 // Rutas para el certificado y la clave privada.
                 $sslOptions = [
-                    'local_cert' => '/path_to_your/fullchain.pem',    // tu certificado
-                    'local_pk' => '/path_to_your/privkey.pem',        // tu clave privada
+                    'local_cert' => env('LARAVEL_WEBSOCKETS_SSL_LOCAL_CERT', null), // tu certificado
+                    'local_pk' => env('LARAVEL_WEBSOCKETS_SSL_LOCAL_PK', null), // tu clave privada
                     'verify_peer' => false
                 ];
 
