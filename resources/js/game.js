@@ -35,8 +35,10 @@ $(document).ready(function () {
         return selected_card;
     }
 
-    var socket = new WebSocket("ws://" + baseURI + ":8090");
-
+    console.log("baseURI: " + baseURI);
+    var socket = new WebSocket("wss://" + baseURI + ":8090");
+    console.log(socket);
+    console.log("socket.readyState: " + socket.readyState);
 
     //USERS LIST
     //obtener jwt del header
