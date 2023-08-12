@@ -35,12 +35,12 @@ $(document).ready(function () {
         return selected_card;
     }
 
-    //verificar si la conexion es segura y usar wss en lugar de ws
-    if (window.location.protocol == "https:") {
-        var socket = new WebSocket("wss://" + baseURI + ":8090");
-    } else {
-        var socket = new WebSocket("ws://" + baseURI + ":8090");
-    }
+
+
+
+
+    var socket = new WebSocket("ws://" + baseURI + ":8090");
+
 
     //USERS LIST
     //obtener jwt del header
