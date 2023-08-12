@@ -35,10 +35,6 @@ $(document).ready(function () {
         return selected_card;
     }
 
-
-
-
-
     var socket = new WebSocket("ws://" + baseURI + ":8090");
 
 
