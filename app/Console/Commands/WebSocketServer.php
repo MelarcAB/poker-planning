@@ -8,6 +8,7 @@ use Ratchet\Http\HttpServer;
 use Ratchet\WebSocket\WsServer;
 
 use App\Http\Controllers\SocketController;
+use Exception;
 
 class WebSocketServer extends Command
 {
@@ -32,22 +33,49 @@ class WebSocketServer extends Command
      */
     public function handle()
     {
+
         try {
             $port = 8090;
             if (app()->environment('production')) {
-                // Asegúrate de que este código esté actualizado para usar SSL en producción
-            } else {
-                $server = IoServer::factory(
-                    new HttpServer(
-                        new WsServer(
-                            new SocketController()
-                        )
-                    ),
-                    $port
-                );
-                $server->run();
+                $port = 8090;
+
+                if (app()->environment('production')) {
+                    // Rutas para el certificado y la clave privada.
+                    // Asegúrate de que estén configuradas correctamente y sean accesibles.
+                    //WEBSOCKETS_SSL_LOCAL_CERT y WEBSOCKETS_SSL_LOCAL_PK
+                    $sslOptions = [
+                        'local_cert' => '/path_to_your/fullchain.pem',    // tu certificado
+                        'local_pk' => '/path_to_your/privkey.pem',        // tu clave privada
+                        'verify_peer' => false
+                    ];
+
+
+                    $loop = \React\EventLoop\Loop::get();
+                    $socket = new \React\Socket\Server('0.0.0.0:' . $port, $loop);
+                    $socket = new \React\Socket\SecureServer($socket, $loop, $sslOptions);
+                    $server = new IoServer(
+                        new HttpServer(
+                            new WsServer(
+                                new SocketController()
+                            )
+                        ),
+                        $socket,
+                        $loop
+                    );
+                    $server->run();
+                } else {
+                    $server = IoServer::factory(
+                        new HttpServer(
+                            new WsServer(
+                                new SocketController()
+                            )
+                        ),
+                        $port
+                    );
+                    $server->run();
+                }
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             echo $e->getMessage();
         }
     }
