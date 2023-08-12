@@ -120,7 +120,7 @@ $(document).ready(function () {
     //votar los tickets pulsando el boton de votar (creador de la sala)
     b_vote_ticket.click(function () {
         //validar si hay ticket seleccionado o si el ticket seleccionado ya ha sido votado
-        if (selected_ticket == null) {
+        if (selected_ticket == null || selected_ticket == "") {
             showError("No hay ticket seleccionado");
             return;
         }
@@ -128,6 +128,8 @@ $(document).ready(function () {
         //obtener si el ticket ya ha revelado los votos
         let ticket = $('[data-ticket-slug="' + selected_ticket + '"]');
         let status = ticket.data('voted-finish');
+        console.log("todos los ticket votados" + checkAllTicketsVoted());
+
         if (status) {
             showError("El ticket ya ha sido votado");
             return;
@@ -137,12 +139,13 @@ $(document).ready(function () {
         if (!checkAllUsersVoted()) {
             swal({
                 title: "¿Estás seguro?",
-                text: "No todos los usuarios han votado",
+                text: "No todos los usuarios han votado el ticket " + selectedTicket.text() + ". ¿Quieres revelar los votos?",
                 icon: "warning",
                 buttons: true,
                 dangerMode: true,
             })
                 .then((willDelete) => {
+
                     if (willDelete) {
                         submitVotes(selected_ticket);
                     } else {
@@ -357,7 +360,7 @@ $(document).ready(function () {
         //quitar brillo a todos data-card-tablero-img="true"
         $('[data-card-tablero-img="true"]').removeClass('brillos');
         votes = data.data;
-        console.log(data)
+
         votes.forEach(function (vote) {
             //comprobar si la ticket_slug es = a ticket seleccionado
             if (vote.ticket_slug == selected_ticket) {
@@ -530,13 +533,11 @@ $(document).ready(function () {
 
         //obtener el html del ticket seleccionado
         let ticket_title = ticket.text();
-        console.log(ticket_title)
 
         selectedTicket.html(ticket_title);
 
         //obtener el estado del ticket
         let status = ticket.data('voted-finish');
-        console.log(status)
         //if true = votacion finalizada
         if (status == true) {
             selectedTicketStatus.html(getTicketStatus(2));
@@ -586,12 +587,15 @@ $(document).ready(function () {
 
     function showTimerVotes(data) {
         let timerInterval
+        //obtener el ticket slug de data
+        let ticket_slug = data.data[0].ticket_slug;
+        let ticket_to_reveal = $('[data-ticket-slug="' + ticket_slug + '"]');
         Swal.fire({
-            title: 'Mostrando los resultados de las votaciones...',
+            title: 'Mostrando los resultados de las votaciones del ticket ' + ticket_to_reveal.data('ticket-title'),
             html:
                 'En <strong></strong> segundos<br/><br/>'
             ,
-            timer: 3000,
+            timer: 5000,
             showConfirmButton: false,  // Esconde el botón de confirmación
             didOpen: () => {
                 const content = Swal.getHtmlContainer()
@@ -616,6 +620,16 @@ $(document).ready(function () {
 
 
 
+    //function to check if all the tickets are voted
+    function checkAllTicketsVoted() {
+        let all_tickets_voted = true;
+        $('[data-ticket-button="true"]').each(function () {
+            if (!$(this).data('voted-finish')) {
+                all_tickets_voted = false;
+            }
+        });
+        return all_tickets_voted;
+    }
 
 
 

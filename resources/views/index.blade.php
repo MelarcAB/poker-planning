@@ -36,7 +36,7 @@
                 </div>
             </div>
             <div class="col-md-4 text-center">
-                <div class="card bg-dark mb-4" style="height: 100%;">
+                <div class="card bg-dark mb-3" style="height: 100%;">
                     <div class="card-body d-flex flex-column">
                         <i class="fas fa-4x fa-envelope-open-text mb-4 text-white"></i>
                         <h3 class="card-title">Invita Participantes</h3>
@@ -48,8 +48,8 @@
         </div>
     </div>
 
-    <div class="container py-5" style="color: white;">
-        <h2 class="display-5 text-center mb-5"></h2>
+    <div class="container py-4" style="color: white;">
+        <h2 class="display-5 text-center mb-3"></h2>
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <p class="text-center">
