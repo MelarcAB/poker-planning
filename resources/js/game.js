@@ -36,7 +36,7 @@ $(document).ready(function () {
     }
 
     console.log("baseURI: " + baseURI);
-    var socket = new WebSocket("wss://" + baseURI + ":8090");
+    var socket = new WebSocket("wss://" + baseURI + "/laravel-websockets");
     console.log(socket);
     console.log("socket.readyState: " + socket.readyState);
 
