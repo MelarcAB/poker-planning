@@ -8,6 +8,7 @@ return [
         'port' => env('LARAVEL_WEBSOCKETS_PORT', 6001),
     ],
 
+
     'apps' => [
         [
             'id' => env('PUSHER_APP_ID'),

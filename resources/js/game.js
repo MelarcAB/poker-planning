@@ -36,16 +36,11 @@ $(document).ready(function () {
     }
 
     //verificar si la conexion es segura y usar wss en lugar de ws
-    var protocol = window.location.protocol == "https:" ? "wss://" : "ws://";
-    var socketUrl = protocol + window.location.hostname;
-    if (window.location.hostname === 'localhost') {
-        socketUrl += ":8090";
+    if (window.location.protocol == "https:") {
+        var socket = new WebSocket("wss://" + baseURI + "/laravel-websockets");
+    } else {
+        var socket = new WebSocket("ws://" + baseURI + ":8090");
     }
-    var socket = new WebSocket(socketUrl);
-
-
-
-
 
     //USERS LIST
     //obtener jwt del header
